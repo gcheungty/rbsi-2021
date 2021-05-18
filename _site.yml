@@ -1,11 +1,13 @@
-name: "my-website"
+name: "RBSI-2021"
 navbar:
-  title: "My Website"
+  title: "RBSI-2021"
   left:
     - text: "Home"
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Labs"
+      href: lab1.html 
 output: 
   html_document:
-    theme: darkly
+    theme: cosmo
