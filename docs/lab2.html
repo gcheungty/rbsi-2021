@@ -280,7 +280,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 
@@ -454,33 +454,58 @@ div.tocify {
 </div>
 
 
-<div id="part-1-downloading-installing-r-and-r-studio" class="section level1">
-<h1>PART 1: Downloading &amp; Installing R and R Studio</h1>
-<p>In order to perform most of the data manipulations in this class, we will be teaching it through R, which is a free statistical software available for various OS.</p>
-<p><strong>R (PC, Mac, &amp; Linux):</strong> <a href="http://archive.linux.duke.edu/cran/" class="uri">http://archive.linux.duke.edu/cran/</a></p>
+<div id="r-and-rstudio" class="section level1">
+<h1>R and RStudio</h1>
+<p>In order to perform most of the data manipulations in this class, we will be teaching it through R, which is a programming language often used in statistics.</p>
 <ul>
-<li>You can download R at the above link</li>
+<li>Other options: Python (huge learning curve), Stata (Not free), SAS/SPSS (Not free)</li>
+</ul>
+<p>Rstudio is a free software program that makes using R much easier. - As its name implies, it is a ‘studio’ or ‘editor’ (actually an integrated development environment, IDE) to make R easier to work with - IMPORTANT: Rstudio is not R. Without R downloaded, R studio has nothing to ‘work with’ - R studio gives us clickable options and allows us to integrate pre-made software packages for statistical analysis</p>
+<ul>
+<li>Left: R console; Right: R Studio console. Notice how there are more options in R Studio.</li>
+</ul>
+<p><img src="r-comparison.png" alt="Basic R console without R studio" width="300" /> <img src="r-console.png" alt="compared to R studio console" width="500" /></p>
+</div>
+<div id="downloading-and-installing" class="section level1">
+<h1>Downloading and Installing</h1>
+<div id="r-pc-mac-linux" class="section level2">
+<h2>R (PC, Mac, &amp; Linux)</h2>
+<div id="downloading-r" class="section level3">
+<h3>Downloading R</h3>
+<ol style="list-style-type: decimal">
+<li>Go to <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></li>
+<li>On the front page, under ”Download and Install R”, select the appropriate download for your operating system.</li>
+<li>For Windows users, click ”Download R for Windows,” and then select ”base”, and then ”Download R 3.6.0 for Windows.”</li>
+<li>For Mac users, click ”Download R for Mac OS X,” and then select ”R-3.6.0.pkg”</li>
+<li>Once your file is downloaded, run and install the R .exe (windows) or .dmg (for Mac OS) file (this will look a little different depending on your computer)</li>
+</ol>
+</div>
+<div id="version-control-for-r" class="section level3">
+<h3>Version Control for R</h3>
+<ul>
 <li>version # allows us to see current R info on a computer</li>
 <li>E.g. I am currently running R version 3.6.2 (2019-12-12) – “Dark and Stormy Night” Copyright (C) 2019 The R Foundation for Statistical Computing Platform: x86_64-apple-darwin15.6.0 (64-bit)</li>
 </ul>
-<div class="figure">
+<center>
 <img src="r-version.png" alt="r-version" width="400" />
-<p class="caption">r-version</p>
-</div>
+</center>
 <ul>
 <li>Sometimes the version matters because R is a free software with contributions from other programmers, often called “packages” as we will show later. Packages can be consistently updated by authors, but may depreciate if not kept up. So if you run into problems using a package, the first step is often making sure your version of R is up to date with what the package requires.</li>
 <li>Here I’m running R 3.6.2, from 2019, which means I probably need an update!</li>
 </ul>
-<p><strong>R Studio:</strong> <a href="https://www.rstudio.com/products/rstudio/download/#download" class="uri">https://www.rstudio.com/products/rstudio/download/#download</a></p>
+</div>
+</div>
+<div id="r-studio" class="section level2">
+<h2>R Studio</h2>
+<ol style="list-style-type: decimal">
+<li>Go to <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a></li>
+<li>On the front page, click ”Download RStudio”</li>
+<li>We want the RStudio Desktop Open Source License, so select ’Download’ for that option</li>
+<li>Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.</li>
+<li>Run the file to install RStudio and follow the instructions.</li>
+</ol>
 <ul>
-<li>IMPORTANT - R Studio is not R, it is an integrated development environment (IDE, also known as an editor) to make R easier to work with</li>
-<li>R studio gives us clickable options and allows us to integrate pre-made software packages for statistical analysis</li>
 <li>When you update R this does not update RStudio, and vice versa</li>
-<li>We will use R Studio</li>
-<li>Left: R console; Right: R Studio console. Notice how there are more options in R Studio.</li>
-</ul>
-<p><img src="r-comparison.png" alt="Basic R console without R studio" width="300" /> <img src="r-console.png" alt="compared to R studio console" width="500" /></p>
-<ul>
 <li>Unlike the R version, we have to run a line of code to access the R Studio Version, or find it in the “About RStudio” dropdown menu.</li>
 </ul>
 <pre><code>RStudio.Version() # checks version of RStudio on computer</code></pre>
@@ -513,8 +538,12 @@ $release_name
 [1] &quot;Orange Blossom&quot;</code></pre>
 <p>For a much more detailed intro to R, check out: <a href="https://cran.r-project.org/doc/manuals/R-intro.pdf" class="uri">https://cran.r-project.org/doc/manuals/R-intro.pdf</a></p>
 <hr />
-<div id="welcome-to-rstudio---user-interface-ui-explanation" class="section level2">
-<h2>Welcome to RStudio - User Interface (UI) explanation</h2>
+</div>
+</div>
+<div id="welcome-to-rstudio" class="section level1">
+<h1>Welcome to RStudio</h1>
+<div id="user-interface-ui-explanation" class="section level2">
+<h2>User Interface (UI) explanation</h2>
 <div class="figure">
 <img src="r-console.png" alt="console" />
 <p class="caption">console</p>
@@ -539,7 +568,10 @@ $release_name
 y &lt;- &quot;Hello World&quot;
 data &lt;- read.csv(&quot;germancities.csv&quot;) # so can datasets
 View(data)</code></pre>
-<p>(<img src="view-germancities.png" alt="data-germancities" />)</p>
+<div class="figure">
+<img src="view-germancities.png" alt="data-germancities" />
+<p class="caption">data-germancities</p>
+</div>
 <pre class="r"><code>rm(x) # things can be removed individually
 rm(list=ls()) # or all at once</code></pre>
 <p><strong>Panel 4 - Everything Else</strong></p>
@@ -548,18 +580,62 @@ rm(list=ls()) # or all at once</code></pre>
 <li>we will come back to most of these topics over time</li>
 <li>You can edit the UI as you wish by going to ‘Preferences’ under the ‘RStudio’ tab</li>
 </ul>
+<hr />
 </div>
-</div>
-<div id="part-2-basics-of-programming" class="section level1">
-<h1>PART 2 : Basics of Programming</h1>
+<div id="basics-of-programming" class="section level2">
+<h2>Basics of Programming</h2>
 <p><strong>Data Types/Elements/Primitives in R</strong></p>
-<p>There are different ‘types’ of information stored in R as data:</p>
+<p>There are different ‘types’ of information stored in R as data, some include: (but there are more)</p>
 <ol style="list-style-type: decimal">
 <li>Numeric</li>
 <li>Boolean / Logical</li>
 <li>String(s)/Characters</li>
-<li><p>Vectors</p></li>
-<li><p><em>Numeric</em></p></li>
+<li>Vectors</li>
+<li>Factors</li>
+<li>Matrices</li>
+<li>Dataframe</li>
+</ol>
+<p>This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset.</p>
+<div id="example-1---dataframe" class="section level3">
+<h3>Example 1 - Dataframe</h3>
+<p><strong>Dataframe</strong>: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday.</p>
+<ul>
+<li>Using sample data of a list of employees from microsoft: <a href="https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1">Source</a></li>
+</ul>
+<pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
+datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
+<div id="htmlwidget-2305f4ca9343af7a2aab" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2305f4ca9343af7a2aab">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>There are five types of information in the data above
+<ol style="list-style-type: decimal">
+<li>The employee’s ID (a number)</li>
+<li>Last Name (a word, or a series of alphabetical characters)</li>
+<li>First Name (a word, or a series of alphabetical characters)</li>
+<li>Title (words, belonging to categories of different job titles the employee can have)</li>
+<li>Birth Date (a number, with a specific format of MM/DD/YY)</li>
+</ol></li>
+</ul>
+<p>So in the dataset above, we already have at least two to four types of data.</p>
+<p>The dataset itself is a dataframe (type 7), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 5). We will go into these in more detail.</p>
+</div>
+<div id="matrices" class="section level3">
+<h3>Matrices</h3>
+<p><strong>Matrices (plural) or a Matrix (singular)</strong> are a more specific type of dataframe, where all the columns must have the same data type, and are of the same length. Most commonly, matrices are numerical (think the matrix in the movie The Matrix!)</p>
+<p>Below we have a 4x3 matrix, with four rows, three columns.</p>
+<pre class="r"><code>matrix (1:12, nrow = 4, ncol = 3)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<pre><code></code></pre>
+</div>
+</div>
+<div id="using-your-console" class="section level2">
+<h2>Using your console</h2>
+<ol style="list-style-type: decimal">
+<li><em>Numeric</em></li>
 </ol>
 <pre class="r"><code>whole.number &lt;- 6
 real.number &lt;- 3.141592
@@ -580,6 +656,7 @@ whole.number + real.number</code></pre>
 <pre class="r"><code>fourty.two &lt;- T
 fourty.two</code></pre>
 <pre><code>## [1] TRUE</code></pre>
+<p><strong>Is this true/false?</strong></p>
 <pre class="r"><code>!fourty.two # ! == &#39;not&#39;</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>x &lt;- 6
@@ -591,32 +668,32 @@ x == 6</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>x == 1000 | y == 7 # | == &#39;this, or this, or both&#39;</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li><em>Aside: Assignment vs Equals</em></li>
-</ol>
+<p><em>Syntax: Assignment vs Equals</em></p>
 <pre class="r"><code>x = 2 # Please avoid at all costs
 x &lt;- 4 # Better assignment operator
 x == 4 # is this true?</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>## String(s)/Characters &amp; Concatenation
-string.one &lt;- &quot;Hello&quot;
+<ol start="3" style="list-style-type: decimal">
+<li>String(s)/Characters &amp; Concatenation</li>
+</ol>
+<pre class="r"><code>string.one &lt;- &quot;Hello&quot;
 string.two &lt;- &quot;World&quot;
 combo.string &lt;- paste(string.one, string.two, sep = &quot; &quot;) # Default sep input 
 combo.string.two &lt;- paste0(string.one, string.two) # Eliminates spacing
-combo.string.three &lt;- paste(string.one, whole.number) # Typecasts numeric
-
-## Aside: Checking/Changing Type
-is.numeric(whole.number)</code></pre>
+combo.string.three &lt;- paste(string.one, whole.number) # Typecasts numeric</code></pre>
+<p><strong>Syntax: Checking/Changing Type</strong></p>
+<pre class="r"><code>is.numeric(whole.number)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>is.factor(whole.number)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>as.character(whole.number)</code></pre>
 <pre><code>## [1] &quot;6&quot;</code></pre>
-<pre class="r"><code>as.character(whole.number)</code></pre>
-<pre><code>## [1] &quot;6&quot;</code></pre>
-<pre class="r"><code>## Vectors
-
-cookies &lt;- c(&quot;chocolate chip&quot;, &quot;sugar&quot;, &quot;snickerdoodle&quot;)
+<pre class="r"><code>str(whole.number)</code></pre>
+<pre><code>##  num 6</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Vectors</li>
+</ol>
+<pre class="r"><code>cookies &lt;- c(&quot;chocolate chip&quot;, &quot;sugar&quot;, &quot;snickerdoodle&quot;)
 numbers &lt;- c(1, 2, 3, 4, 5)
 
 x &lt;- c(1,2,3,4,5) # the c stands for concatenate
@@ -635,6 +712,7 @@ z &lt;- c(string.one, whole.number)
 ## Factors
 factor.example &lt;- as.factor(c(rep(&quot;A&quot;,3), rep(&quot;B&quot;,4), rep(&quot;C&quot;,6)))
 levels(factor.example)</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
 <pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
 <pre class="r"><code>factor.example[1]</code></pre>
 <pre><code>## [1] A
@@ -730,6 +808,7 @@ length(x)</code></pre>
 ### Main
 ## Major
 # Minor</code></pre>
+</div>
 <div id="r-markdown" class="section level2">
 <h2>R Markdown</h2>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>

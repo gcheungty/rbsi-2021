@@ -12,8 +12,8 @@ output:
     toc: TRUE
     toc_float: TRUE
     number_sections: FALSE
-    code_folding: "hide"
-    css: style.css
+    code_folding: "show"
+    css: "style.css"
 ---
 
 ```{r, include = FALSE}
@@ -22,34 +22,57 @@ library(DT)
 datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
 ```
 
-# PART 1: Downloading & Installing R and R Studio 
+# R and RStudio
 
-In order to perform most of the data manipulations in this class, we will be teaching it through R, which is a free statistical software available for various OS. 
+In order to perform most of the data manipulations in this class, we will be teaching it through R, which is a programming language often used in statistics. 
 
- **R (PC, Mac, & Linux):** http://archive.linux.duke.edu/cran/
+- Other options: Python (huge learning curve), Stata (Not free), SAS/SPSS (Not free) 
 
-- You can download R at the above link
+Rstudio is a free software program that makes using R much easier. 
+- As its name implies, it is a 'studio' or 'editor' (actually an integrated development environment, IDE) to make R easier to work with
+- IMPORTANT: Rstudio is not R. Without R downloaded, R studio has nothing to 'work with'
+- R studio gives us clickable options and allows us to integrate pre-made software packages for statistical analysis 
+
+- Left: R console; Right: R Studio console. Notice how there are more options in R Studio.
+
+![Basic R console without R studio](r-comparison.png){width=300px} ![compared to R studio console](r-console.png){width=500px}
+
+# Downloading and Installing
+
+## R (PC, Mac, & Linux)
+
+### Downloading R
+
+1. Go to https://cran.r-project.org/
+2. On the front page, under ”Download and Install R”, select the appropriate download for your operating system.
+3. For Windows users, click ”Download R for Windows,” and then select ”base”, and then ”Download R 3.6.0 for Windows.”
+4. For Mac users, click ”Download R for Mac OS X,” and then select ”R-3.6.0.pkg”
+5. Once your file is downloaded, run and install the R .exe (windows) or .dmg (for Mac OS) file (this will look a little different depending on your computer)
+
+### Version Control for R
+
 - version # allows us to see current R info on a computer
 - E.g. I am currently running R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin15.6.0 (64-bit)
 
+<center>
 ![r-version](r-version.png){width=400px}
+</center>
 
 - Sometimes the version matters because R is a free software with contributions from other programmers, often called "packages" as we will show later. Packages can be consistently updated by authors, but may depreciate if not kept up. So if you run into problems using a package, the first step is often making sure your version of R is up to date with what the package requires. 
 - Here I'm running R 3.6.2, from 2019, which means I probably need an update! 
 
 
-**R Studio:** https://www.rstudio.com/products/rstudio/download/#download
+## R Studio
 
-- IMPORTANT - R Studio is not R, it is an integrated development environment (IDE, also known as an editor) to make R easier to work with
-- R studio gives us clickable options and allows us to integrate pre-made software packages for statistical analysis 
+1. Go to https://www.rstudio.com/
+2. On the front page, click ”Download RStudio”
+3. We want the RStudio Desktop Open Source License, so select ’Download’ for that option
+4. Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.
+5. Run the file to install RStudio and follow the instructions.
+
 - When you update R this does not update RStudio, and vice versa
-- We will use R Studio
-- Left: R console; Right: R Studio console. Notice how there are more options in R Studio.
-
-![Basic R console without R studio](r-comparison.png){width=300px} ![compared to R studio console](r-console.png){width=500px}
-
 - Unlike the R version, we have to run a line of code to access the R Studio Version, or find it in the "About RStudio" dropdown menu.
 ```
 RStudio.Version() # checks version of RStudio on computer
@@ -90,7 +113,9 @@ https://cran.r-project.org/doc/manuals/R-intro.pdf
 
 *** 
 
-## Welcome to RStudio - User Interface (UI) explanation 
+# Welcome to RStudio 
+
+## User Interface (UI) explanation 
 
 ![console](r-console.png)
 
@@ -115,7 +140,9 @@ data <- read.csv("germancities.csv") # so can datasets
 View(data)
 ```
 
-(![data-germancities](view-germancities.png))
+![data-germancities](view-germancities.png)
+
+
 
 ```{r}
 rm(x) # things can be removed individually
@@ -129,16 +156,63 @@ rm(list=ls()) # or all at once
 - we will come back to most of these topics over time
 - You can edit the UI as you wish by going to 'Preferences' under the 'RStudio' tab
 
-# PART 2 : Basics of Programming
+***
+
+## Basics of Programming
 
 **Data Types/Elements/Primitives in R**
 
-There are different 'types' of information stored in R as data: 
+There are different 'types' of information stored in R as data, some include: (but there are more)
 
 1. Numeric 
 2. Boolean / Logical
 3. String(s)/Characters
 4. Vectors
+5. Factors
+6. Matrices
+7. Dataframe 
+
+This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset. 
+
+### Example 1 - Dataframe
+
+**Dataframe**: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday. 
+
+- Using sample data of a list of employees from microsoft: 
+[Source](https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1)
+
+```{r}
+data <- read.csv("excel-employee.csv")
+datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T))
+```
+
+- There are five types of information in the data above
+  1. The employee's ID (a number)
+  2. Last Name (a word, or a series of alphabetical characters)
+  3. First Name (a word, or a series of alphabetical characters)
+  4. Title (words, belonging to categories of different job titles the employee can have)
+  5. Birth Date (a number, with a specific format of MM/DD/YY)
+
+So in the dataset above, we already have at least two to four types of data. 
+
+The dataset itself is a dataframe (type 7), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 5). We will go into these in more detail. 
+
+### Matrices
+
+**Matrices (plural) or a Matrix (singular)** are a more specific type of dataframe, where all the columns must have the same data type, and are of the same length. Most commonly, matrices are numerical (think the matrix in the movie The Matrix!)
+
+Below we have a 4x3 matrix, with four rows, three columns. 
+
+```{r}
+matrix (1:12, nrow = 4, ncol = 3)
+```
+
+
+
+```
+```
+
+## Using your console
 
 1. *Numeric*
 ```{r}
@@ -163,6 +237,7 @@ fourty.two <- T
 fourty.two
 ```
 
+**Is this true/false?**
 
 ```{r}
 !fourty.two # ! == 'not'
@@ -183,7 +258,7 @@ x == 600 & y == 700 # & == 'and this is also true'
 x == 1000 | y == 7 # | == 'this, or this, or both'
 ```
 
-3. *Aside: Assignment vs Equals*
+*Syntax: Assignment vs Equals*
 ```{r}
 x = 2 # Please avoid at all costs
 x <- 4 # Better assignment operator
@@ -191,50 +266,28 @@ x == 4 # is this true?
 ```
 
 
+3. String(s)/Characters & Concatenation
 
-```r
-## String(s)/Characters & Concatenation
+```{r}
 string.one <- "Hello"
 string.two <- "World"
 combo.string <- paste(string.one, string.two, sep = " ") # Default sep input 
 combo.string.two <- paste0(string.one, string.two) # Eliminates spacing
 combo.string.three <- paste(string.one, whole.number) # Typecasts numeric
+```
 
-## Aside: Checking/Changing Type
+
+**Syntax: Checking/Changing Type**
+```{r}
 is.numeric(whole.number)
-```
-
-```
-## [1] TRUE
-```
-
-```r
 is.factor(whole.number)
-```
-
-```
-## [1] FALSE
-```
-
-```r
 as.character(whole.number)
+str(whole.number)
 ```
 
-```
-## [1] "6"
-```
+4. Vectors
 
-```r
-as.character(whole.number)
-```
-
-```
-## [1] "6"
-```
-
-```r
-## Vectors
-
+```{r}
 cookies <- c("chocolate chip", "sugar", "snickerdoodle")
 numbers <- c(1, 2, 3, 4, 5)
 
