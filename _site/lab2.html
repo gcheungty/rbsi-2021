@@ -9,19 +9,33 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Gloria Cheung" />
 
 
-<title>lab2_basic_R_20.utf8.md</title>
+<title>Lab 2</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.16/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -68,6 +82,7 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -257,6 +272,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -314,106 +337,150 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
-
-
-
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
 </div>
 
 
-<pre class="r"><code>######## RBSI 2019 Methods Lab 2 - Introduction to Programming ########
-######## Created by Gabriel Madson (5/28/19)
-rm(list=ls())
 
-###### PART 1 ######
-#### Downloading &amp; Installing R / R Studio ####
-# R (PC, Mac, &amp; Linux): http://archive.linux.duke.edu/cran/
-version # allows us to see current R info on a computer</code></pre>
-<pre><code>##                _                           
-## platform       x86_64-apple-darwin15.6.0   
-## arch           x86_64                      
-## os             darwin15.6.0                
-## system         x86_64, darwin15.6.0        
-## status                                     
-## major          3                           
-## minor          6.2                         
-## year           2019                        
-## month          12                          
-## day            12                          
-## svn rev        77560                       
-## language       R                           
-## version.string R version 3.6.2 (2019-12-12)
-## nickname       Dark and Stormy Night</code></pre>
-<pre class="r"><code># R Studio: https://www.rstudio.com/products/rstudio/download/#download
-# IMPORTANT - R Studio is not R, it is an IDE to make R easier to work with
-#   When you update R this does not update RStudio, and vice versa
-RStudio.Version() # checks version of RStudio on computer</code></pre>
-<pre><code>## $citation
-## 
-## To cite RStudio in publications use:
-## 
-##   RStudio Team (2019). RStudio: Integrated Development for R.
-##   RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
-## 
-## A BibTeX entry for LaTeX users is
-## 
-##   @Manual{,
-##     title = {RStudio: Integrated Development Environment for R},
-##     author = {{RStudio Team}},
-##     organization = {RStudio, Inc.},
-##     address = {Boston, MA},
-##     year = {2019},
-##     url = {http://www.rstudio.com/},
-##   }
-## 
-## 
-## $mode
-## [1] &quot;desktop&quot;
-## 
-## $version
-## [1] &#39;1.2.5033&#39;
-## 
-## $release_name
-## [1] &quot;Orange Blossom&quot;</code></pre>
-<pre class="r"><code># https://cran.r-project.org/doc/manuals/R-intro.pdf - A much more detailed intro to R
+<h1 class="title toc-ignore">Lab 2</h1>
+<h4 class="author">Gloria Cheung</h4>
+<h4 class="date">5/18/2021</h4>
 
-#### Welcome to RStudio - UI explanation ####
-## Panel 1 - Console
-# where code is run/executed
-# logs all of your past commands and output
-# you can work from just the console, but this is not advised
-#    R without RStudio is just the console
+</div>
 
-## Panel 2 - Script
-# Keeps track of everything you&#39;re doing, so you can forget!
-# The entire script can be run at once (cmd*A + cmd*enter)
-# Or line-by-line (cmd*enter) [Mac]
+<div id="TOC">
+<ul>
+<li><a href="#part-1-downloading-installing-r-and-r-studio">PART 1: Downloading &amp; Installing R and R Studio</a><ul>
+<li><a href="#welcome-to-rstudio---user-interface-ui-explanation">Welcome to RStudio - User Interface (UI) explanation</a></li>
+</ul></li>
+<li><a href="#part-2-basics-of-programming">PART 2 : Basics of Programming</a><ul>
+<li><a href="#r-markdown">R Markdown</a></li>
+<li><a href="#including-plots">Including Plots</a></li>
+</ul></li>
+</ul>
+</div>
 
-## Panel 3 - Local Environment
-x &lt;- 3 # variables can be stored in local enviro
+<div id="part-1-downloading-installing-r-and-r-studio" class="section level1">
+<h1>PART 1: Downloading &amp; Installing R and R Studio</h1>
+<p>In order to perform most of the data manipulations in this class, we will be teaching it through R, which is a free statistical software available for various OS.</p>
+<p><strong>R (PC, Mac, &amp; Linux):</strong> <a href="http://archive.linux.duke.edu/cran/" class="uri">http://archive.linux.duke.edu/cran/</a></p>
+<ul>
+<li>You can download R at the above link</li>
+<li>version # allows us to see current R info on a computer</li>
+<li>E.g. I am currently running R version 3.6.2 (2019-12-12) – “Dark and Stormy Night” Copyright (C) 2019 The R Foundation for Statistical Computing Platform: x86_64-apple-darwin15.6.0 (64-bit)</li>
+</ul>
+<div class="figure">
+<img src="r-version.png" alt="r-version" width="400" />
+<p class="caption">r-version</p>
+</div>
+<ul>
+<li>Sometimes the version matters because R is a free software with contributions from other programmers, often called “packages” as we will show later. Packages can be consistently updated by authors, but may depreciate if not kept up. So if you run into problems using a package, the first step is often making sure your version of R is up to date with what the package requires.</li>
+<li>Here I’m running R 3.6.2, from 2019, which means I probably need an update!</li>
+</ul>
+<p><strong>R Studio:</strong> <a href="https://www.rstudio.com/products/rstudio/download/#download" class="uri">https://www.rstudio.com/products/rstudio/download/#download</a></p>
+<ul>
+<li>IMPORTANT - R Studio is not R, it is an integrated development environment (IDE, also known as an editor) to make R easier to work with</li>
+<li>R studio gives us clickable options and allows us to integrate pre-made software packages for statistical analysis</li>
+<li>When you update R this does not update RStudio, and vice versa</li>
+<li>We will use R Studio</li>
+<li>Left: R console; Right: R Studio console. Notice how there are more options in R Studio.</li>
+</ul>
+<p><img src="r-comparison.png" alt="Basic R console without R studio" width="300" /> <img src="r-console.png" alt="compared to R studio console" width="500" /></p>
+<ul>
+<li>Unlike the R version, we have to run a line of code to access the R Studio Version, or find it in the “About RStudio” dropdown menu.</li>
+</ul>
+<pre><code>RStudio.Version() # checks version of RStudio on computer</code></pre>
+<pre><code>$citation
+
+To cite RStudio in publications use:
+
+  RStudio Team (2019). RStudio: Integrated Development for
+  R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {RStudio: Integrated Development Environment for R},
+    author = {{RStudio Team}},
+    organization = {RStudio, Inc.},
+    address = {Boston, MA},
+    year = {2019},
+    url = {http://www.rstudio.com/},
+  }
+
+
+$mode
+[1] &quot;desktop&quot;
+
+$version
+[1] ‘1.2.5033’
+
+$release_name
+[1] &quot;Orange Blossom&quot;</code></pre>
+<p>For a much more detailed intro to R, check out: <a href="https://cran.r-project.org/doc/manuals/R-intro.pdf" class="uri">https://cran.r-project.org/doc/manuals/R-intro.pdf</a></p>
+<hr />
+<div id="welcome-to-rstudio---user-interface-ui-explanation" class="section level2">
+<h2>Welcome to RStudio - User Interface (UI) explanation</h2>
+<div class="figure">
+<img src="r-console.png" alt="console" />
+<p class="caption">console</p>
+</div>
+<p><strong>Panel 1 - Console</strong></p>
+<ul>
+<li>where code is run/executed</li>
+<li>logs all of your past commands and output</li>
+<li>you can work from just the console, but this is not advised
+<ul>
+<li>R without RStudio is just the console</li>
+</ul></li>
+</ul>
+<p><strong>Panel 2 - Script</strong></p>
+<ul>
+<li>Keeps track of everything you’re doing, so you can forget!</li>
+<li>The entire script can be run at once (cmd<em>A + cmd</em>enter)</li>
+<li>Or line-by-line (cmd*enter) [Mac]</li>
+</ul>
+<p><strong>Panel 3 - Local Environment</strong></p>
+<pre class="r"><code>x &lt;- 3 # variables can be stored in local environment
 y &lt;- &quot;Hello World&quot;
 data &lt;- read.csv(&quot;germancities.csv&quot;) # so can datasets
-View(data)
-
-rm(x) # things can be removed individually
-rm(list=ls()) # or all at once
-
-## Panel 4 - Everything Else
-# includes filepaths, plot viewer, package loader, help window, etc.
-# we will come back to most of these topics over time
-
-## You can edit the UI as you wish by going to &#39;Preferences&#39; under the &#39;RStudio&#39; tab
-
-###### PART 2 ######
-#### Basics of Programming ####
-## Data Types/Elements/Primitives in R ##
-## Numeric
-whole.number &lt;- 6
+View(data)</code></pre>
+<p>(<img src="view-germancities.png" alt="data-germancities" />)</p>
+<pre class="r"><code>rm(x) # things can be removed individually
+rm(list=ls()) # or all at once</code></pre>
+<p><strong>Panel 4 - Everything Else</strong></p>
+<ul>
+<li>includes filepaths, plot viewer, package loader, help window, etc.</li>
+<li>we will come back to most of these topics over time</li>
+<li>You can edit the UI as you wish by going to ‘Preferences’ under the ‘RStudio’ tab</li>
+</ul>
+</div>
+</div>
+<div id="part-2-basics-of-programming" class="section level1">
+<h1>PART 2 : Basics of Programming</h1>
+<p><strong>Data Types/Elements/Primitives in R</strong></p>
+<p>There are different ‘types’ of information stored in R as data:</p>
+<ol style="list-style-type: decimal">
+<li>Numeric</li>
+<li>Boolean / Logical</li>
+<li>String(s)/Characters</li>
+<li><p>Vectors</p></li>
+<li><p><em>Numeric</em></p></li>
+</ol>
+<pre class="r"><code>whole.number &lt;- 6
 real.number &lt;- 3.141592
 
 whole.number + real.number</code></pre>
 <pre><code>## [1] 9.141592</code></pre>
-<pre class="r"><code>## Boolean/Logical
-TRUE</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><em>Boolean / Logical</em></li>
+</ol>
+<pre class="r"><code>TRUE</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>FALSE</code></pre>
 <pre><code>## [1] FALSE</code></pre>
@@ -435,8 +502,10 @@ x == 6</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>x == 1000 | y == 7 # | == &#39;this, or this, or both&#39;</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>## Aside: Assignment vs Equals
-x = 2 # Please avoid at all costs
+<ol start="3" style="list-style-type: decimal">
+<li><em>Aside: Assignment vs Equals</em></li>
+</ol>
+<pre class="r"><code>x = 2 # Please avoid at all costs
 x &lt;- 4 # Better assignment operator
 x == 4 # is this true?</code></pre>
 <pre><code>## [1] TRUE</code></pre>
@@ -572,6 +641,26 @@ length(x)</code></pre>
 ### Main
 ## Major
 # Minor</code></pre>
+<div id="r-markdown" class="section level2">
+<h2>R Markdown</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
+<pre class="r"><code>summary(cars)</code></pre>
+<pre><code>##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00</code></pre>
+</div>
+<div id="including-plots" class="section level2">
+<h2>Including Plots</h2>
+<p>You can also embed plots, for example:</p>
+<p><img src="lab2_files/figure-html/pressure-1.png" width="672" /></p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+</div>
 
 
 

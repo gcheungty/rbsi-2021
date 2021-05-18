@@ -7,7 +7,12 @@ navbar:
     - text: "About"
       href: about.html
     - text: "Labs"
-      href: lab1.html 
+      href: index.html
+      menu: 
+      - text: Lab 1
+        href: lab1.html 
+      - text: Lab 2
+        href: lab2.html
 output: 
   html_document:
     theme: cosmo
