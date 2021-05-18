@@ -1,15 +1,26 @@
 ---
 title: "My Website"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 pagetitle: "Index"
+output: html_document
 ---
 
 ## Index 
 
 [**What is Data**]
+
 [**Intro to R**](lab2_basic_R_20.html)
+
 [**Data Cleaning**](lab3_using_data_19.html)
+
 [**OLS in R**]
+
 [**Interpreting and Graphing Results in R**]
+
 [**Research Paper Troubleshooting**]
 
 Hello, Website!
