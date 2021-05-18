@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>lab3_using_data_19.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">RBSI-Methods 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
+    <li>
+      <a href="lab1.html">Lab 1</a>
+    </li>
+    <li>
+      <a href="lab2.html">Lab 2</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lab 3</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<pre class="r"><code>######## RBSI 2019 Methods Lab 4 - Working With Data ########
+######## Created by Gabriel Madson (6/4/19)
+
+rm(list=ls())
+setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;): cannot change working directory</code></pre>
+<pre class="r"><code>#### Administrative ####
+# Go to ANES Data Center and register
+# http://www.electionstudies.org 
+# Come for help now, material builds
+
+#### A Brief Review ####
+x &lt;- 8
+y &lt;- 34
+x == 8 &amp; y == 35 # T or F?</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>x == 8 | y == 35 # T or F?</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) 
+x # what is they type?</code></pre>
+<pre><code>## [1] &quot;1&quot; &quot;a&quot; &quot;2&quot; &quot;b&quot;</code></pre>
+<pre class="r"><code>#### Debugging ####
+help(&quot;mean&quot;)
+?str()
+help(&quot;str&quot;)
+# https://stackoverflow.com - someone has asked your question before
+
+#### Filepaths ####
+# Telling your computer how to locate folders, documents, pictures, etc.
+# getwd() stands for &#39;get working directory&#39; -- &quot;where am I right now?&quot;
+# setwd() stands for &#39;set working directory&#39; -- &quot;look here until I say otherwise&quot;
+
+setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;): cannot change working directory</code></pre>
+<pre class="r"><code>getwd() # notice the quotes at the ends, forward slashes, and lack of whitespace</code></pre>
+<pre><code>## [1] &quot;/Users/gcheung/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab&quot;</code></pre>
+<pre class="r"><code>file.choose()</code></pre>
+<pre><code>## Error in file.choose(): file choice cancelled</code></pre>
+<pre class="r"><code>setwd(&quot;/Users/madson37/Desktop&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;/Users/madson37/Desktop&quot;): cannot change working directory</code></pre>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/gcheung/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab&quot;</code></pre>
+<pre class="r"><code>file.choose() # notice where I start now</code></pre>
+<pre><code>## Error in file.choose(): file choice cancelled</code></pre>
+<pre class="r"><code>## what is this ~ ?!
+# ~ == &#39;home directory&#39; which is different for everyone; just a shortcut
+setwd(&quot;/Users/madson37/Dropbox (Personal)/Bunche/Methods Lab&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;/Users/madson37/Dropbox (Personal)/Bunche/Methods Lab&quot;): cannot change working directory</code></pre>
+<pre class="r"><code># and 
+setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;)</code></pre>
+<pre><code>## Error in setwd(&quot;~/Dropbox (Personal)/Bunche/Methods Lab&quot;): cannot change working directory</code></pre>
+<pre class="r"><code># are equivalent
+
+## what is this . ?!
+setwd(&quot;~/&quot;)
+setwd(&quot;./Dropbox (Personal)/Bunche/Methods Lab&quot;) </code></pre>
+<pre><code>## Error in setwd(&quot;./Dropbox (Personal)/Bunche/Methods Lab&quot;): cannot change working directory</code></pre>
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/Users/gcheung&quot;</code></pre>
+<pre class="r"><code># . == &#39;from where I currently am&#39;
+
+# We can also set the working directory under the Session tab above
+#   or with the shortcut ctrl*shift*H [Mac]
+
+## Why set filepaths?
+# Saving to proper locations
+# Separating different projects
+# Loading files
+# Computers are efficient, but stupid (too literal)
+
+#### Packages ####
+install.packages(&quot;foreign&quot;)</code></pre>
+<pre><code>## Warning in install.packages :
+##   package &#39;foreign&#39; is not available (for R version 3.6.2)</code></pre>
+<pre class="r"><code>library(foreign)
+
+#### Load data ####
+# There are several &#39;read&#39; functions that load data into R
+read.csv() # for excel files (Note: first save excel file as .csv)</code></pre>
+<pre><code>## Error in read.table(file = file, header = header, sep = sep, quote = quote, : argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code>read.table() # for text files (.txt)</code></pre>
+<pre><code>## Error in read.table(): argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code>read.delim() # same as read.table, but with custom presents for tab separated data</code></pre>
+<pre><code>## Error in read.table(file = file, header = header, sep = sep, quote = quote, : argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code>load() # for R data files</code></pre>
+<pre><code>## Error in load(): argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code># When data comes from an alternative statistical software (Stata, SPSS, etc.)
+#   we need the foreign package to read the data
+library(foreign)
+
+read.spss() # for spss files (.sav)</code></pre>
+<pre><code>## Error in grep(&quot;^(http|ftp|https)://&quot;, file): argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code>read.dta() # for stata files (Note: stata 13 files require special package)</code></pre>
+<pre><code>## Error in grep(&quot;^(http|ftp|https)://&quot;, file): argument &quot;file&quot; is missing, with no default</code></pre>
+<pre class="r"><code># Loading 2012 ANES Timeseries
+anes12 &lt;- read.spss(&quot;./anes_timeseries_2012/anes_timeseries_2012.sav&quot;)</code></pre>
+<pre><code>## Error in read.spss(&quot;./anes_timeseries_2012/anes_timeseries_2012.sav&quot;): unable to open file: &#39;No such file or directory&#39;</code></pre>
+<pre class="r"><code>anes12 &lt;- read.spss(file.choose()) # Alternative: brings up current wd, but has nav</code></pre>
+<pre><code>## Error in read.spss(file.choose()): file &#39;/Users/gcheung/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/lab3_using_data_19.R&#39; is not in any supported SPSS format</code></pre>
+<pre class="r"><code>#### Getting to know the data ####
+# Consult the codebook
+length(anes12) # tells us how many columns (variables)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>length(anes12$caseid) # tells us how many rows (observations)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12) # brief overview of data (works best for small datasets)</code></pre>
+<pre><code>## Error in summary(anes12): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12$pid_x)</code></pre>
+<pre><code>## Error in summary(anes12$pid_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>head(anes12$pid_x, 10) # shows us the first few observations of a variable</code></pre>
+<pre><code>## Error in head(anes12$pid_x, 10): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>is.factor(anes12$pid_x)</code></pre>
+<pre><code>## Error in is.factor(anes12$pid_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># how many observations are missing (NA) on this question?
+# would we want this variable as a factor?
+
+summary(anes12$relig_7cat_x)</code></pre>
+<pre><code>## Error in summary(anes12$relig_7cat_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># would we want this variable as a factor?
+
+summary(anes12$ft_dpc)</code></pre>
+<pre><code>## Error in summary(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>is.factor(anes12$ft_dpc)</code></pre>
+<pre><code>## Error in is.factor(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>levels(anes12$ft_dpc)</code></pre>
+<pre><code>## Error in levels(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># would we want this variable as a factor?
+
+#### Cleaning/Recoding ####
+
+summary(anes12$pid_x) # lets make pid ordinal</code></pre>
+<pre><code>## Error in summary(anes12$pid_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>## Two methods: the long way and exploiting the data
+# Long way
+pid_new1 &lt;- c() # create an empty vector to store our new operationalization
+pid_new1[anes12$pid_x == &quot;1. Strong Democrat&quot;] &lt;- 1</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;1. Strong Democrat&quot;] &lt;- 1: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>length(pid_new1) # notice it autofills to equal the length of the data</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>head(pid_new1, 10) # but all non-Strong Democrats are given a value of NA</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;2. Not very strong Democract&quot;] &lt;- 2</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;2. Not very strong Democract&quot;] &lt;- 2: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;3. Independent-Democrat&quot;] &lt;- 3</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;3. Independent-Democrat&quot;] &lt;- 3: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;4. Independent&quot;] &lt;- 4</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;4. Independent&quot;] &lt;- 4: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;5. Independent-Republican&quot;] &lt;- 5</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;5. Independent-Republican&quot;] &lt;- 5: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;6. Not very strong Republican&quot;] &lt;- 6</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;6. Not very strong Republican&quot;] &lt;- 6: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new1[anes12$pid_x == &quot;7. Strong Republican&quot;] &lt;- 7</code></pre>
+<pre><code>## Error in pid_new1[anes12$pid_x == &quot;7. Strong Republican&quot;] &lt;- 7: object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(pid_new1) # what happened to the missing category?</code></pre>
+<pre><code>## Length  Class   Mode 
+##      0   NULL   NULL</code></pre>
+<pre class="r"><code>hist(pid_new1)</code></pre>
+<pre><code>## Error in hist.default(pid_new1): &#39;x&#39; must be numeric</code></pre>
+<pre class="r"><code># Trick way
+head(anes12$pid_x)</code></pre>
+<pre><code>## Error in head(anes12$pid_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>levels(anes12$pid_x)</code></pre>
+<pre><code>## Error in levels(anes12$pid_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>head(as.numeric(anes12$pid_x))</code></pre>
+<pre><code>## Error in head(as.numeric(anes12$pid_x)): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>pid_new2 &lt;- as.numeric(anes12$pid_x)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(pid_new2) # what happened to the missing category now?</code></pre>
+<pre><code>## Error in summary(pid_new2): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>pid_new2 &lt;- pid_new2 - 1</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>pid_new2 &lt;- ifelse(pid_new2 == 0, NA, pid_new2) # if true, do this, otherwise do this</code></pre>
+<pre><code>## Error in ifelse(pid_new2 == 0, NA, pid_new2): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>summary(pid_new2)</code></pre>
+<pre><code>## Error in summary(pid_new2): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>summary(pid_new1) # exactly the same</code></pre>
+<pre><code>## Length  Class   Mode 
+##      0   NULL   NULL</code></pre>
+<pre class="r"><code># Note: I didnt put these new variables into the dataset, you can do this two ways
+anes12$pid_new &lt;- pid_new2 # add a new variable to the dataset</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>anes12$pid_x &lt;- pid_new2 # or edit an existing variable (careful with this method)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;pid_new2&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12$ft_dpc) # now lets recode the feeling thermometer variable</code></pre>
+<pre><code>## Error in summary(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># we have to deal with the notorious factor-numeric problem of R
+levels(anes12$ft_dpc) # these are not actually factors, they are numeric entries</code></pre>
+<pre><code>## Error in levels(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># lets try the trick we used with pid
+head(anes12$ft_dpc) # the first 6 people evaluated Obama as 100/100</code></pre>
+<pre><code>## Error in head(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>ft_new1 &lt;- as.numeric(anes12$ft_dpc) # lets just convert to numeric</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>head(ft_new1) # 7!?!?!?!?!?! Why not 100?</code></pre>
+<pre><code>## Error in head(ft_new1): object &#39;ft_new1&#39; not found</code></pre>
+<pre class="r"><code>levels(anes12$ft_dpc) # factor levels are numeric, but not ordered properly</code></pre>
+<pre><code>## Error in levels(anes12$ft_dpc): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>ft_new2 &lt;- as.character(anes12$ft_dpc)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>head(ft_new2) # now its correct but we need to make it numeric</code></pre>
+<pre><code>## Error in head(ft_new2): object &#39;ft_new2&#39; not found</code></pre>
+<pre class="r"><code>ft_new2 &lt;- as.numeric(ft_new2)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;ft_new2&#39; not found</code></pre>
+<pre class="r"><code>summary(ft_new2) # seemed to work but why that warning message?</code></pre>
+<pre><code>## Error in summary(ft_new2): object &#39;ft_new2&#39; not found</code></pre>
+<pre class="r"><code>length(which(anes12$ft_dpc == &quot;-2. Don&#39;t recognize&quot; |
+             anes12$ft_dpc == &quot;-8. Don&#39;t know&quot; | 
+             anes12$ft_dpc == &quot;-9. Refused&quot;))</code></pre>
+<pre><code>## Error in which(anes12$ft_dpc == &quot;-2. Don&#39;t recognize&quot; | anes12$ft_dpc == : object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># Note: this can all be done in a single line of code
+ft_new3 &lt;- as.numeric(as.character(anes12$ft_dpc))</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(ft_new2)</code></pre>
+<pre><code>## Error in summary(ft_new2): object &#39;ft_new2&#39; not found</code></pre>
+<pre class="r"><code>summary(ft_new3) # equivalent</code></pre>
+<pre><code>## Error in summary(ft_new3): object &#39;ft_new3&#39; not found</code></pre>
+<pre class="r"><code>#### Variable Creation ####
+
+summary(anes12$relig_7cat_x) # lets say we are only interested in binary religious</code></pre>
+<pre><code>## Error in summary(anes12$relig_7cat_x): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>religious &lt;- ifelse(anes12$relig_7cat_x == &quot;8. Not religious&quot;, 1, 0)</code></pre>
+<pre><code>## Error in ifelse(anes12$relig_7cat_x == &quot;8. Not religious&quot;, 1, 0): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># who is the &#39;base case&#39; here? does it matter?
+
+# lets build a new variable based on media exposure
+summary(anes12$prmedia_wkinews) # days in week read news on internet</code></pre>
+<pre><code>## Error in summary(anes12$prmedia_wkinews): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12$prmedia_wktvnws) #... on tv</code></pre>
+<pre><code>## Error in summary(anes12$prmedia_wktvnws): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12$prmedia_wkpaprnws) #... in newspaper</code></pre>
+<pre><code>## Error in summary(anes12$prmedia_wkpaprnws): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(anes12$prmedia_wkrdnws) #... on radio</code></pre>
+<pre><code>## Error in summary(anes12$prmedia_wkrdnws): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>int_news &lt;- as.numeric(anes12$prmedia_wkinews) # days in week read news on internet</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>summary(int_news) # what does 1 represent? 12?</code></pre>
+<pre><code>## Error in summary(int_news): object &#39;int_news&#39; not found</code></pre>
+<pre class="r"><code>tv_news &lt;- as.numeric(anes12$prmedia_wktvnws) #... on tv</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>nwsp_news &lt;- as.numeric(anes12$prmedia_wkpaprnws) #... in newspaper</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>rad_news &lt;- as.numeric(anes12$prmedia_wkrdnws) #... on radio</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code># identify NAs
+int_news &lt;- ifelse(int_news &lt;= 4, NA, int_news)</code></pre>
+<pre><code>## Error in ifelse(int_news &lt;= 4, NA, int_news): object &#39;int_news&#39; not found</code></pre>
+<pre class="r"><code>tv_news &lt;- ifelse(tv_news &lt;= 3, NA, tv_news)</code></pre>
+<pre><code>## Error in ifelse(tv_news &lt;= 3, NA, tv_news): object &#39;tv_news&#39; not found</code></pre>
+<pre class="r"><code>nwsp_news &lt;- ifelse(nwsp_news &lt;= 3, NA, nwsp_news)</code></pre>
+<pre><code>## Error in ifelse(nwsp_news &lt;= 3, NA, nwsp_news): object &#39;nwsp_news&#39; not found</code></pre>
+<pre class="r"><code>rad_news &lt;- ifelse(rad_news &lt;= 3, NA, rad_news)</code></pre>
+<pre><code>## Error in ifelse(rad_news &lt;= 3, NA, rad_news): object &#39;rad_news&#39; not found</code></pre>
+<pre class="r"><code># reorientate 
+int_news &lt;- int_news - 5</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;int_news&#39; not found</code></pre>
+<pre class="r"><code>tv_news &lt;- tv_news - 4</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;tv_news&#39; not found</code></pre>
+<pre class="r"><code>nwsp_news &lt;- nwsp_news - 4</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;nwsp_news&#39; not found</code></pre>
+<pre class="r"><code>rad_news &lt;- rad_news - 4</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;rad_news&#39; not found</code></pre>
+<pre class="r"><code># create the index
+media_exposure &lt;- (int_news + tv_news + nwsp_news + rad_news)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;int_news&#39; not found</code></pre>
+<pre class="r"><code>summary(media_exposure)</code></pre>
+<pre><code>## Error in summary(media_exposure): object &#39;media_exposure&#39; not found</code></pre>
+<pre class="r"><code># what does 0 represent? 28? What about 7? be wary of how you interpret
+exposure_2 &lt;- media_exposure / 7 # how is this interpreted?</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;media_exposure&#39; not found</code></pre>
+<pre class="r"><code>length(which(nwsp_news &gt; 0 &amp; rad_news &gt; 0)) / length(anes12$caseid)</code></pre>
+<pre><code>## Error in which(nwsp_news &gt; 0 &amp; rad_news &gt; 0): object &#39;nwsp_news&#39; not found</code></pre>
+<pre class="r"><code>#### Subsetting ####
+anes12 &lt;- as.data.frame(anes12) # we need dataframes to subset, anes is currently list</code></pre>
+<pre><code>## Error in as.data.frame(anes12): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>data1 &lt;- anes12[1:10, ] # first 10 respondents, all variables</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>data2 &lt;- anes12[ ,1:10] # all respondents, first 10 variables</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>data3 &lt;- anes12[c(1:10, 100:110), seq(from = 1, to = 6, by = 2)] # whats this?</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>data4 &lt;- anes12[-c(100:110), ] # dataset minus respondents 100 thru 110</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>trolls &lt;- c(12, 45, 68, 754)
+data5 &lt;- anes12[-trolls, ]</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>?subset
+
+summary(anes12$libcpre_self)</code></pre>
+<pre><code>## Error in summary(anes12$libcpre_self): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>ext_cons_data &lt;- subset(anes12, anes12$libcpre_self == &quot;7. Extremely conservative&quot;)</code></pre>
+<pre><code>## Error in subset(anes12, anes12$libcpre_self == &quot;7. Extremely conservative&quot;): object &#39;anes12&#39; not found</code></pre>
+<pre class="r"><code>length(ext_cons_data$libcpre_self)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;ext_cons_data&#39; not found</code></pre>
+<pre class="r"><code>summary(ext_cons_data$libcpre_self)</code></pre>
+<pre><code>## Error in summary(ext_cons_data$libcpre_self): object &#39;ext_cons_data&#39; not found</code></pre>
+<pre class="r"><code>## Why subset?
+# make large datasets run faster
+# drop nefarius respondents
+# make comparisons to full dataset
+
+#### Merging ####
+rm(list=ls())
+house12 &lt;- read.delim(&quot;house12&quot;, sep = &quot;,&quot;)</code></pre>
+<pre><code>## Warning in file(file, &quot;rt&quot;): cannot open file &#39;house12&#39;: No such file or
+## directory</code></pre>
+<pre><code>## Error in file(file, &quot;rt&quot;): cannot open the connection</code></pre>
+<pre class="r"><code>state12 &lt;- read.delim(&quot;StateVars.txt&quot;, sep = &quot;,&quot;)</code></pre>
+<pre><code>## Warning in file(file, &quot;rt&quot;): cannot open file &#39;StateVars.txt&#39;: No such file
+## or directory</code></pre>
+<pre><code>## Error in file(file, &quot;rt&quot;): cannot open the connection</code></pre>
+<pre class="r"><code>View(house12)</code></pre>
+<pre><code>## Error in View : object &#39;house12&#39; not found</code></pre>
+<pre class="r"><code>View(state12)</code></pre>
+<pre><code>## Error in View : object &#39;state12&#39; not found</code></pre>
+<pre class="r"><code>?merge
+full_data &lt;- merge(house12, state12, by.x = &quot;stateAbbr&quot;, by.y = &quot;StAbr&quot;)</code></pre>
+<pre><code>## Error in merge(house12, state12, by.x = &quot;stateAbbr&quot;, by.y = &quot;StAbr&quot;): object &#39;house12&#39; not found</code></pre>
+<pre class="r"><code># http://www.princeton.edu/~otorres/Merge101R.pdf</code></pre>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -10,6 +10,7 @@ date: "5/18/2021"
 output: 
   html_document:
     toc: TRUE
+    toc_float: TRUE
     number_sections: FALSE
     code_folding: "hide"
     css: style.css
