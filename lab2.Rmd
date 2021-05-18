@@ -72,8 +72,11 @@ Platform: x86_64-apple-darwin15.6.0 (64-bit)
 4. Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.
 5. Run the file to install RStudio and follow the instructions.
 
+### Version Control for RStudio
+
 - When you update R this does not update RStudio, and vice versa
 - Unlike the R version, we have to run a line of code to access the R Studio Version, or find it in the "About RStudio" dropdown menu.
+
 ```
 RStudio.Version() # checks version of RStudio on computer
 ```
@@ -113,11 +116,15 @@ https://cran.r-project.org/doc/manuals/R-intro.pdf
 
 *** 
 
-# Welcome to RStudio 
+<center>
+# **Welcome to RStudio **
+</center> 
+
+***
 
 ## User Interface (UI) explanation 
 
-![console](r-console.png)
+![RStudio layout](r-console.png)
 
 **Panel 1 - Console**
 
@@ -128,11 +135,17 @@ https://cran.r-project.org/doc/manuals/R-intro.pdf
 
 **Panel 2 - Script**
 
-- Keeps track of everything you're doing, so you can forget!
+- write your code here, and run it from here, so you can keep track of everything
+- think of it as your word document but for your code
 - The entire script can be run at once (cmd*A + cmd*enter)
 - Or line-by-line (cmd*enter) [Mac]
+- This is also where you can have your code, data, and files in general stored as tabs
 
 **Panel 3 - Local Environment**
+
+- This shows what variables or objects you have created in this session, and what each of them means
+- In the example below, we create three 'objects': x, y, and data; which are then stored in the environment until they are changed or reassigned
+
 ```{r}
 x <- 3 # variables can be stored in local environment
 y <- "Hello World"
@@ -140,9 +153,11 @@ data <- read.csv("germancities.csv") # so can datasets
 View(data)
 ```
 
-![data-germancities](view-germancities.png)
+![new-environment](view-environment-01.png){width=300px}
 
+![data-germancities](view-germancities.png){width=300px}
 
+> **Syntax: How to clear the environment**
 
 ```{r}
 rm(x) # things can be removed individually
@@ -167,26 +182,27 @@ There are different 'types' of information stored in R as data, some include: (b
 1. Numeric 
 2. Boolean / Logical
 3. String(s)/Characters
-4. Vectors
-5. Factors
-6. Matrices
-7. Dataframe 
+4. Factors
+5. Vectors
+6. Lists
+7. Matrices
+8. Dataframe 
 
 This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset. 
 
-### Example 1 - Dataframe
+### Dataframe
 
 **Dataframe**: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday. 
 
-- Using sample data of a list of employees from microsoft: 
-[Source](https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1)
+- Using sample data of a list of employees from microsoft, below is a dataset with five columns, and five rows of data (plus the first row for the names of each column)
+- [Data Source](https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1)
 
 ```{r}
 data <- read.csv("excel-employee.csv")
 datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T))
 ```
 
-- There are five types of information in the data above
+- There are five types of information in the data above, as captured by each column
   1. The employee's ID (a number)
   2. Last Name (a word, or a series of alphabetical characters)
   3. First Name (a word, or a series of alphabetical characters)
@@ -195,7 +211,8 @@ datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, s
 
 So in the dataset above, we already have at least two to four types of data. 
 
-The dataset itself is a dataframe (type 7), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 5). We will go into these in more detail. 
+The dataset itself is a dataframe (type 8), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 4). We will go into these in more detail. 
+Note that in this case, the variables are structured as the columns of the data, but that does not always have to be the case, variables can also be in the rows of the data. 
 
 ### Matrices
 
@@ -207,23 +224,48 @@ Below we have a 4x3 matrix, with four rows, three columns.
 matrix (1:12, nrow = 4, ncol = 3)
 ```
 
+### Vectors and Lists
 
+- Whereas matrices have both rows and columns, vectors and lists operate in one dimension. 
+- So you can think of matrices as made of vectors 
+- The key difference between vectors and lists is that vectors should contain the same kind of information in each element, while lists can mix elements 
+- the notation for vectors is `c()`, and the notation for lists is `list()`
+- Note that in the example below, though the input is the same for both x and y, since vectors require all elements to be the same, it has interpreted `2` as a letter instead of a number (More on this in the next section)
 
+```{r}
+x <- c('mike', 2, 'lucy')
+x 
+y <- list('mike', 2, 'lucy')
+y
 ```
-```
 
-## Using your console
+### Numeric / Strings and Characters / Boolean
 
-1. *Numeric*
+The smallest unit of data will be individual elements - this can take the form of numbers, words, characters, or booleans. Lists and vectors are made of one or more elements, and dataframes and matrices are made of one or more lists or vectors or elements. 
+
+1. *Numeric* 
+- represents a number, either whole or real 
 ```{r}
 whole.number <- 6
 real.number <- 3.141592
-
-whole.number + real.number
 ```
 
+2. **Characters and Strings** 
+- characters are any form of data that has an alphabet in it, multiple characters in a row are strings, whether or not they are words. If there is a mix of characters and numbers, R automatically interprets it as a string. 
+- the syntax for characters (and strings) is that they have to be enclosed in quotation marks like `"a"`
+- in the example below, char.two yields an error because the `a` is not enclosed in quotations
 
-2. *Boolean  / Logical*
+```{r, error = TRUE}
+char.one <- "a"
+char.two <- a
+string.one <- "Hello"
+string.two <- "ab12cd"
+```
+
+3. *Boolean / Logical* 
+- Is a binary variable that can only have either of two answers: `TRUE` or `FALSE`
+- Is actually used very often, either in the `TRUE/FALSE` form, or in a `0/1` form
+- Think: it is easier to code binary outcomes in binary because it is less prone to error; lets say the data was for a student's attendance, whether they are `Present/Absent` is as easily represented as `True/False`
 ```{r}
 TRUE
 FALSE
@@ -231,24 +273,42 @@ T
 F
 ```
 
+***
+
+## Using your console
+
+Now that we've covered some of the essential basics of R syntax, let us move to the basics of actually using your console to manipulate data. 
+
+### Syntax: Assignment vs Equals
+
+As you might have noticed in the above code chunks, in R we use the assignment operator `<-` to assign value to objects. There are other assignment operators (such as `=`), but it can be confusing, so stick to using `<-`. 
+
+Value assignment means to set a value to be stored in an object (also called a variable). While this may seem inefficient, we could do `1 + 2` instead of `x = 1, y = 2, x + y`, it becomes increasingly difficult to manually type out the values of interest when the number of values we are working with gets bigger, like in a dataset. 
 
 ```{r}
-fourty.two <- T
-fourty.two
+x = 2 # Please avoid at all costs
+x <- 4 # Better assignment operator
 ```
 
-**Is this true/false?**
+### Syntax: Equal-to and not-equal-to
+
+One of the main reasons why `=` can be confusing is because there is another operator `==` which is the equal-to operator. So it checks if the value on the left is the same as the value on the right, i.e. is `1 == 2`, mathematically it is not. The opposite of the equal-to operator is the not-equal-to operator `!=`
 
 ```{r}
-!fourty.two # ! == 'not'
+x == 4
+x == 5
+x !=5
 ```
+
+This equal-to operator becomes very useful when we want to check if two values are the same. Take for instance those forms that ask you to type in your email twice, it probably uses an equal-to operator to determine if you typed the same email twice. 
 
 ```{r}
-x <- 6
-y <- 7
-
-x == 6
+email <- 'john.smith@duke.edu'
+email2 <- 'james.smith@duke.edu'
+email == email2
 ```
+
+### Syntax: And vs or 
 
 ```{r}
 x == 600 & y == 700 # & == 'and this is also true'
@@ -258,27 +318,66 @@ x == 600 & y == 700 # & == 'and this is also true'
 x == 1000 | y == 7 # | == 'this, or this, or both'
 ```
 
-*Syntax: Assignment vs Equals*
+### Syntax: Checking / Changing Data Types
+
 ```{r}
-x = 2 # Please avoid at all costs
-x <- 4 # Better assignment operator
-x == 4 # is this true?
+is.numeric(whole.number)
+is.factor(whole.number)
+as.character(whole.number)
+str(whole.number)
+```
+
+### Arithmetic Operators
+
+```{r}
+tabl <- "
+| Operator | Description |
+|----------|-------------|
+| +        | addition    |
+| -        | subtraction |
+| *        | multiplication | 
+| /        | division    |
+| ^ or **  | exponentiation | 
+| x %% y   | 5 %% 2 is 1 |
+| x %/% y  | 5 %/% 2 is 2 |
+"
+cat(tabl)
 ```
 
 
-3. String(s)/Characters & Concatenation
+# R follows the order of operations: PEMDAS
+Print()
 
-```{r}
+### Concatenation, Seq, Rep
+- How do we remember multiple numerical values without adding them? 
+- How do we add together non-numerical values?
+  - We can use lists or vectors [### Vectors and Lists]
+  - the `c()` operator for vectors means concatenate
+    - just remember that `c()` can only be used for data of the same type
+  - for strings we also have the option of using the `paste()` function 
+
+```{r, error = TRUE}
+'a' + 'b' # Doesn't work
 string.one <- "Hello"
 string.two <- "World"
-combo.string <- paste(string.one, string.two, sep = " ") # Default sep input 
-combo.string.two <- paste0(string.one, string.two) # Eliminates spacing
-combo.string.three <- paste(string.one, whole.number) # Typecasts numeric
+c(string.one, string.two)
+c(1,2,3,4,5)
+paste(string.one, string.two, sep = " ") # Default sep input 
+paste0(string.one, string.two) # Eliminates spacing
+paste(string.one, whole.number) # Typecasts numeric
+```
+
+Remember in [### Vectors and Lists] I mentioned that vectors have to be the same type? Look at what happens when we try and concatenate characters and numbers: 
+
+```{r}
+x <- c(1, "a", 2, "b") # but the do have to be the same type!!!!!
+# notice that 1 and 2 are of type character, this is called 'type casting'
 ```
 
 
 **Syntax: Checking/Changing Type**
 ```{r}
+whole.number
 is.numeric(whole.number)
 is.factor(whole.number)
 as.character(whole.number)
@@ -477,7 +576,7 @@ print(2^2 + 3 * 2 - (1 + 3))
 ```r
 # when in doubt use parentheses!
 
-## Basic Statistics Functions
+# Basic Statistics Functions
 x <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm
 
 length(x)
@@ -544,27 +643,3 @@ summary(x) # gives a variety of statistics about a variable
 ## Major
 # Minor
 ```
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

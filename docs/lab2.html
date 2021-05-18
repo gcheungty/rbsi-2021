@@ -504,6 +504,8 @@ div.tocify {
 <li>Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.</li>
 <li>Run the file to install RStudio and follow the instructions.</li>
 </ol>
+<div id="version-control-for-rstudio" class="section level3">
+<h3>Version Control for RStudio</h3>
 <ul>
 <li>When you update R this does not update RStudio, and vice versa</li>
 <li>Unlike the R version, we have to run a line of code to access the R Studio Version, or find it in the “About RStudio” dropdown menu.</li>
@@ -538,15 +540,19 @@ $release_name
 [1] &quot;Orange Blossom&quot;</code></pre>
 <p>For a much more detailed intro to R, check out: <a href="https://cran.r-project.org/doc/manuals/R-intro.pdf" class="uri">https://cran.r-project.org/doc/manuals/R-intro.pdf</a></p>
 <hr />
+<center>
+</div>
 </div>
 </div>
 <div id="welcome-to-rstudio" class="section level1">
-<h1>Welcome to RStudio</h1>
+<h1><strong>Welcome to RStudio </strong></h1>
+</center>
+<hr />
 <div id="user-interface-ui-explanation" class="section level2">
 <h2>User Interface (UI) explanation</h2>
 <div class="figure">
-<img src="r-console.png" alt="console" />
-<p class="caption">console</p>
+<img src="r-console.png" alt="RStudio layout" />
+<p class="caption">RStudio layout</p>
 </div>
 <p><strong>Panel 1 - Console</strong></p>
 <ul>
@@ -559,19 +565,32 @@ $release_name
 </ul>
 <p><strong>Panel 2 - Script</strong></p>
 <ul>
-<li>Keeps track of everything you’re doing, so you can forget!</li>
+<li>write your code here, and run it from here, so you can keep track of everything</li>
+<li>think of it as your word document but for your code</li>
 <li>The entire script can be run at once (cmd<em>A + cmd</em>enter)</li>
 <li>Or line-by-line (cmd*enter) [Mac]</li>
+<li>This is also where you can have your code, data, and files in general stored as tabs</li>
 </ul>
 <p><strong>Panel 3 - Local Environment</strong></p>
+<ul>
+<li>This shows what variables or objects you have created in this session, and what each of them means</li>
+<li>In the example below, we create three ‘objects’: x, y, and data; which are then stored in the environment until they are changed or reassigned</li>
+</ul>
 <pre class="r"><code>x &lt;- 3 # variables can be stored in local environment
 y &lt;- &quot;Hello World&quot;
 data &lt;- read.csv(&quot;germancities.csv&quot;) # so can datasets
 View(data)</code></pre>
 <div class="figure">
-<img src="view-germancities.png" alt="data-germancities" />
+<img src="view-environment-01.png" alt="new-environment" width="300" />
+<p class="caption">new-environment</p>
+</div>
+<div class="figure">
+<img src="view-germancities.png" alt="data-germancities" width="300" />
 <p class="caption">data-germancities</p>
 </div>
+<blockquote>
+<p><strong>Syntax: How to clear the environment</strong></p>
+</blockquote>
 <pre class="r"><code>rm(x) # things can be removed individually
 rm(list=ls()) # or all at once</code></pre>
 <p><strong>Panel 4 - Everything Else</strong></p>
@@ -590,24 +609,26 @@ rm(list=ls()) # or all at once</code></pre>
 <li>Numeric</li>
 <li>Boolean / Logical</li>
 <li>String(s)/Characters</li>
-<li>Vectors</li>
 <li>Factors</li>
+<li>Vectors</li>
+<li>Lists</li>
 <li>Matrices</li>
 <li>Dataframe</li>
 </ol>
 <p>This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset.</p>
-<div id="example-1---dataframe" class="section level3">
-<h3>Example 1 - Dataframe</h3>
+<div id="dataframe" class="section level3">
+<h3>Dataframe</h3>
 <p><strong>Dataframe</strong>: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday.</p>
 <ul>
-<li>Using sample data of a list of employees from microsoft: <a href="https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1">Source</a></li>
+<li>Using sample data of a list of employees from microsoft, below is a dataset with five columns, and five rows of data (plus the first row for the names of each column)</li>
+<li><a href="https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1">Data Source</a></li>
 </ul>
 <pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
 datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
-<div id="htmlwidget-2305f4ca9343af7a2aab" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2305f4ca9343af7a2aab">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-92ebe394861c561bea41" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92ebe394861c561bea41">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <ul>
-<li>There are five types of information in the data above
+<li>There are five types of information in the data above, as captured by each column
 <ol style="list-style-type: decimal">
 <li>The employee’s ID (a number)</li>
 <li>Last Name (a word, or a series of alphabetical characters)</li>
@@ -617,7 +638,7 @@ datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLen
 </ol></li>
 </ul>
 <p>So in the dataset above, we already have at least two to four types of data.</p>
-<p>The dataset itself is a dataframe (type 7), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 5). We will go into these in more detail.</p>
+<p>The dataset itself is a dataframe (type 8), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 4). We will go into these in more detail. Note that in this case, the variables are structured as the columns of the data, but that does not always have to be the case, variables can also be in the rows of the data.</p>
 </div>
 <div id="matrices" class="section level3">
 <h3>Matrices</h3>
@@ -629,22 +650,62 @@ datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLen
 ## [2,]    2    6   10
 ## [3,]    3    7   11
 ## [4,]    4    8   12</code></pre>
-<pre><code></code></pre>
 </div>
+<div id="vectors-and-lists" class="section level3">
+<h3>Vectors and Lists</h3>
+<ul>
+<li>Whereas matrices have both rows and columns, vectors and lists operate in one dimension.</li>
+<li>So you can think of matrices as made of vectors</li>
+<li>The key difference between vectors and lists is that vectors should contain the same kind of information in each element, while lists can mix elements</li>
+<li>the notation for vectors is <code>c()</code>, and the notation for lists is <code>list()</code></li>
+<li>Note that in the example below, though the input is the same for both x and y, since vectors require all elements to be the same, it has interpreted <code>2</code> as a letter instead of a number (More on this in the next section)</li>
+</ul>
+<pre class="r"><code>x &lt;- c(&#39;mike&#39;, 2, &#39;lucy&#39;)
+x </code></pre>
+<pre><code>## [1] &quot;mike&quot; &quot;2&quot;    &quot;lucy&quot;</code></pre>
+<pre class="r"><code>y &lt;- list(&#39;mike&#39;, 2, &#39;lucy&#39;)
+y</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;mike&quot;
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] &quot;lucy&quot;</code></pre>
 </div>
-<div id="using-your-console" class="section level2">
-<h2>Using your console</h2>
+<div id="numeric-strings-and-characters-boolean" class="section level3">
+<h3>Numeric / Strings and Characters / Boolean</h3>
+<p>The smallest unit of data will be individual elements - this can take the form of numbers, words, characters, or booleans. Lists and vectors are made of one or more elements, and dataframes and matrices are made of one or more lists or vectors or elements.</p>
 <ol style="list-style-type: decimal">
 <li><em>Numeric</em></li>
 </ol>
+<ul>
+<li>represents a number, either whole or real</li>
+</ul>
 <pre class="r"><code>whole.number &lt;- 6
-real.number &lt;- 3.141592
-
-whole.number + real.number</code></pre>
-<pre><code>## [1] 9.141592</code></pre>
+real.number &lt;- 3.141592</code></pre>
 <ol start="2" style="list-style-type: decimal">
+<li><strong>Characters and Strings</strong></li>
+</ol>
+<ul>
+<li>characters are any form of data that has an alphabet in it, multiple characters in a row are strings, whether or not they are words. If there is a mix of characters and numbers, R automatically interprets it as a string.</li>
+<li>the syntax for characters (and strings) is that they have to be enclosed in quotation marks like <code>&quot;a&quot;</code></li>
+<li>in the example below, char.two yields an error because the <code>a</code> is not enclosed in quotations</li>
+</ul>
+<pre class="r"><code>char.one &lt;- &quot;a&quot;
+char.two &lt;- a</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;a&#39; not found</code></pre>
+<pre class="r"><code>string.one &lt;- &quot;Hello&quot;
+string.two &lt;- &quot;ab12cd&quot;</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li><em>Boolean / Logical</em></li>
 </ol>
+<ul>
+<li>Is a binary variable that can only have either of two answers: <code>TRUE</code> or <code>FALSE</code></li>
+<li>Is actually used very often, either in the <code>TRUE/FALSE</code> form, or in a <code>0/1</code> form</li>
+<li>Think: it is easier to code binary outcomes in binary because it is less prone to error; lets say the data was for a student’s attendance, whether they are <code>Present/Absent</code> is as easily represented as <code>True/False</code></li>
+</ul>
 <pre class="r"><code>TRUE</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>FALSE</code></pre>
@@ -653,35 +714,122 @@ whole.number + real.number</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>F</code></pre>
 <pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>fourty.two &lt;- T
-fourty.two</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<p><strong>Is this true/false?</strong></p>
-<pre class="r"><code>!fourty.two # ! == &#39;not&#39;</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>x &lt;- 6
-y &lt;- 7
-
-x == 6</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>x == 600 &amp; y == 700 # &amp; == &#39;and this is also true&#39;</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>x == 1000 | y == 7 # | == &#39;this, or this, or both&#39;</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<p><em>Syntax: Assignment vs Equals</em></p>
+<hr />
+</div>
+</div>
+<div id="using-your-console" class="section level2">
+<h2>Using your console</h2>
+<p>Now that we’ve covered some of the essential basics of R syntax, let us move to the basics of actually using your console to manipulate data.</p>
+<div id="syntax-assignment-vs-equals" class="section level3">
+<h3>Syntax: Assignment vs Equals</h3>
+<p>As you might have noticed in the above code chunks, in R we use the assignment operator <code>&lt;-</code> to assign value to objects. There are other assignment operators (such as <code>=</code>), but it can be confusing, so stick to using <code>&lt;-</code>.</p>
+<p>Value assignment means to set a value to be stored in an object (also called a variable). While this may seem inefficient, we could do <code>1 + 2</code> instead of <code>x = 1, y = 2, x + y</code>, it becomes increasingly difficult to manually type out the values of interest when the number of values we are working with gets bigger, like in a dataset.</p>
 <pre class="r"><code>x = 2 # Please avoid at all costs
-x &lt;- 4 # Better assignment operator
-x == 4 # is this true?</code></pre>
+x &lt;- 4 # Better assignment operator</code></pre>
+</div>
+<div id="syntax-equal-to-and-not-equal-to" class="section level3">
+<h3>Syntax: Equal-to and not-equal-to</h3>
+<p>One of the main reasons why <code>=</code> can be confusing is because there is another operator <code>==</code> which is the equal-to operator. So it checks if the value on the left is the same as the value on the right, i.e. is <code>1 == 2</code>, mathematically it is not. The opposite of the equal-to operator is the not-equal-to operator <code>!=</code></p>
+<pre class="r"><code>x == 4</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>String(s)/Characters &amp; Concatenation</li>
-</ol>
+<pre class="r"><code>x == 5</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>x !=5</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>This equal-to operator becomes very useful when we want to check if two values are the same. Take for instance those forms that ask you to type in your email twice, it probably uses an equal-to operator to determine if you typed the same email twice.</p>
+<pre class="r"><code>email &lt;- &#39;john.smith@duke.edu&#39;
+email2 &lt;- &#39;james.smith@duke.edu&#39;
+email == email2</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="syntax-and-vs-or" class="section level3">
+<h3>Syntax: And vs or</h3>
+<pre class="r"><code>x == 600 &amp; y == 700 # &amp; == &#39;and this is also true&#39;</code></pre>
+<pre><code>## Warning: NAs introduced by coercion
+
+## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>x == 1000 | y == 7 # | == &#39;this, or this, or both&#39;</code></pre>
+<pre><code>## Warning: NAs introduced by coercion
+
+## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1]    NA FALSE    NA</code></pre>
+</div>
+<div id="syntax-checking-changing-data-types" class="section level3">
+<h3>Syntax: Checking / Changing Data Types</h3>
+<pre class="r"><code>is.numeric(whole.number)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.factor(whole.number)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>as.character(whole.number)</code></pre>
+<pre><code>## [1] &quot;6&quot;</code></pre>
+<pre class="r"><code>str(whole.number)</code></pre>
+<pre><code>##  num 6</code></pre>
+</div>
+<div id="arithmetic-operators" class="section level3">
+<h3>Arithmetic Operators</h3>
+<pre class="r"><code>tabl &lt;- &quot;
+| Operator | Description |
+|----------|-------------|
+| +        | addition    |
+| -        | subtraction |
+| *        | multiplication | 
+| /        | division    |
+| ^ or **  | exponentiation | 
+| x %% y   | 5 %% 2 is 1 |
+| x %/% y  | 5 %/% 2 is 2 |
+&quot;
+cat(tabl)</code></pre>
+<pre><code>## 
+## | Operator | Description |
+## |----------|-------------|
+## | +        | addition    |
+## | -        | subtraction |
+## | *        | multiplication | 
+## | /        | division    |
+## | ^ or **  | exponentiation | 
+## | x %% y   | 5 %% 2 is 1 |
+## | x %/% y  | 5 %/% 2 is 2 |</code></pre>
+</div>
+</div>
+</div>
+<div id="r-follows-the-order-of-operations-pemdas" class="section level1">
+<h1>R follows the order of operations: PEMDAS</h1>
+<p>Print()</p>
+<div id="concatenation-seq-rep" class="section level3">
+<h3>Concatenation, Seq, Rep</h3>
+<ul>
+<li>How do we remember multiple numerical values without adding them?</li>
+<li>How do we add together non-numerical values?
+<ul>
+<li>We can use lists or vectors [### Vectors and Lists]</li>
+<li>the <code>c()</code> operator for vectors means concatenate
+<ul>
+<li>just remember that <code>c()</code> can only be used for data of the same type</li>
+</ul></li>
+<li>for strings we also have the option of using the <code>paste()</code> function</li>
+</ul></li>
+</ul>
+<pre class="r"><code>&#39;a&#39; + &#39;b&#39; # Doesn&#39;t work</code></pre>
+<pre><code>## Error in &quot;a&quot; + &quot;b&quot;: non-numeric argument to binary operator</code></pre>
 <pre class="r"><code>string.one &lt;- &quot;Hello&quot;
 string.two &lt;- &quot;World&quot;
-combo.string &lt;- paste(string.one, string.two, sep = &quot; &quot;) # Default sep input 
-combo.string.two &lt;- paste0(string.one, string.two) # Eliminates spacing
-combo.string.three &lt;- paste(string.one, whole.number) # Typecasts numeric</code></pre>
+c(string.one, string.two)</code></pre>
+<pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+<pre class="r"><code>c(1,2,3,4,5)</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>paste(string.one, string.two, sep = &quot; &quot;) # Default sep input </code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+<pre class="r"><code>paste0(string.one, string.two) # Eliminates spacing</code></pre>
+<pre><code>## [1] &quot;HelloWorld&quot;</code></pre>
+<pre class="r"><code>paste(string.one, whole.number) # Typecasts numeric</code></pre>
+<pre><code>## [1] &quot;Hello 6&quot;</code></pre>
+<p>Remember in [### Vectors and Lists] I mentioned that vectors have to be the same type? Look at what happens when we try and concatenate characters and numbers:</p>
+<pre class="r"><code>x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) # but the do have to be the same type!!!!!
+# notice that 1 and 2 are of type character, this is called &#39;type casting&#39;</code></pre>
 <p><strong>Syntax: Checking/Changing Type</strong></p>
+<pre class="r"><code>whole.number</code></pre>
+<pre><code>## [1] 6</code></pre>
 <pre class="r"><code>is.numeric(whole.number)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>is.factor(whole.number)</code></pre>
@@ -784,7 +932,7 @@ print(5)</code></pre>
 <pre><code>## [1] 6</code></pre>
 <pre class="r"><code># when in doubt use parentheses!
 
-## Basic Statistics Functions
+# Basic Statistics Functions
 x &lt;- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm
 
 length(x)</code></pre>
@@ -808,25 +956,6 @@ length(x)</code></pre>
 ### Main
 ## Major
 # Minor</code></pre>
-</div>
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-</div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="lab2_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
 </div>
 </div>
 
