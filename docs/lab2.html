@@ -24,7 +24,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
@@ -275,14 +274,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 
 
@@ -437,14 +428,6 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
-
 
 
 <h1 class="title toc-ignore">Lab 2</h1>
@@ -547,14 +530,79 @@ $release_name
 <div id="welcome-to-rstudio" class="section level1">
 <h1><strong>Welcome to RStudio </strong></h1>
 </center>
+<p>The rest of this lab will center on running through the basics of using R, using the RStudio interface, and getting familiar with the practice of programming and statistical analysis. It will be a lot of content to cover but working with the material hands on will help too! At the end of this tutorial, there will be an R file with the code used today, as well as an activity we will work through in lab to play around with some data and get familiar with the output in R.</p>
+<p>The basis of programming is that we write down instructions for the computer to follow, and then we tell the computer to follow those instructions. We write, or code, instructions in R because it is a common language that both the computer and we can understand. We call the instructions commands and we tell the computer to follow the instructions by executing (also called running) those commands.</p>
 <hr />
-<div id="user-interface-ui-explanation" class="section level2">
-<h2>User Interface (UI) explanation</h2>
+<div id="programming-basics-and-key-points" class="section level2">
+<h2>Programming basics and key points</h2>
+<p>To begin, open up RStudio, and you will usually see the main window has been divided into four panels. We will primarily be using the two panels on the left, the top is the script, and the bottom is the console.</p>
 <div class="figure">
 <img src="r-console.png" alt="RStudio layout" />
 <p class="caption">RStudio layout</p>
 </div>
-<p><strong>Panel 1 - Console</strong></p>
+<p>There are two main ways of interacting with R, by writing code and running it from the script (Panel 1), or by typing it and executing it in the console (Panel 2).</p>
+<ol style="list-style-type: decimal">
+<li><p>The script is where you will write your code, or documentation, think of it as a document where your instructions go. But unless you run these instructions, they are just text to the computer. You can run your script selecting the command you desire, and using the <code>Ctrl</code> + <code>Enter</code> shortcut on Windows, or <code>Cmd</code> + <code>return</code> on Macs.</p></li>
+<li><p>On the console, you can type your command in and directly run it by pressing <code>Enter</code>.</p></li>
+</ol>
+<div id="calculations-data-elements-and-variable-assignment" class="section level3">
+<h3>Calculations, Data Elements, and Variable Assignment</h3>
+<ul>
+<li>Here is an example of a type of output you get in R console:</li>
+<li>You can use R like a calculator and put in simple math problems like so:</li>
+</ul>
+<pre class="r"><code>1 + 2 </code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>16 / 4</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>This is what that execution and output looks like in RStudio as well.</p>
+<div class="figure">
+<img src="math-output.png" alt="Math Output" width="200" />
+<p class="caption">Math Output</p>
+</div>
+<p>However, to do more, we need to assign <strong>values</strong> to <strong>objects</strong>. To do so, we name an object, let’s say we call it <em>some_numbers</em>, followed by the assignment operator <code>&lt;-</code>, and the value we want to give it:</p>
+<pre class="r"><code>some_numbers &lt;- 5</code></pre>
+<p>So now, we can do a series of mathematical operations to some_numbers.</p>
+<pre class="r"><code>2.2 * some_numbers</code></pre>
+<pre><code>## [1] 11</code></pre>
+<p>We can also change the value of an object by reassigning it a new value using the same assignment operator <code>&lt;-</code></p>
+<pre class="r"><code>some_numbers &lt;- 10 + 20
+some_numbers</code></pre>
+<pre><code>## [1] 30</code></pre>
+<p>We could easily multiply 2.2 by 5 ourselves, or add 10 to 20 by hand, but the true power in assigning value to objects is when we have multiple values stored. Below I have a list of five numbers (more on creating lists later), when we save them as one object, we can apply the same mathematical operator on all five of them at the same time without doing more work.</p>
+<pre class="r"><code>some_numbers &lt;- c(2,3,6,18,108)
+some_numbers * 5</code></pre>
+<pre><code>## [1]  10  15  30  90 540</code></pre>
+<p>Isn’t that easier than doing it individually to each number?</p>
+<blockquote>
+<p>Syntax: Case-sensitivity</p>
+</blockquote>
+<p>Note, that R is case-sensitive. Hence, be careful of how you name objects!</p>
+<pre class="r"><code>some_numbers </code></pre>
+<pre><code>## [1]   2   3   6  18 108</code></pre>
+<pre class="r"><code>Some_numbers</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;Some_numbers&#39; not found</code></pre>
+<blockquote>
+<p>Syntax: Writing and commenting in-line You can also add in-line comments and sections when writing code, so as to introduce some kind of structure or explanation in your code. This makes it easier for both yourself to keep track of the progress you have made, and for a reader to follow your code and what the variables mean. Often we use <code>#</code> in-line to indicate a comment, when R sees a <code>#</code>, it stops executing the rest of the line. Some conventions used in sectioning code is to use multiple <code>####</code> to indicate headers and major sections in the code, <code>###</code> as sub-sections, and just one <code>#</code> for minor comments For example, if one had two variables, x and x2, which referred to different things, it could be helpful to comment next to both variables during the assignment process what they mean to you.</p>
+</blockquote>
+<pre class="r"><code>x &lt;- 5 # Maximum score for first homework
+x2 &lt;- 10 # Total score for first and second homework </code></pre>
+</div>
+<div id="user-interface-ui-explanation" class="section level3">
+<h3>User Interface (UI) explanation</h3>
+<div class="figure">
+<img src="r-console.png" alt="RStudio layout" />
+<p class="caption">RStudio layout</p>
+</div>
+<p><strong>Panel 1 - Script</strong></p>
+<ul>
+<li>write your code here, and run it from here, so you can keep track of everything</li>
+<li>think of it as your word document but for your code</li>
+<li>The entire script can be run at once (cmd<em>A + cmd</em>enter)</li>
+<li>Or line-by-line (cmd*enter) [Mac]</li>
+<li>This is also where you can have your code, data, and files in general stored as tabs</li>
+</ul>
+<p><strong>Panel 2 - Console</strong></p>
 <ul>
 <li>where code is run/executed</li>
 <li>logs all of your past commands and output</li>
@@ -562,14 +610,6 @@ $release_name
 <ul>
 <li>R without RStudio is just the console</li>
 </ul></li>
-</ul>
-<p><strong>Panel 2 - Script</strong></p>
-<ul>
-<li>write your code here, and run it from here, so you can keep track of everything</li>
-<li>think of it as your word document but for your code</li>
-<li>The entire script can be run at once (cmd<em>A + cmd</em>enter)</li>
-<li>Or line-by-line (cmd*enter) [Mac]</li>
-<li>This is also where you can have your code, data, and files in general stored as tabs</li>
 </ul>
 <p><strong>Panel 3 - Local Environment</strong></p>
 <ul>
@@ -601,10 +641,12 @@ rm(list=ls()) # or all at once</code></pre>
 </ul>
 <hr />
 </div>
-<div id="basics-of-programming" class="section level2">
-<h2>Basics of Programming</h2>
+</div>
+</div>
+<div id="basics-of-programming" class="section level1">
+<h1>Basics of Programming</h1>
 <p><strong>Data Types/Elements/Primitives in R</strong></p>
-<p>There are different ‘types’ of information stored in R as data, some include: (but there are more)</p>
+<p>There are different ‘types’ of information stored in R as data, these are some of the most common ones that we will encounter:</p>
 <ol style="list-style-type: decimal">
 <li>Numeric</li>
 <li>Boolean / Logical</li>
@@ -615,68 +657,9 @@ rm(list=ls()) # or all at once</code></pre>
 <li>Matrices</li>
 <li>Dataframe</li>
 </ol>
-<p>This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset.</p>
-<div id="dataframe" class="section level3">
-<h3>Dataframe</h3>
-<p><strong>Dataframe</strong>: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday.</p>
-<ul>
-<li>Using sample data of a list of employees from microsoft, below is a dataset with five columns, and five rows of data (plus the first row for the names of each column)</li>
-<li><a href="https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1">Data Source</a></li>
-</ul>
-<pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
-datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
-<div id="htmlwidget-92ebe394861c561bea41" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-92ebe394861c561bea41">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
-<ul>
-<li>There are five types of information in the data above, as captured by each column
-<ol style="list-style-type: decimal">
-<li>The employee’s ID (a number)</li>
-<li>Last Name (a word, or a series of alphabetical characters)</li>
-<li>First Name (a word, or a series of alphabetical characters)</li>
-<li>Title (words, belonging to categories of different job titles the employee can have)</li>
-<li>Birth Date (a number, with a specific format of MM/DD/YY)</li>
-</ol></li>
-</ul>
-<p>So in the dataset above, we already have at least two to four types of data.</p>
-<p>The dataset itself is a dataframe (type 8), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 4). We will go into these in more detail. Note that in this case, the variables are structured as the columns of the data, but that does not always have to be the case, variables can also be in the rows of the data.</p>
-</div>
-<div id="matrices" class="section level3">
-<h3>Matrices</h3>
-<p><strong>Matrices (plural) or a Matrix (singular)</strong> are a more specific type of dataframe, where all the columns must have the same data type, and are of the same length. Most commonly, matrices are numerical (think the matrix in the movie The Matrix!)</p>
-<p>Below we have a 4x3 matrix, with four rows, three columns.</p>
-<pre class="r"><code>matrix (1:12, nrow = 4, ncol = 3)</code></pre>
-<pre><code>##      [,1] [,2] [,3]
-## [1,]    1    5    9
-## [2,]    2    6   10
-## [3,]    3    7   11
-## [4,]    4    8   12</code></pre>
-</div>
-<div id="vectors-and-lists" class="section level3">
-<h3>Vectors and Lists</h3>
-<ul>
-<li>Whereas matrices have both rows and columns, vectors and lists operate in one dimension.</li>
-<li>So you can think of matrices as made of vectors</li>
-<li>The key difference between vectors and lists is that vectors should contain the same kind of information in each element, while lists can mix elements</li>
-<li>the notation for vectors is <code>c()</code>, and the notation for lists is <code>list()</code></li>
-<li>Note that in the example below, though the input is the same for both x and y, since vectors require all elements to be the same, it has interpreted <code>2</code> as a letter instead of a number (More on this in the next section)</li>
-</ul>
-<pre class="r"><code>x &lt;- c(&#39;mike&#39;, 2, &#39;lucy&#39;)
-x </code></pre>
-<pre><code>## [1] &quot;mike&quot; &quot;2&quot;    &quot;lucy&quot;</code></pre>
-<pre class="r"><code>y &lt;- list(&#39;mike&#39;, 2, &#39;lucy&#39;)
-y</code></pre>
-<pre><code>## [[1]]
-## [1] &quot;mike&quot;
-## 
-## [[2]]
-## [1] 2
-## 
-## [[3]]
-## [1] &quot;lucy&quot;</code></pre>
-</div>
-<div id="numeric-strings-and-characters-boolean" class="section level3">
-<h3>Numeric / Strings and Characters / Boolean</h3>
-<p>The smallest unit of data will be individual elements - this can take the form of numbers, words, characters, or booleans. Lists and vectors are made of one or more elements, and dataframes and matrices are made of one or more lists or vectors or elements.</p>
+<div id="basic-data-types" class="section level2">
+<h2>Basic Data Types</h2>
+<p>The most basic unit of data types in R are numbers, characters, words, and booleans.</p>
 <ol style="list-style-type: decimal">
 <li><em>Numeric</em></li>
 </ol>
@@ -689,9 +672,11 @@ real.number &lt;- 3.141592</code></pre>
 <li><strong>Characters and Strings</strong></li>
 </ol>
 <ul>
-<li>characters are any form of data that has an alphabet in it, multiple characters in a row are strings, whether or not they are words. If there is a mix of characters and numbers, R automatically interprets it as a string.</li>
+<li>characters are any form of data that has an alphabet in it</li>
+<li>Strings are multiple characters in a row, whether or not they are real words that can be found in a dictionary. If there is a mix of characters and numbers, R automatically interprets it as a string.</li>
 <li>the syntax for characters (and strings) is that they have to be enclosed in quotation marks like <code>&quot;a&quot;</code></li>
-<li>in the example below, char.two yields an error because the <code>a</code> is not enclosed in quotations</li>
+<li>if you reference a word without quotation marks, R will assume and look for objects that have been created called <code>a</code></li>
+<li>in the example below, <code>char.two</code> yields an error because the <code>a</code> is not enclosed in quotations, and there is no object called <code>a</code></li>
 </ul>
 <pre class="r"><code>char.one &lt;- &quot;a&quot;
 char.two &lt;- a</code></pre>
@@ -714,21 +699,294 @@ string.two &lt;- &quot;ab12cd&quot;</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>F</code></pre>
 <pre><code>## [1] FALSE</code></pre>
+<p><strong>4. Factor</strong></p>
+<ul>
+<li>R has a special class of data that is used fairly commonly, called <code>factor</code> data. Factors are used to capture categorical data, where there is a pre-defined set of values. For example take the number of classes in a college - there are four categories used to organize students: freshman, sophomore, junior, and senior. These are used regardless of how many years of study a student might have completed, and are often evaluated based on the quality and quantity of classes and course credits a student has completed. Another often used example for factors is gender: male, female, and other.</li>
+</ul>
+<p>We use the operator <code>levels()</code> to find out what the levels in a factor are. Notice that even when the levels are mixed with integers, <code>as.factor()</code> interprets them as <code>character</code> objects.</p>
+<pre class="r"><code>factor.example &lt;- as.factor(c(rep(&quot;Freshman&quot;,3), rep(&quot;Sophomore&quot;,4), rep(&quot;Junior&quot;,6), rep(&quot;Senior&quot;, 2)))
+levels(factor.example)</code></pre>
+<pre><code>## [1] &quot;Freshman&quot;  &quot;Junior&quot;    &quot;Senior&quot;    &quot;Sophomore&quot;</code></pre>
+<pre class="r"><code>factor.example[1]</code></pre>
+<pre><code>## [1] Freshman
+## Levels: Freshman Junior Senior Sophomore</code></pre>
+<pre class="r"><code>factor.example2 &lt;- as.factor(c(rep(1,3), rep(2,4), rep(&quot;Junior&quot;,6), rep(&quot;Senior&quot;, 2)))
+factor.example2</code></pre>
+<pre><code>##  [1] 1      1      1      2      2      2      2      Junior Junior Junior
+## [11] Junior Junior Junior Senior Senior
+## Levels: 1 2 Junior Senior</code></pre>
+<pre class="r"><code>levels(factor.example2)</code></pre>
+<pre><code>## [1] &quot;1&quot;      &quot;2&quot;      &quot;Junior&quot; &quot;Senior&quot;</code></pre>
+<pre class="r"><code>factor.example2[1]</code></pre>
+<pre><code>## [1] 1
+## Levels: 1 2 Junior Senior</code></pre>
+<blockquote>
+<p><strong>Syntax: Checking Data Types</strong></p>
+</blockquote>
+<p>Knowing the different data types is important because some operations only work with specific data types. For example, though you can add multiple numeric objects together using the addition operator <code>+</code>, it is not possible to do the same with character objects, or between character and numeric objects.</p>
+<pre class="r"><code>5 + 5</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>&quot;five&quot; + &quot;five&quot;</code></pre>
+<pre><code>## Error in &quot;five&quot; + &quot;five&quot;: non-numeric argument to binary operator</code></pre>
+<pre class="r"><code>5 + &quot;five&quot;</code></pre>
+<pre><code>## Error in 5 + &quot;five&quot;: non-numeric argument to binary operator</code></pre>
+<p>Aside from getting an error message, there are a couple of tools available to you for determining and changing the data type of an object.</p>
+<pre class="r"><code>is.numeric(whole.number)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.numeric(string.one)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>str(whole.number)</code></pre>
+<pre><code>##  num 6</code></pre>
+<pre class="r"><code>class(string.one)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p><strong>Changing data types: </strong></p>
+<p>One example of a need to change data types is when combining data across types. For example, while factors look (and often behave) like character vectors, they can be they are actually treated as integer vectors by R. So you need to be very careful when treating them as strings. Yet because the levels don’t have any inherent numerical value, they cannot be combined with numerical objects. They have to be transformed into numeric types first.</p>
+<pre class="r"><code>factor.example + whole.number</code></pre>
+<pre><code>## Warning in Ops.factor(factor.example, whole.number): &#39;+&#39; not meaningful for
+## factors</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>as.numeric(factor.example) + 6</code></pre>
+<pre><code>##  [1]  7  7  7 10 10 10 10  8  8  8  8  8  8  9  9</code></pre>
+<p>You can also change numeric types to characters. Remember how strings have the quotation marks <code>&quot;&quot;</code> around them?</p>
+<pre class="r"><code>as.character(whole.number) </code></pre>
+<pre><code>## [1] &quot;6&quot;</code></pre>
+<div id="example-1" class="section level3">
+<h3>Example 1</h3>
+<p>Let’s combine some of these basic data types into a type of data some of you might be familiar with - a hypothetical list of student grades.</p>
+<pre class="r"><code>data &lt;- read.csv(&quot;class-grades.csv&quot;)
+datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
+<div id="htmlwidget-a10e71d1050349ffe2e3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a10e71d1050349ffe2e3">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Freshman&quot;,&quot;Junior&quot;,&quot;Senior&quot;,&quot;Sophomore&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"75\" data-max=\"90\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["Freshman","Sophomore","Sophomore","Senior","Junior","Freshman"],[78,83,86,75,89,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Student.ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Class<\/th>\n      <th>Grades<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,4]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>class(data$Student.ID)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>class(data$First.Name)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(data$Class)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(data$Grades)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<p>Here we have at first glance, two types of data: <em>numeric</em> and <em>character</em>.</p>
+<p>However, thinking back to the basic data types we just covered, we might find it useful to structure Class as <code>factor</code> instead of <code>character</code> if we want to organize the data by the seniority of students. Luckily, R has automatically done that conversion for us. But if we needed to do it, remember we can use the operator <code>as.factor()</code>.</p>
 <hr />
 </div>
 </div>
-<div id="using-your-console" class="section level2">
-<h2>Using your console</h2>
+<div id="vectors-and-lists" class="section level2">
+<h2>Vectors and Lists</h2>
+<p>Vectors and lists are a way to store multiple values or objects, which can be either numbers or characters.</p>
+<ul>
+<li>the notation for vectors is <code>c()</code></li>
+<li>You can use <code>c()</code> to add more elements to an existing vector</li>
+</ul>
+<pre class="r"><code>weights &lt;- c(10, 15, 20, 60, 65)
+weights</code></pre>
+<pre><code>## [1] 10 15 20 60 65</code></pre>
+<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;cat&quot;, &quot;dog&quot;)
+animals</code></pre>
+<pre><code>## [1] &quot;mouse&quot; &quot;cat&quot;   &quot;dog&quot;</code></pre>
+<pre class="r"><code>c(weights, animals)</code></pre>
+<pre><code>## [1] &quot;10&quot;    &quot;15&quot;    &quot;20&quot;    &quot;60&quot;    &quot;65&quot;    &quot;mouse&quot; &quot;cat&quot;   &quot;dog&quot;</code></pre>
+<p>Lists are similar to vectors in that they are a series of values, however the key difference between vectors and lists is that while vectors should contain the same kind of data types across all objects, lists can mix elements</p>
+<ul>
+<li>the notation for lists is <code>list()</code></li>
+<li>Note that in the example below, though the input is the same for both x and y, since vectors require all elements to be the same, it has interpreted <code>2</code> as a character instead of a number. This is called <em>type-casting</em>.</li>
+<li>Hence when we apply the function <code>class()</code> to both x and y, class tells us what kind of data is in the vectors, but sees the list as a different data type</li>
+</ul>
+<pre class="r"><code>x &lt;- c(&#39;mike&#39;, 2, &#39;lucy&#39;)
+x </code></pre>
+<pre><code>## [1] &quot;mike&quot; &quot;2&quot;    &quot;lucy&quot;</code></pre>
+<pre class="r"><code>class(x)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>y &lt;- list(&#39;mike&#39;, 2, &#39;lucy&#39;)
+y</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;mike&quot;
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] &quot;lucy&quot;</code></pre>
+<pre class="r"><code>class(y)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div id="using-vectors-and-lists" class="section level3">
+<h3>Using Vectors and Lists</h3>
+<p>Since vectors and lists are essentially just a group of objects, we can inspect their contents, structure, and also interact with the objects within them as a group. - Note the difference between adding a number to every value in a vector, and adding another number to a vector</p>
+<pre class="r"><code>length(weights)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>class(weights)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>weights + 30</code></pre>
+<pre><code>## [1] 40 45 50 90 95</code></pre>
+<pre class="r"><code>weights2 &lt;- c(weights, 30)
+weights2</code></pre>
+<pre><code>## [1] 10 15 20 60 65 30</code></pre>
+<p>In this case, <code>weights</code> is a vector of 5 values, we can extract and replace values at specific locations in the vector. Using square brackets <code>[]</code> to select the position of the value we are interested in.</p>
+<pre class="r"><code>weights[1]</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>weights[3] &lt;- 5
+weights</code></pre>
+<pre><code>## [1] 10 15  5 60 65</code></pre>
+<blockquote>
+<p>Syntax: Indices in R For those who have some programming experience, R indices start at 1. Other programming languages in the C family such as C++, Java, and Python, start from 0 instead.</p>
+</blockquote>
+</div>
+</div>
+<div id="matrices" class="section level2">
+<h2>Matrices</h2>
+<p>Similar to vectors, <strong>Matrices (plural) or a Matrix (singular)</strong> are a collection of elements arranged into a fixed number of rows and columns. The function <code>matrix()</code> creates a matrix. All the columns must have the same data type, and must be the same length, though most often, matrices are numerical (think the matrix in the movie The Matrix!)</p>
+<p>Below we have a 4x3 matrix, with four rows, three columns. Here we used <code>1:12</code> to create a sequence of numbers from 1 to 12. It is the same as using <code>c(1,2,3,4,5,6,7,8,9,10,11,12)</code></p>
+<pre class="r"><code>1:12</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12</code></pre>
+<pre class="r"><code>matrix (1:12, nrow = 4, ncol = 3)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<p>You can also create a matrix from a vector. Matrices have to have the same column length, so note how <code>weights</code> with 5 values is not the right dimension for a matrix (R automatically repeats the first number), but <code>weights2</code> with 6 values is.</p>
+<pre class="r"><code>matrix(weights, byrow = TRUE, nrow = 3)</code></pre>
+<pre><code>## Warning in matrix(weights, byrow = TRUE, nrow = 3): data length [5] is not
+## a sub-multiple or multiple of the number of rows [3]</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   10   15
+## [2,]    5   60
+## [3,]   65   10</code></pre>
+<pre class="r"><code>matrix(weights2, byrow = TRUE, nrow = 3)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   10   15
+## [2,]   20   60
+## [3,]   65   30</code></pre>
+</div>
+<div id="dataframe" class="section level2">
+<h2>Dataframe</h2>
+<p><strong>Dataframe</strong>: A dataframe is a general form of data that has columns and rows, like a list or a table. Unlike a matrix, a dataframe usually has multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday.</p>
+<p>If you have a matrix or a list you would like to convert in a dataframe, the associated function is <code>data.frame()</code>. However, more often than not we start by importing a dataset into R that we want to work with.</p>
+<p>To access something inside of R, <code>$</code> is often used to refer to a column. Below we have a makeshift dataframe with two columns, <em>age</em> and <em>name</em>. <code>my.data$age</code> allows us to reference the age column.</p>
+<pre class="r"><code>my.data &lt;- data.frame(age = c(35, 24, 18, 72), name = c(&quot;Oliver&quot;, &quot;Meghan&quot;,
+                      &quot;Cole&quot;, &quot;Violet&quot;))
+
+View(my.data)
+my.data$age # the &#39;$&#39; lets R know you want to access something inside of my.data</code></pre>
+<pre><code>## [1] 35 24 18 72</code></pre>
+<div id="example-2" class="section level3">
+<h3>Example 2</h3>
+<ul>
+<li>Using sample data of a list of employees from microsoft, below is a dataset with five columns, and five rows of data (plus the first row for the names of each column)</li>
+<li><a href="https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1">Data Source</a></li>
+</ul>
+<pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
+datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
+<div id="htmlwidget-09255112ec2ed88ddac8" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-09255112ec2ed88ddac8">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>There are five types of information in the data above, as captured by each column
+<ol style="list-style-type: decimal">
+<li>The employee’s ID (a number)</li>
+<li>Last Name (a word, or a series of alphabetical characters)</li>
+<li>First Name (a word, or a series of alphabetical characters)</li>
+<li>Title (words, belonging to categories of different job titles the employee can have)</li>
+<li>Birth Date (a number, with a specific format of MM/DD/YY)</li>
+</ol></li>
+</ul>
+<p>So in the dataset above, we already have at least three types of data, from the basic data types we covered earlier.</p>
+<p>The dataset itself is a <em>dataframe</em>, the employees ID can be <em>numerical</em>, the names can be thought of <em>characters</em> or string. If there are a few limited categories for the job title, it can be a type of <em>factor.</em></p>
+<p>Note that in this case, the variables are structured as the columns of the data, but that does not always have to be the case, variables can also be in the rows of the data.</p>
+</div>
+</div>
+</div>
+<div id="using-your-console" class="section level1">
+<h1>Using your console</h1>
 <p>Now that we’ve covered some of the essential basics of R syntax, let us move to the basics of actually using your console to manipulate data.</p>
-<div id="syntax-assignment-vs-equals" class="section level3">
-<h3>Syntax: Assignment vs Equals</h3>
+<div id="arithmetic-operators" class="section level2">
+<h2>Arithmetic Operators</h2>
+<p>One of the most common functions of R is the use of arithmetic operators, here is a complete list of the most common operators. - The order of operations is the same as the convention in math: parenthesis, exponents, multiplication and division (from left to right), addition and subtraction (from left to right); also known as PEMDAS. - when in doubt use parentheses!</p>
+<pre class="r"><code>tabl &lt;- &quot;
+| Operator | Description    |
+|----------|----------------|
+| +        | addition       |
+| -        | subtraction    |
+| *        | multiplication | 
+| /        | division       |
+| ^ or **  | exponentiation | 
+| x %% y   | 5 %% 2 is 1    |
+| x %/% y  | 5 %/% 2 is 2   |
+&quot;
+cat(tabl)</code></pre>
+<pre><code>## 
+## | Operator | Description    |
+## |----------|----------------|
+## | +        | addition       |
+## | -        | subtraction    |
+## | *        | multiplication | 
+## | /        | division       |
+## | ^ or **  | exponentiation | 
+## | x %% y   | 5 %% 2 is 1    |
+## | x %/% y  | 5 %/% 2 is 2   |</code></pre>
+</div>
+<div id="logical-operators" class="section level2">
+<h2>Logical Operators</h2>
+<p>Another common operator type are logical operators</p>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>&lt;</td>
+<td>Less than</td>
+</tr>
+<tr class="even">
+<td>&gt;</td>
+<td>Great than</td>
+</tr>
+<tr class="odd">
+<td>&lt;=</td>
+<td>Less than or equal to</td>
+</tr>
+<tr class="even">
+<td>&gt;=</td>
+<td>Greater than or equal to</td>
+</tr>
+<tr class="odd">
+<td>==</td>
+<td>Equal to each other</td>
+</tr>
+<tr class="even">
+<td>!=</td>
+<td>Not equal to each other</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>tabl2 &lt;- &quot;
+| Operator | Description              |
+|----------|--------------------------|
+| &lt;        | Less than                |
+| &gt;        | Great than               |
+| &lt;=       | Less than or equal to    |
+| &gt;=       | Greater than or equal to |
+| ==       | Equal to each other      |
+| !=       | Not equal to each other  |
+&quot;</code></pre>
+</div>
+<div id="help" class="section level2">
+<h2>Help</h2>
+<p>For any of the functions used here, such as <code>c()</code>, <code>list()</code>, <code>data.frame()</code>, <code>matrix()</code>, and any future functions, you can use the <code>?help</code> function in R to learn more about a function.</p>
+<p>As shown below, this help function gives you more detail on the function, as well as some of the many options one can specify - such as for matrix, what are the dimensions of the matrix?</p>
+<pre class="r"><code>?matrix
+?list</code></pre>
+</div>
+<div id="syntax-assignment-vs-equals" class="section level2">
+<h2>Syntax: Assignment vs Equals</h2>
 <p>As you might have noticed in the above code chunks, in R we use the assignment operator <code>&lt;-</code> to assign value to objects. There are other assignment operators (such as <code>=</code>), but it can be confusing, so stick to using <code>&lt;-</code>.</p>
 <p>Value assignment means to set a value to be stored in an object (also called a variable). While this may seem inefficient, we could do <code>1 + 2</code> instead of <code>x = 1, y = 2, x + y</code>, it becomes increasingly difficult to manually type out the values of interest when the number of values we are working with gets bigger, like in a dataset.</p>
 <pre class="r"><code>x = 2 # Please avoid at all costs
 x &lt;- 4 # Better assignment operator</code></pre>
 </div>
-<div id="syntax-equal-to-and-not-equal-to" class="section level3">
-<h3>Syntax: Equal-to and not-equal-to</h3>
+<div id="syntax-equal-to-and-not-equal-to" class="section level2">
+<h2>Syntax: Equal-to and not-equal-to</h2>
 <p>One of the main reasons why <code>=</code> can be confusing is because there is another operator <code>==</code> which is the equal-to operator. So it checks if the value on the left is the same as the value on the right, i.e. is <code>1 == 2</code>, mathematically it is not. The opposite of the equal-to operator is the not-equal-to operator <code>!=</code></p>
 <pre class="r"><code>x == 4</code></pre>
 <pre><code>## [1] TRUE</code></pre>
@@ -742,8 +1000,8 @@ email2 &lt;- &#39;james.smith@duke.edu&#39;
 email == email2</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 </div>
-<div id="syntax-and-vs-or" class="section level3">
-<h3>Syntax: And vs or</h3>
+<div id="syntax-and-vs-or" class="section level2">
+<h2>Syntax: And vs or</h2>
 <pre class="r"><code>x == 600 &amp; y == 700 # &amp; == &#39;and this is also true&#39;</code></pre>
 <pre><code>## Warning: NAs introduced by coercion
 
@@ -754,48 +1012,6 @@ email == email2</code></pre>
 
 ## Warning: NAs introduced by coercion</code></pre>
 <pre><code>## [1]    NA FALSE    NA</code></pre>
-</div>
-<div id="syntax-checking-changing-data-types" class="section level3">
-<h3>Syntax: Checking / Changing Data Types</h3>
-<pre class="r"><code>is.numeric(whole.number)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is.factor(whole.number)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>as.character(whole.number)</code></pre>
-<pre><code>## [1] &quot;6&quot;</code></pre>
-<pre class="r"><code>str(whole.number)</code></pre>
-<pre><code>##  num 6</code></pre>
-</div>
-<div id="arithmetic-operators" class="section level3">
-<h3>Arithmetic Operators</h3>
-<pre class="r"><code>tabl &lt;- &quot;
-| Operator | Description |
-|----------|-------------|
-| +        | addition    |
-| -        | subtraction |
-| *        | multiplication | 
-| /        | division    |
-| ^ or **  | exponentiation | 
-| x %% y   | 5 %% 2 is 1 |
-| x %/% y  | 5 %/% 2 is 2 |
-&quot;
-cat(tabl)</code></pre>
-<pre><code>## 
-## | Operator | Description |
-## |----------|-------------|
-## | +        | addition    |
-## | -        | subtraction |
-## | *        | multiplication | 
-## | /        | division    |
-## | ^ or **  | exponentiation | 
-## | x %% y   | 5 %% 2 is 1 |
-## | x %/% y  | 5 %/% 2 is 2 |</code></pre>
-</div>
-</div>
-</div>
-<div id="r-follows-the-order-of-operations-pemdas" class="section level1">
-<h1>R follows the order of operations: PEMDAS</h1>
-<p>Print()</p>
 <div id="concatenation-seq-rep" class="section level3">
 <h3>Concatenation, Seq, Rep</h3>
 <ul>
@@ -825,138 +1041,63 @@ c(string.one, string.two)</code></pre>
 <pre class="r"><code>paste(string.one, whole.number) # Typecasts numeric</code></pre>
 <pre><code>## [1] &quot;Hello 6&quot;</code></pre>
 <p>Remember in [### Vectors and Lists] I mentioned that vectors have to be the same type? Look at what happens when we try and concatenate characters and numbers:</p>
-<pre class="r"><code>x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) # but the do have to be the same type!!!!!
+<pre class="r"><code>x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) # but they do have to be the same type!
 # notice that 1 and 2 are of type character, this is called &#39;type casting&#39;</code></pre>
-<p><strong>Syntax: Checking/Changing Type</strong></p>
-<pre class="r"><code>whole.number</code></pre>
-<pre><code>## [1] 6</code></pre>
-<pre class="r"><code>is.numeric(whole.number)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is.factor(whole.number)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>as.character(whole.number)</code></pre>
-<pre><code>## [1] &quot;6&quot;</code></pre>
-<pre class="r"><code>str(whole.number)</code></pre>
-<pre><code>##  num 6</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Vectors</li>
-</ol>
-<pre class="r"><code>cookies &lt;- c(&quot;chocolate chip&quot;, &quot;sugar&quot;, &quot;snickerdoodle&quot;)
-numbers &lt;- c(1, 2, 3, 4, 5)
-
-x &lt;- c(1,2,3,4,5) # the c stands for concatenate
+<p><strong>Seq and Rep</strong></p>
+<p>In cases where there is some repetition or sequences in the multiple values, such as an index when we want to number off observations or a repeating sequence to group observations, we can also use <code>seq()</code> and <code>rep()</code> to make the job easier. These functions work both on numeric and character objects.</p>
+<pre class="r"><code>x &lt;- c(1,2,3,4,5) # the c stands for concatenate
 x &lt;- seq(from = 1, to = 5, by = 1) # same as above
 x &lt;- 1:5 # same as above
 x &lt;- rep(1, times = 10)
-x &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;) # vectors do not have to be numbers
-x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) # but the do have to be the same type!!!!!
-# notice that 1 and 2 are of type character, this is called &#39;type casting&#39;
 
-x &lt;- 1:10
-y &lt;- c(x, 10:1) # vectors can be complex as long as you keep them one type
-
-z &lt;- c(string.one, whole.number)
-
-## Factors
-factor.example &lt;- as.factor(c(rep(&quot;A&quot;,3), rep(&quot;B&quot;,4), rep(&quot;C&quot;,6)))
-levels(factor.example)</code></pre>
-<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
-<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
-<pre class="r"><code>factor.example[1]</code></pre>
-<pre><code>## [1] A
-## Levels: A B C</code></pre>
-<pre class="r"><code>factor.example[0] # note that R starts at 1, whereas most languages start at 0</code></pre>
-<pre><code>## factor(0)
-## Levels: A B C</code></pre>
-<pre class="r"><code>factor.two &lt;- as.factor(seq(1:10))
-factor.two + whole.number # Careful! Still allows meaningless calculation</code></pre>
-<pre><code>## Warning in Ops.factor(factor.two, whole.number): &#39;+&#39; not meaningful for
-## factors</code></pre>
-<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA</code></pre>
-<pre class="r"><code>as.numeric(factor.two) + whole.number</code></pre>
-<pre><code>##  [1]  7  8  9 10 11 12 13 14 15 16</code></pre>
-<pre class="r"><code>## Matrices
-# vectors in 2 dimensions
-x &lt;- matrix(1:10, nrow = 2, ncol = 5, byrow = F) # default is by column
-x &lt;- matrix(c(1,&quot;a&quot;,2,&quot;b&quot;), nrow = 2, ncol = 2, byrow = T) # same rules as vectors
-str(x)</code></pre>
-<pre><code>##  chr [1:2, 1:2] &quot;1&quot; &quot;2&quot; &quot;a&quot; &quot;b&quot;</code></pre>
-<pre class="r"><code>## Dataframes
-# Matrices that allow columns to be of different type
-# this is the structure for nearly all data sets you will work with
-my.data &lt;- data.frame(age = c(35, 24, 18, 72), name = c(&quot;Oliver&quot;, &quot;Meghan&quot;,
-                      &quot;Cole&quot;, &quot;Violet&quot;))
-
-View(my.data)
-my.data$age # the &#39;$&#39; lets R know you want to access something inside of my.data</code></pre>
-<pre><code>## [1] 35 24 18 72</code></pre>
-<pre class="r"><code>my.data$name</code></pre>
-<pre><code>## [1] Oliver Meghan Cole   Violet
-## Levels: Cole Meghan Oliver Violet</code></pre>
-<pre class="r"><code>is.numeric(my.data$age)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>is.numeric(my.data$name)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code># but always beware of factors!
-is.character(my.data$name)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<pre class="r"><code>is.factor(my.data$name)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>my.data$name &lt;- as.character(my.data$name)
-
-## Lists
-# loosely defined as a dataframe in n dimensions
-# used for hierarchical data structures
-x &lt;- list()
-x[[1]] &lt;- 1:10 # lists are ordered and a &#39;page&#39; is accessed using [[i]]
-x[[2]] &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;)
-x[[3]] &lt;- matrix(1:10, nrow = 2, ncol = 5, byrow = T)
-x[[4]] &lt;- my.data
-
-y &lt;- list()
-y[[1]] &lt;- rep(100,5)
-y[[2]] &lt;- 7
-x[[5]] &lt;- y # lists can even store other lists
-
-#### Operations ####
-# R follows the order of operations: PEMDAS
-
-## Arithmetic
-print(5)</code></pre>
-<pre><code>## [1] 5</code></pre>
-<pre class="r"><code>print(2 + 2 - 1)</code></pre>
-<pre><code>## [1] 3</code></pre>
-<pre class="r"><code>print(2 - 3 * 1)</code></pre>
-<pre><code>## [1] -1</code></pre>
-<pre class="r"><code>print(2^2 + 3 * 2 - (1 + 3))</code></pre>
-<pre><code>## [1] 6</code></pre>
-<pre class="r"><code># when in doubt use parentheses!
-
-# Basic Statistics Functions
-x &lt;- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm
-
+x &lt;- factor(LETTERS[1:4]); names(x) &lt;- letters[1:4]
+x</code></pre>
+<pre><code>## a b c d 
+## A B C D 
+## Levels: A B C D</code></pre>
+<pre class="r"><code>rep(x, 2)</code></pre>
+<pre><code>## a b c d a b c d 
+## A B C D A B C D 
+## Levels: A B C D</code></pre>
+<hr />
+</div>
+</div>
+</div>
+<div id="basic-statistics-functions" class="section level1">
+<h1>Basic Statistics Functions</h1>
+<pre class="r"><code>x &lt;- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
 length(x)</code></pre>
 <pre><code>## [1] 100</code></pre>
-<pre class="r"><code>which(x &gt; 6) # output are the locations, NOT VALUES, for which this is true</code></pre>
-<pre><code>##  [1]  14  25  34  42  47  50  60  62  67  72  73  78  80  84  85  87  88
-## [18]  93  94  98 100</code></pre>
+<pre class="r"><code>x</code></pre>
+<pre><code>##   [1] 5.642409 4.811697 5.413315 4.994201 5.487044 6.722270 5.301983
+##   [8] 4.454037 4.918539 5.360751 4.523501 4.887336 3.979655 6.172124
+##  [15] 6.373601 4.742504 4.144551 5.710006 5.812246 4.815999 3.702117
+##  [22] 5.099506 5.451243 5.683171 5.541975 4.970638 3.789109 5.881188
+##  [29] 5.235167 6.459767 3.502141 5.580394 4.427832 3.581746 4.519493
+##  [36] 7.160672 4.720245 5.434408 4.185640 5.851920 4.771229 3.129059
+##  [43] 5.942986 5.213097 6.511588 3.468437 5.217545 4.195157 4.367001
+##  [50] 6.807446 4.032716 3.709505 5.369486 6.175201 5.481094 6.205278
+##  [57] 5.611148 6.866392 4.974527 5.758912 4.192345 5.995933 6.069872
+##  [64] 6.375061 4.681893 4.855506 4.218762 6.401390 3.833603 5.455381
+##  [71] 6.632993 3.291997 5.886685 5.595300 5.514062 4.445370 6.741106
+##  [78] 5.103644 4.872169 4.754489 5.336528 5.169785 6.502904 5.346052
+##  [85] 5.330847 3.502367 6.358729 5.480655 4.409998 4.969075 5.497225
+##  [92] 3.832575 6.317948 4.761399 4.944153 5.145540 6.012782 5.066625
+##  [99] 5.116287 6.915669</code></pre>
+<pre class="r"><code>which(x &gt; 6)  # output are the locations, NOT VALUES, for which this is true</code></pre>
+<pre><code>##  [1]   6  14  15  30  36  45  50  54  56  58  63  64  68  71  77  83  87
+## [18]  93  97 100</code></pre>
 <pre class="r"><code>length(which(x &gt; 6)) # how many fit this criteria</code></pre>
-<pre><code>## [1] 21</code></pre>
+<pre><code>## [1] 20</code></pre>
 <pre class="r"><code>max(x)</code></pre>
-<pre><code>## [1] 7.409226</code></pre>
+<pre><code>## [1] 7.160672</code></pre>
 <pre class="r"><code>mean(x)</code></pre>
-<pre><code>## [1] 5.136716</code></pre>
+<pre><code>## [1] 5.197886</code></pre>
 <pre class="r"><code>sd(x)</code></pre>
-<pre><code>## [1] 1.062346</code></pre>
-<pre class="r"><code>summary(x) # gives a variety of statistics about a variable</code></pre>
+<pre><code>## [1] 0.9214044</code></pre>
+<pre class="r"><code>summary(x)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   2.850   4.397   5.272   5.137   5.798   7.409</code></pre>
-<pre class="r"><code>#### Headers, Formatting, Spacing, Commenting, Conventions ####
-#### Section ####
-### Main
-## Major
-# Minor</code></pre>
-</div>
+##   3.129   4.642   5.226   5.198   5.822   7.161</code></pre>
 </div>
 
 

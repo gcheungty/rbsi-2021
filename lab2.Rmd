@@ -183,9 +183,20 @@ Isn't that easier than doing it individually to each number?
 
 Note, that R is case-sensitive. Hence, be careful of how you name objects!
 
-```{r}
+```{r, error = TRUE}
 some_numbers 
 Some_numbers
+```
+
+> Syntax: Writing and commenting in-line
+> You can also add in-line comments and sections when writing code, so as to introduce some kind of structure or explanation in your code. This makes it easier for both yourself to keep track of the progress you have made, and for a reader to follow your code and what the variables mean. 
+> Often we use `#` in-line to indicate a comment, when R sees a `#`, it stops  executing the rest of the line. 
+> Some conventions used in sectioning code is to use multiple `####` to indicate headers and major sections in the code, `###` as sub-sections, and just one `#` for minor comments 
+> For example, if one had two variables, x and x2, which referred to different things, it could be helpful to comment next to both variables during the assignment process what they mean to you. 
+
+```{r}
+x <- 5 # Maximum score for first homework
+x2 <- 10 # Total score for first and second homework 
 ```
 
 
@@ -312,7 +323,7 @@ factor.example2[1]
 
 Knowing the different data types is important because some operations only work with specific data types. For example, though you can add multiple numeric objects together using the addition operator `+`, it is not possible to do the same with character objects, or between character and numeric objects.
 
-```{r}
+```{r, error = TRUE}
 5 + 5
 "five" + "five"
 5 + "five"
@@ -579,6 +590,7 @@ x == 1000 | y == 7 # | == 'this, or this, or both'
 ```
 
 ### Concatenation, Seq, Rep
+
 - How do we remember multiple numerical values without adding them? 
 - How do we add together non-numerical values?
   - We can use lists or vectors [### Vectors and Lists]
@@ -606,11 +618,17 @@ x <- c(1, "a", 2, "b") # but they do have to be the same type!
 
 **Seq and Rep**
 
+In cases where there is some repetition or sequences in the multiple values, such as an index when we want to number off observations or a repeating sequence to group observations, we can also use `seq()` and `rep()` to make the job easier. These functions work both on numeric and character objects. 
+
 ```{r}
 x <- c(1,2,3,4,5) # the c stands for concatenate
 x <- seq(from = 1, to = 5, by = 1) # same as above
 x <- 1:5 # same as above
 x <- rep(1, times = 10)
+
+x <- factor(LETTERS[1:4]); names(x) <- letters[1:4]
+x
+rep(x, 2)
 ```
 
 ***
@@ -618,7 +636,7 @@ x <- rep(1, times = 10)
 # Basic Statistics Functions
 
 ```{r}
-x <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm
+x <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
 length(x)
 x
 which(x > 6)  # output are the locations, NOT VALUES, for which this is true
@@ -630,9 +648,4 @@ summary(x)
 ```
 
 
-#### Headers, Formatting, Spacing, Commenting, Conventions ####
-#### Section ####
-### Main
-## Major
-# Minor
 
