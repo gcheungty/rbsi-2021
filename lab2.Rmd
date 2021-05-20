@@ -12,7 +12,6 @@ output:
     toc: TRUE
     toc_float: TRUE
     number_sections: FALSE
-    code_folding: "show"
     css: "style.css"
 ---
 
@@ -120,26 +119,84 @@ https://cran.r-project.org/doc/manuals/R-intro.pdf
 # **Welcome to RStudio **
 </center> 
 
+The rest of this lab will center on running through the basics of using R, using the RStudio interface, and getting familiar with the practice of programming and statistical analysis. It will be a lot of content to cover but working with the material hands on will help too! At the end of this tutorial, there will be an R file with the code used today, as well as an activity we will work through in lab to play around with some data and get familiar with the output in R. 
+
+The basis of programming is that we write down instructions for the computer to follow, and then we tell the computer to follow those instructions. We write, or code, instructions in R because it is a common language that both the computer and we can understand. We call the instructions commands and we tell the computer to follow the instructions by executing (also called running) those commands.
+
 ***
 
-## User Interface (UI) explanation 
+## Programming basics and key points 
+
+To begin, open up RStudio, and you will usually see the main window has been divided into four panels. We will primarily be using the two panels on the left, the top is the script, and the bottom is the console. 
 
 ![RStudio layout](r-console.png)
 
-**Panel 1 - Console**
+There are two main ways of interacting with R, by writing code and running it from the script (Panel 1), or by typing it and executing it in the console (Panel 2). 
 
-- where code is run/executed
-- logs all of your past commands and output
-- you can work from just the console, but this is not advised
-  - R without RStudio is just the console
+1. The script is where you will write your code, or documentation, think of it as a document where your instructions go. But unless you run these instructions, they are just text to the computer. You can run your script selecting the command you desire, and using the `Ctrl` + `Enter` shortcut on Windows, or `Cmd` + `return` on Macs. 
 
-**Panel 2 - Script**
+2. On the console, you can type your command in and directly run it by pressing `Enter`.
+
+### Calculations, Data Elements, and Variable Assignment
+
+- Here is an example of a type of output you get in R console:
+- You can use R like a calculator and put in simple math problems like so:
+
+```{r}
+1 + 2 
+16 / 4
+```
+
+This is what that execution and output looks like in RStudio as well. 
+
+![Math Output](math-output.png){width=200px}
+
+However, to do more, we need to assign **values** to **objects**. To do so, we name an object, let's say we call it *some_numbers*, followed by the assignment operator `<-`, and the value we want to give it: 
+
+```{r}
+some_numbers <- 5
+```
+
+So now, we can do a series of mathematical operations to some_numbers.
+
+```{r}
+2.2 * some_numbers
+```
+
+We can also change the value of an object by reassigning it a new value using the same assignment operator `<-`
+
+```{r}
+some_numbers <- 10 + 20
+some_numbers
+```
+
+We could easily multiply 2.2 by 5 ourselves, or add 10 to 20 by hand, but the true power in assigning value to objects is when we have multiple values stored. Below I have a list of five numbers (more on creating lists later), when we save them as one object, we can apply the same mathematical operator on all five of them at the same time without doing more work. 
+
+```{r}
+some_numbers <- c(2,3,6,18,108)
+some_numbers * 5
+```
+
+Isn't that easier than doing it individually to each number?
+
+### User Interface (UI) explanation
+
+![RStudio layout](r-console.png)
+
+**Panel 1 - Script**
 
 - write your code here, and run it from here, so you can keep track of everything
 - think of it as your word document but for your code
 - The entire script can be run at once (cmd*A + cmd*enter)
 - Or line-by-line (cmd*enter) [Mac]
 - This is also where you can have your code, data, and files in general stored as tabs
+
+**Panel 2 - Console**
+
+- where code is run/executed
+- logs all of your past commands and output
+- you can work from just the console, but this is not advised
+  - R without RStudio is just the console
 
 **Panel 3 - Local Environment**
 
@@ -173,11 +230,11 @@ rm(list=ls()) # or all at once
 
 ***
 
-## Basics of Programming
+# Basics of Programming
 
 **Data Types/Elements/Primitives in R**
 
-There are different 'types' of information stored in R as data, some include: (but there are more)
+There are different 'types' of information stored in R as data, these are some of the most common ones that we will encounter:
 
 1. Numeric 
 2. Boolean / Logical
@@ -188,9 +245,81 @@ There are different 'types' of information stored in R as data, some include: (b
 7. Matrices
 8. Dataframe 
 
-This list can seem overwhelming, but I find that one way to think of data is to start with a hypothetical dataset (since we are learning about R as a way to approach data and statistics), and then breakdown the data types by what information we need to store in the dataset. 
+## Basic Data Types
 
-### Dataframe
+The most basic unit of data types in R are numbers, characters, words, and booleans. 
+
+1. *Numeric* 
+- represents a number, either whole or real 
+```{r}
+whole.number <- 6
+real.number <- 3.141592
+```
+
+2. **Characters and Strings** 
+- characters are any form of data that has an alphabet in it
+- Strings are multiple characters in a row, whether or not they are real words that can be found in a dictionary. If there is a mix of characters and numbers, R automatically interprets it as a string. 
+- the syntax for characters (and strings) is that they have to be enclosed in quotation marks like `"a"`
+- in the example below, `char.two` yields an error because the `a` is not enclosed in quotations
+
+```{r, error = TRUE}
+char.one <- "a"
+char.two <- a
+string.one <- "Hello"
+string.two <- "ab12cd"
+```
+
+3. *Boolean / Logical* 
+- Is a binary variable that can only have either of two answers: `TRUE` or `FALSE`
+- Is actually used very often, either in the `TRUE/FALSE` form, or in a `0/1` form
+- Think: it is easier to code binary outcomes in binary because it is less prone to error; lets say the data was for a student's attendance, whether they are `Present/Absent` is as easily represented as `True/False`
+```{r}
+TRUE
+FALSE
+T
+F
+```
+
+### Syntax: Checking / Changing Data Types
+
+Do you remember that when you added 5 + "six", you got an error due to a mismatch in data types? You can avoid such embarrassing situations by checking the data type of a variable beforehand. You can do this with the class() function, as the code in the editor shows.
+
+```{r}
+is.numeric(whole.number)
+is.factor(whole.number)
+as.character(whole.number)
+str(whole.number)
+```
+
+
+***
+
+## Vectors and Lists
+
+- Whereas matrices have both rows and columns, vectors and lists operate in one dimension. 
+- So you can think of matrices as made of vectors 
+- The key difference between vectors and lists is that vectors should contain the same kind of information in each element, while lists can mix elements 
+- the notation for vectors is `c()`, and the notation for lists is `list()`
+- Note that in the example below, though the input is the same for both x and y, since vectors require all elements to be the same, it has interpreted `2` as a letter instead of a number (More on this in the next section)
+
+```{r}
+x <- c('mike', 2, 'lucy')
+x 
+y <- list('mike', 2, 'lucy')
+y
+```
+
+## Matrices
+
+**Matrices (plural) or a Matrix (singular)** are a more specific type of dataframe, where all the columns must have the same data type, and are of the same length. Most commonly, matrices are numerical (think the matrix in the movie The Matrix!)
+
+Below we have a 4x3 matrix, with four rows, three columns. 
+
+```{r}
+matrix (1:12, nrow = 4, ncol = 3)
+```
+
+## Dataframe
 
 **Dataframe**: A dataframe is a general form of data that has columns and rows, like a list or a table, usually with multiple different types of information. You might see something similar in a class roster, a list of invitees to a birthday party, a list of ingredients in a recipe, these are all a form of data we interact with everyday. 
 
@@ -214,7 +343,7 @@ So in the dataset above, we already have at least two to four types of data.
 The dataset itself is a dataframe (type 8), the employees ID can be numerical (type 1), the names can be thought of characters or words (type 3). If there are a few limited categories for the job title, it can be a type of factor (type 4). We will go into these in more detail. 
 Note that in this case, the variables are structured as the columns of the data, but that does not always have to be the case, variables can also be in the rows of the data. 
 
-### Matrices
+## Matrices
 
 **Matrices (plural) or a Matrix (singular)** are a more specific type of dataframe, where all the columns must have the same data type, and are of the same length. Most commonly, matrices are numerical (think the matrix in the movie The Matrix!)
 
@@ -224,7 +353,7 @@ Below we have a 4x3 matrix, with four rows, three columns.
 matrix (1:12, nrow = 4, ncol = 3)
 ```
 
-### Vectors and Lists
+## Vectors and Lists
 
 - Whereas matrices have both rows and columns, vectors and lists operate in one dimension. 
 - So you can think of matrices as made of vectors 
@@ -239,7 +368,7 @@ y <- list('mike', 2, 'lucy')
 y
 ```
 
-### Numeric / Strings and Characters / Boolean
+## Numeric / Strings and Characters / Boolean
 
 The smallest unit of data will be individual elements - this can take the form of numbers, words, characters, or booleans. Lists and vectors are made of one or more elements, and dataframes and matrices are made of one or more lists or vectors or elements. 
 
@@ -275,7 +404,7 @@ F
 
 ***
 
-## Using your console
+# Using your console
 
 Now that we've covered some of the essential basics of R syntax, let us move to the basics of actually using your console to manipulate data. 
 
@@ -318,14 +447,6 @@ x == 600 & y == 700 # & == 'and this is also true'
 x == 1000 | y == 7 # | == 'this, or this, or both'
 ```
 
-### Syntax: Checking / Changing Data Types
-
-```{r}
-is.numeric(whole.number)
-is.factor(whole.number)
-as.character(whole.number)
-str(whole.number)
-```
 
 ### Arithmetic Operators
 
