@@ -1,0 +1,78 @@
+---
+title: "Lab 2 Exercises"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'MwadU.html'))})
+author: "Gloria Cheung"
+date: "5/18/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: TRUE
+    css: "style.css"
+---
+
+# Q
+
+Consider the following vectors: 
+
+```{r}
+p <- c(1,2,3,4)
+q <- c(7,3,5,2)
+r  <- c(1,2)
+```
+
+What is the value of `p + q`? 
+
+What is the value of `p + r`?
+
+
+# Q
+
+If:
+```{r}
+Age <- c(22, 25, 18, 20)
+Name <- c("James", "Mathew", "Olivia", "Stella")
+Gender <- c("M", "M", "F", "F")
+```
+
+then what is the R-code for getting the following output;
+
+```{r, echo=FALSE}
+data.frame(Age, Name, Gender)
+```
+
+# Q
+
+If: 
+
+```{r}
+x <- c("Peony", "Thyme", "Honeysuckle", "Olive")
+z <- 0:9
+```
+
+then what is the output from the following R-statements:
+
+```{r, results='hide'}
+as.character(z)
+as.factor(x)
+```
+
+# Q
+
+```{r}
+y <- c(21, 4, 7, 2, 10, 5, 12, 6)
+```
+
+What is the value of:
+
+```{r, results = 'hide'}
+y < 7
+```
+
+
+
