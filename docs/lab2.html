@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Gloria Cheung" />
 
 
 <title>Lab 2: Intro to R</title>
@@ -407,17 +406,12 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Week 1</li>
-    <li class="dropdown-header">Lab 1</li>
     <li>
       <a href="lab2.html">Lab 2</a>
     </li>
     <li class="divider"></li>
-    <li class="dropdown-header">Lab 3</li>
-    <li class="dropdown-header">Lab4</li>
-    <li class="divider"></li>
     <li>
-      <a href="Lab5_Visualization.html">Lab 5</a>
+      <a href="lab4.html">Lab 4</a>
     </li>
   </ul>
 </li>
@@ -435,6 +429,8 @@ div.tocify {
 
 <h1 class="title toc-ignore">Lab 2: Intro to R</h1>
 <h4 class="author">Gloria Cheung</h4>
+<a class="author_email" href="mailto:#"><a href="mailto:gloria.cheung@duke.edu" class="email">gloria.cheung@duke.edu</a></a>
+</address>
 <h4 class="date">5/18/2021</h4>
 
 </div>
@@ -758,8 +754,8 @@ factor.example2</code></pre>
 <p>Let’s combine some of these basic data types into a type of data some of you might be familiar with - a hypothetical list of student grades.</p>
 <pre class="r"><code>data &lt;- read.csv(&quot;class-grades.csv&quot;)
 datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
-<div id="htmlwidget-2e2f4fcabeb4d280766a" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2e2f4fcabeb4d280766a">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Freshman&quot;,&quot;Junior&quot;,&quot;Senior&quot;,&quot;Sophomore&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"75\" data-max=\"90\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["Freshman","Sophomore","Sophomore","Senior","Junior","Freshman"],[78,83,86,75,89,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Student.ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Class<\/th>\n      <th>Grades<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,4]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4f6717326f126e57ca47" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4f6717326f126e57ca47">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Freshman&quot;,&quot;Junior&quot;,&quot;Senior&quot;,&quot;Sophomore&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"75\" data-max=\"90\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["Freshman","Sophomore","Sophomore","Senior","Junior","Freshman"],[78,83,86,75,89,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Student.ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Class<\/th>\n      <th>Grades<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,4]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>class(data$Student.ID)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
 <pre class="r"><code>class(data$First.Name)</code></pre>
@@ -879,8 +875,8 @@ my.data$age # the &#39;$&#39; lets R know you want to access something inside of
 </ul>
 <pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
 datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
-<div id="htmlwidget-0b45e000a6f257ac935c" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0b45e000a6f257ac935c">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8c68459f2b0c09195984" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8c68459f2b0c09195984">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>There are five types of information in the data above, as captured by each column
 <ol style="list-style-type: decimal">
@@ -1072,43 +1068,43 @@ x</code></pre>
 <p>Take two hypothetical objects: <code>x.vector</code> which is a vector of 100 numbers (don’t worry about the rnorm function used to create it, for now); and <code>y.data</code>, a 30x3 dataframe, with some randomly dispersed NAs.</p>
 <pre class="r"><code>x.vector &lt;- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
 x.vector</code></pre>
-<pre><code>##   [1] 3.921215 5.234618 5.866436 4.853093 7.991576 3.376831 4.177068
-##   [8] 4.289367 5.381560 4.375732 4.794768 4.984004 5.017384 6.081364
-##  [15] 3.166189 6.317459 4.702025 5.359067 4.988619 3.987270 5.424943
-##  [22] 5.201095 4.233632 4.023933 4.434303 5.554692 5.068334 4.492096
-##  [29] 4.829298 5.922218 3.962460 5.571449 3.285026 3.891266 4.715895
-##  [36] 5.897763 4.565480 4.498183 5.407778 5.801916 3.567751 4.966255
-##  [43] 5.840079 4.224113 4.146880 4.242308 4.464154 4.826047 5.281404
-##  [50] 5.567577 4.087798 5.482508 4.535511 5.834093 5.539456 4.140158
-##  [57] 6.341235 5.640018 4.662001 4.181823 5.642635 6.928699 4.620541
-##  [64] 4.673983 6.324837 3.367925 4.136523 2.259026 6.971212 5.328762
-##  [71] 4.361738 3.993538 3.368201 4.720311 4.471411 2.906457 5.900712
-##  [78] 4.992749 5.304422 4.021360 4.700309 4.272421 4.773295 5.132834
-##  [85] 3.998494 3.687906 5.085960 6.313382 4.713730 4.067753 4.391416
-##  [92] 5.828060 3.172705 4.382384 4.643073 4.130304 5.131830 5.254677
-##  [99] 4.326729 4.063989</code></pre>
+<pre><code>##   [1] 4.448268 4.576119 4.251612 4.300543 6.372908 5.436060 5.230264
+##   [8] 4.130238 5.212944 5.437121 4.302693 6.294515 5.269672 5.592673
+##  [15] 5.302429 6.073053 5.326379 4.116757 5.419578 5.324324 4.439598
+##  [22] 6.658311 4.498908 4.891156 5.533669 1.624129 4.881174 6.417346
+##  [29] 4.393985 5.668413 4.119427 5.530028 5.108089 5.957347 5.402790
+##  [36] 6.285542 3.318002 4.990818 3.893306 4.153425 3.500167 5.699092
+##  [43] 4.071127 4.155764 4.571867 3.371284 5.343116 4.336746 3.037633
+##  [50] 4.390566 4.631925 3.388551 5.112383 7.063670 4.483481 5.575696
+##  [57] 3.931104 6.395342 4.820193 6.280377 4.892273 4.167228 5.327776
+##  [64] 5.492324 5.119532 5.475365 3.773094 5.496730 4.489666 5.144092
+##  [71] 3.632295 4.464982 4.158254 4.532882 4.377974 3.627478 5.002488
+##  [78] 4.697915 4.328889 5.298136 6.438513 5.826730 6.889794 5.944310
+##  [85] 5.143413 4.209008 4.851445 6.169215 4.085316 7.116556 4.595649
+##  [92] 5.026618 5.107162 4.314072 5.348096 5.278949 5.732412 5.862574
+##  [99] 4.329655 5.039830</code></pre>
 <pre class="r"><code>df &lt;- data.frame(A = rep(1:3, times = 10), B = rep(4:6, times = 10), C = rep(7:9, times = 10))
 y.data &lt;- as.data.frame(lapply(df, function(cc) cc[ sample(c(TRUE, NA), prob = c(0.80, 0.20), size = length(cc), replace = TRUE) ]))
 datatable(y.data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T) )</code></pre>
-<div id="htmlwidget-9bf01c509819b9e556ce" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9bf01c509819b9e556ce">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1\" data-max=\"3\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"4\" data-max=\"6\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"7\" data-max=\"9\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,null,2,null],[4,5,6,4,5,null,4,5,6,null,5,6,4,5,6,4,5,6,4,5,null,4,5,6,4,5,6,null,5,6],[7,8,9,7,8,9,7,8,9,7,null,9,null,8,9,7,8,9,null,8,9,7,null,9,7,8,9,7,8,9]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>A<\/th>\n      <th>B<\/th>\n      <th>C<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0d0d3543d6852401141a" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0d0d3543d6852401141a">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1\" data-max=\"3\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"4\" data-max=\"6\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"7\" data-max=\"9\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[null,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,null,1,2,3,null,2,3,1,2,3],[4,5,6,4,5,6,null,5,null,4,5,6,4,null,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6],[7,8,9,null,null,9,7,8,9,7,8,9,null,8,9,7,8,null,7,null,null,null,8,9,7,8,null,7,8,9]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>A<\/th>\n      <th>B<\/th>\n      <th>C<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>We can look directly at the objects by calling them:</p>
 <pre class="r"><code>x.vector</code></pre>
-<pre><code>##   [1] 3.921215 5.234618 5.866436 4.853093 7.991576 3.376831 4.177068
-##   [8] 4.289367 5.381560 4.375732 4.794768 4.984004 5.017384 6.081364
-##  [15] 3.166189 6.317459 4.702025 5.359067 4.988619 3.987270 5.424943
-##  [22] 5.201095 4.233632 4.023933 4.434303 5.554692 5.068334 4.492096
-##  [29] 4.829298 5.922218 3.962460 5.571449 3.285026 3.891266 4.715895
-##  [36] 5.897763 4.565480 4.498183 5.407778 5.801916 3.567751 4.966255
-##  [43] 5.840079 4.224113 4.146880 4.242308 4.464154 4.826047 5.281404
-##  [50] 5.567577 4.087798 5.482508 4.535511 5.834093 5.539456 4.140158
-##  [57] 6.341235 5.640018 4.662001 4.181823 5.642635 6.928699 4.620541
-##  [64] 4.673983 6.324837 3.367925 4.136523 2.259026 6.971212 5.328762
-##  [71] 4.361738 3.993538 3.368201 4.720311 4.471411 2.906457 5.900712
-##  [78] 4.992749 5.304422 4.021360 4.700309 4.272421 4.773295 5.132834
-##  [85] 3.998494 3.687906 5.085960 6.313382 4.713730 4.067753 4.391416
-##  [92] 5.828060 3.172705 4.382384 4.643073 4.130304 5.131830 5.254677
-##  [99] 4.326729 4.063989</code></pre>
+<pre><code>##   [1] 4.448268 4.576119 4.251612 4.300543 6.372908 5.436060 5.230264
+##   [8] 4.130238 5.212944 5.437121 4.302693 6.294515 5.269672 5.592673
+##  [15] 5.302429 6.073053 5.326379 4.116757 5.419578 5.324324 4.439598
+##  [22] 6.658311 4.498908 4.891156 5.533669 1.624129 4.881174 6.417346
+##  [29] 4.393985 5.668413 4.119427 5.530028 5.108089 5.957347 5.402790
+##  [36] 6.285542 3.318002 4.990818 3.893306 4.153425 3.500167 5.699092
+##  [43] 4.071127 4.155764 4.571867 3.371284 5.343116 4.336746 3.037633
+##  [50] 4.390566 4.631925 3.388551 5.112383 7.063670 4.483481 5.575696
+##  [57] 3.931104 6.395342 4.820193 6.280377 4.892273 4.167228 5.327776
+##  [64] 5.492324 5.119532 5.475365 3.773094 5.496730 4.489666 5.144092
+##  [71] 3.632295 4.464982 4.158254 4.532882 4.377974 3.627478 5.002488
+##  [78] 4.697915 4.328889 5.298136 6.438513 5.826730 6.889794 5.944310
+##  [85] 5.143413 4.209008 4.851445 6.169215 4.085316 7.116556 4.595649
+##  [92] 5.026618 5.107162 4.314072 5.348096 5.278949 5.732412 5.862574
+##  [99] 4.329655 5.039830</code></pre>
 <pre class="r"><code>View(y.data)</code></pre>
 <ul>
 <li>In some cases, the data you might be working with might have thousands of observations, so just calling the object (<code>x.vector</code> or <code>View(y.data)</code>) might not always be useful because you’ll just a really long list of numbers and objects.
@@ -1126,55 +1122,55 @@ datatable(y.data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageL
 <pre class="r"><code>length(x.vector)</code></pre>
 <pre><code>## [1] 100</code></pre>
 <pre class="r"><code>x.vector</code></pre>
-<pre><code>##   [1] 3.921215 5.234618 5.866436 4.853093 7.991576 3.376831 4.177068
-##   [8] 4.289367 5.381560 4.375732 4.794768 4.984004 5.017384 6.081364
-##  [15] 3.166189 6.317459 4.702025 5.359067 4.988619 3.987270 5.424943
-##  [22] 5.201095 4.233632 4.023933 4.434303 5.554692 5.068334 4.492096
-##  [29] 4.829298 5.922218 3.962460 5.571449 3.285026 3.891266 4.715895
-##  [36] 5.897763 4.565480 4.498183 5.407778 5.801916 3.567751 4.966255
-##  [43] 5.840079 4.224113 4.146880 4.242308 4.464154 4.826047 5.281404
-##  [50] 5.567577 4.087798 5.482508 4.535511 5.834093 5.539456 4.140158
-##  [57] 6.341235 5.640018 4.662001 4.181823 5.642635 6.928699 4.620541
-##  [64] 4.673983 6.324837 3.367925 4.136523 2.259026 6.971212 5.328762
-##  [71] 4.361738 3.993538 3.368201 4.720311 4.471411 2.906457 5.900712
-##  [78] 4.992749 5.304422 4.021360 4.700309 4.272421 4.773295 5.132834
-##  [85] 3.998494 3.687906 5.085960 6.313382 4.713730 4.067753 4.391416
-##  [92] 5.828060 3.172705 4.382384 4.643073 4.130304 5.131830 5.254677
-##  [99] 4.326729 4.063989</code></pre>
+<pre><code>##   [1] 4.448268 4.576119 4.251612 4.300543 6.372908 5.436060 5.230264
+##   [8] 4.130238 5.212944 5.437121 4.302693 6.294515 5.269672 5.592673
+##  [15] 5.302429 6.073053 5.326379 4.116757 5.419578 5.324324 4.439598
+##  [22] 6.658311 4.498908 4.891156 5.533669 1.624129 4.881174 6.417346
+##  [29] 4.393985 5.668413 4.119427 5.530028 5.108089 5.957347 5.402790
+##  [36] 6.285542 3.318002 4.990818 3.893306 4.153425 3.500167 5.699092
+##  [43] 4.071127 4.155764 4.571867 3.371284 5.343116 4.336746 3.037633
+##  [50] 4.390566 4.631925 3.388551 5.112383 7.063670 4.483481 5.575696
+##  [57] 3.931104 6.395342 4.820193 6.280377 4.892273 4.167228 5.327776
+##  [64] 5.492324 5.119532 5.475365 3.773094 5.496730 4.489666 5.144092
+##  [71] 3.632295 4.464982 4.158254 4.532882 4.377974 3.627478 5.002488
+##  [78] 4.697915 4.328889 5.298136 6.438513 5.826730 6.889794 5.944310
+##  [85] 5.143413 4.209008 4.851445 6.169215 4.085316 7.116556 4.595649
+##  [92] 5.026618 5.107162 4.314072 5.348096 5.278949 5.732412 5.862574
+##  [99] 4.329655 5.039830</code></pre>
 <pre class="r"><code>head(y.data)</code></pre>
-<pre><code>##   A  B C
-## 1 1  4 7
-## 2 2  5 8
-## 3 3  6 9
-## 4 1  4 7
-## 5 2  5 8
-## 6 3 NA 9</code></pre>
+<pre><code>##    A B  C
+## 1 NA 4  7
+## 2  2 5  8
+## 3  3 6  9
+## 4  1 4 NA
+## 5  2 5 NA
+## 6  3 6  9</code></pre>
 <pre class="r"><code>colnames(y.data)</code></pre>
 <pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
 <p>We can also summarize (<code>summary()</code>) and tabulate (<code>table()</code>) the vector and dataframe variables respectively, to determine what the range of values are and whether there are NAs in the data. - The summary tells us what the min, max, and mean of each object of interest is, you can also find these values by calling them directly using specific functions: <code>min()</code>, <code>max()</code>, <code>mean()</code>. - Additionally you can find the standard deviation of x using <code>sd()</code> - Note that tabulating the vector is not informative here because all the values are different - However, it is pretty useful for the dataframe, because there are repeated numbers in the dataframe</p>
 <pre class="r"><code>summary(x.vector)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   2.259   4.170   4.708   4.796   5.388   7.992</code></pre>
+##   1.624   4.325   5.015   4.952   5.493   7.117</code></pre>
 <pre class="r"><code>head(table(x.vector))</code></pre>
 <pre><code>## x.vector
-## 2.25902646907247 2.90645670446073 3.16618891230357 3.17270468745804 
+## 1.62412886397851 3.03763310717454 3.31800179228178 3.37128389601925 
 ##                1                1                1                1 
-## 3.28502557381656 3.36792465722348 
+## 3.38855116982609 3.50016747856941 
 ##                1                1</code></pre>
 <pre class="r"><code>summary(y.data$A)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##       1       1       2       2       3       3       2</code></pre>
+##   1.000   1.000   2.000   2.037   3.000   3.000       3</code></pre>
 <pre class="r"><code>summary(y.data$B)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##       4       4       5       5       6       6       4</code></pre>
+##       4       4       5       5       6       6       3</code></pre>
 <pre class="r"><code>table(y.data$B)</code></pre>
 <pre><code>## 
-##  4  5  6 
-##  8 10  8</code></pre>
+## 4 5 6 
+## 9 9 9</code></pre>
 <pre class="r"><code>table(y.data$C)</code></pre>
 <pre><code>## 
-##  7  8  9 
-##  8  8 10</code></pre>
+## 7 8 9 
+## 7 8 7</code></pre>
 <p>So far we have been working with hypothetical values and objects, but next week we will be talking more about data, how to clean and use data, and what we can do with it!</p>
 <hr />
 </div>

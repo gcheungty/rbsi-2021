@@ -5,7 +5,9 @@ knit: (function(input_file, encoding) {
   rmarkdown::render(input_file,
  encoding=encoding,
  output_file=file.path(dirname(input_file), out_dir, 'lab2.html'))})
-author: "Gloria Cheung"
+author: 
+  - name: "Gloria Cheung"
+    email: gloria.cheung@duke.edu
 date: "5/18/2021"
 output: 
   html_document:
