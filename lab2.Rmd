@@ -7,7 +7,6 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, 'lab2.html'))})
 author: "Gloria Cheung"
 date: "5/18/2021"
-link: https://gcheungty.github.io/rbsi-2021/lab2.html 
 output: 
   html_document:
     toc: TRUE

@@ -12,11 +12,14 @@ navbar:
       menu: 
       - text: Week 1
       - text: Lab 1
-        href: lab1.html 
       - text: Lab 2
         href: lab2.html
       - text: '---------'
       - text: Lab 3
+      - text: Lab4
+      - text: '---------'
+      - text: Lab 5
+        href: Lab5_Visualization.html
 output: 
   html_document:
     theme: cosmo
