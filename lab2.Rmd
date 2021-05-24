@@ -1,5 +1,5 @@
 ---
-title: "Lab 2"
+title: "Lab 2: Intro to R"
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
@@ -7,6 +7,7 @@ knit: (function(input_file, encoding) {
  output_file=file.path(dirname(input_file), out_dir, 'lab2.html'))})
 author: "Gloria Cheung"
 date: "5/18/2021"
+link: https://gcheungty.github.io/rbsi-2021/lab2.html 
 output: 
   html_document:
     toc: TRUE
@@ -634,20 +635,73 @@ rep(x, 2)
 
 ***
 
-# Basic Statistics Functions
+# Basic Statistics and Analysis Functions
 
+Finally, let's consider what first steps you can take for analyzing a dataset or a series of values.
+
+Take two hypothetical objects: `x.vector` which is a vector of 100 numbers (don't worry about the rnorm function used to create it, for now); and `y.data`,  a 30x3 dataframe, with some randomly dispersed NAs. 
 ```{r}
-x <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
-length(x)
-x
-which(x > 6)  # output are the locations, NOT VALUES, for which this is true
-length(which(x > 6)) # how many fit this criteria
-max(x)
-mean(x)
-sd(x)
-summary(x)
+x.vector <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
+x.vector
+df <- data.frame(A = rep(1:3, times = 10), B = rep(4:6, times = 10), C = rep(7:9, times = 10))
+y.data <- as.data.frame(lapply(df, function(cc) cc[ sample(c(TRUE, NA), prob = c(0.80, 0.20), size = length(cc), replace = TRUE) ]))
+datatable(y.data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
 ```
 
+We can look directly at the objects by calling them: 
+```{r}
+x.vector
+View(y.data)
+```
 
+- In some cases, the data you might be working with might have thousands of observations, so just calling the object (`x.vector` or `View(y.data)`) might not always be useful because you'll just a really long list of numbers and objects. 
+  - You can also view dataframes in the console by calling it directly, but `View()` opens up the dataframe in a new tab, and allows you to scroll through it
+- So you might want to check the length of `x.vector` using `length()`, as well as look at the first couple of values of `y.data` using `head()`, before deciding how to proceed. 
+- You can also check the environment tab, which gives a general description of the objects. 
+  - ![Environment](environment-example.png)
+  - Here we see that x.vector is a vector, with 100 numerical objects.
+  - And y.data is a dataframe, with 10 observations, and 3 variables (or columns), you can see the names of the columns in `head()`, in `View()`, and also by calling them directly using `colnames()`
+
+```{r}
+length(x.vector)
+x.vector
+head(y.data)
+colnames(y.data)
+```
+
+We can also summarize (`summary()`) and tabulate (`table()`) the vector and dataframe variables respectively, to determine what the range of values are and whether there are NAs in the data. 
+- The summary tells us what the min, max, and mean of each object of interest is, you can also find these values by calling them directly using specific functions: `min()`, `max()`, `mean()`. 
+  - Additionally you can find the standard deviation of x using `sd()`
+- Note that tabulating the vector is not informative here because all the values are different
+- However, it is pretty useful for the dataframe, because there are repeated numbers in the dataframe
+
+```{r}
+summary(x.vector)
+head(table(x.vector))
+summary(y.data$A)
+summary(y.data$B)
+table(y.data$B)
+table(y.data$C)
+```
+
+So far we have been working with hypothetical values and objects, but next week we will be talking more about data, how to clean and use data, and what we can do with it! 
 
 *** 
+# Troubleshooting R and RStudio
+
+- The goal behind these labs is to introduce you to some of the syntax and concepts in using R as a way to conduct statistical analysis, given time constraints, it is often hard to cover everything or cover each concept completely
+
+For a much more detailed intro to R, check out: 
+https://cran.r-project.org/doc/manuals/R-intro.pdf 
+
+- However, there are some common resources that one might find useful for troubleshooting R 
+  1. The basic `?help` function is incredibly useful for checking the syntax of some common r functions - what goes into the function? How can we use the function? Often at the end of the help section there are examples as well of how the function is used 
+  2. Stackoverflow is a good resource for others who might be encountering the same problems as you and who might have found a prior solution [Stackoverflow](https://stackoverflow.com)
+  3. This [rcookbook](https://rc2e.com) could also be helpful for more in-depth coverage of some of the key concepts we've already touched on here
+  
+And the best way to be more familiar with R is to play around with it! You can try using some of the included datafiles in RStudio, and try working with the data. `mtcars` is a great beginner dataset to start with. 
+
+```{r}
+data <- mtcars
+```
+

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Gloria Cheung" />
+
+
+<title>Lab 2: Intro to R; Just Code</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.16/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">RBSI-Methods 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
+    <li>
+      <a href="lab1.html">Lab 1</a>
+    </li>
+    <li>
+      <a href="lab2.html">Lab 2</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lab 3</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 2: Intro to R; Just Code</h1>
+<h4 class="author">Gloria Cheung</h4>
+<h4 class="date">5/18/2021</h4>
+
+</div>
+
+
+<div id="r-and-rstudio" class="section level1">
+<h1>R and RStudio</h1>
+</div>
+<div id="downloading-and-installing" class="section level1">
+<h1>Downloading and Installing</h1>
+<div id="r-pc-mac-linux" class="section level2">
+<h2>R (PC, Mac, &amp; Linux)</h2>
+<div id="downloading-r" class="section level3">
+<h3>Downloading R</h3>
+<ol style="list-style-type: decimal">
+<li>Go to <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></li>
+<li>On the front page, under ”Download and Install R”, select the appropriate download for your operating system.</li>
+<li>For Windows users, click ”Download R for Windows,” and then select ”base”, and then ”Download R 3.6.0 for Windows.”</li>
+<li>For Mac users, click ”Download R for Mac OS X,” and then select ”R-3.6.0.pkg”</li>
+<li>Once your file is downloaded, run and install the R .exe (windows) or .dmg (for Mac OS) file (this will look a little different depending on your computer)</li>
+</ol>
+</div>
+<div id="version-control-for-r" class="section level3">
+<h3>Version Control for R</h3>
+</div>
+</div>
+<div id="r-studio" class="section level2">
+<h2>R Studio</h2>
+<ol style="list-style-type: decimal">
+<li>Go to <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a></li>
+<li>On the front page, click ”Download RStudio”</li>
+<li>We want the RStudio Desktop Open Source License, so select ’Download’ for that option</li>
+<li>Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.</li>
+<li>Run the file to install RStudio and follow the instructions.</li>
+</ol>
+<div id="version-control-for-rstudio" class="section level3">
+<h3>Version Control for RStudio</h3>
+<pre class="r"><code>RStudio.Version() # checks version of RStudio on computer</code></pre>
+<pre><code>## $citation
+## 
+## To cite RStudio in publications use:
+## 
+##   RStudio Team (2019). RStudio: Integrated Development for R.
+##   RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Manual{,
+##     title = {RStudio: Integrated Development Environment for R},
+##     author = {{RStudio Team}},
+##     organization = {RStudio, Inc.},
+##     address = {Boston, MA},
+##     year = {2019},
+##     url = {http://www.rstudio.com/},
+##   }
+## 
+## 
+## $mode
+## [1] &quot;desktop&quot;
+## 
+## $version
+## [1] &#39;1.2.5033&#39;
+## 
+## $release_name
+## [1] &quot;Orange Blossom&quot;</code></pre>
+<p>For a much more detailed intro to R, check out: <a href="https://cran.r-project.org/doc/manuals/R-intro.pdf" class="uri">https://cran.r-project.org/doc/manuals/R-intro.pdf</a></p>
+<hr />
+<center>
+</div>
+</div>
+</div>
+<div id="welcome-to-rstudio" class="section level1">
+<h1><strong>Welcome to RStudio </strong></h1>
+</center>
+<div id="programming-basics-and-key-points" class="section level2">
+<h2>Programming basics and key points</h2>
+<div id="calculations-data-elements-and-variable-assignment" class="section level3">
+<h3>Calculations, Data Elements, and Variable Assignment</h3>
+<pre class="r"><code>1 + 2 </code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>16 / 4</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>some_numbers &lt;- 5</code></pre>
+<pre class="r"><code>2.2 * some_numbers</code></pre>
+<pre><code>## [1] 11</code></pre>
+<pre class="r"><code>some_numbers &lt;- 10 + 20
+some_numbers</code></pre>
+<pre><code>## [1] 30</code></pre>
+<pre class="r"><code>some_numbers &lt;- c(2,3,6,18,108)
+some_numbers * 5</code></pre>
+<pre><code>## [1]  10  15  30  90 540</code></pre>
+<blockquote>
+<p>Syntax: Case-sensitivity</p>
+</blockquote>
+<pre class="r"><code>some_numbers </code></pre>
+<pre><code>## [1]   2   3   6  18 108</code></pre>
+<pre class="r"><code>Some_numbers</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;Some_numbers&#39; not found</code></pre>
+<blockquote>
+<p>Syntax: Writing and commenting in-line</p>
+</blockquote>
+<pre class="r"><code>x &lt;- 5 # Maximum score for first homework
+x2 &lt;- 10 # Total score for first and second homework </code></pre>
+</div>
+<div id="user-interface-ui-explanation" class="section level3">
+<h3>User Interface (UI) explanation</h3>
+<div class="figure">
+<img src="r-console.png" alt="RStudio layout" />
+<p class="caption">RStudio layout</p>
+</div>
+<p><strong>Panel 1 - Script</strong></p>
+<p><strong>Panel 2 - Console</strong></p>
+<p><strong>Panel 3 - Local Environment</strong></p>
+<pre class="r"><code>x &lt;- 3 # variables can be stored in local environment
+y &lt;- &quot;Hello World&quot;
+data &lt;- read.csv(&quot;germancities.csv&quot;) # so can datasets
+View(data)</code></pre>
+<blockquote>
+<p><strong>Syntax: How to clear the environment</strong></p>
+</blockquote>
+<pre class="r"><code>rm(x) # things can be removed individually
+rm(list=ls()) # or all at once</code></pre>
+<p><strong>Panel 4 - Everything Else</strong> ***</p>
+</div>
+</div>
+</div>
+<div id="basics-of-programming" class="section level1">
+<h1>Basics of Programming</h1>
+<p><strong>Data Types/Elements/Primitives in R</strong></p>
+<div id="basic-data-types" class="section level2">
+<h2>Basic Data Types</h2>
+<p>The most basic unit of data types in R are numbers, characters, words, and booleans.</p>
+<ol style="list-style-type: decimal">
+<li><em>Numeric</em></li>
+</ol>
+<pre class="r"><code>whole.number &lt;- 6
+real.number &lt;- 3.141592</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Characters and Strings</strong></li>
+</ol>
+<pre class="r"><code>char.one &lt;- &quot;a&quot;
+char.two &lt;- a</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;a&#39; not found</code></pre>
+<pre class="r"><code>string.one &lt;- &quot;Hello&quot;
+string.two &lt;- &quot;ab12cd&quot;</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><em>Boolean / Logical</em></li>
+</ol>
+<pre class="r"><code>TRUE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>FALSE</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>T</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>F</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p><strong>4. Factor</strong></p>
+<pre class="r"><code>factor.example &lt;- as.factor(c(rep(&quot;Freshman&quot;,3), rep(&quot;Sophomore&quot;,4), rep(&quot;Junior&quot;,6), rep(&quot;Senior&quot;, 2)))
+levels(factor.example)</code></pre>
+<pre><code>## [1] &quot;Freshman&quot;  &quot;Junior&quot;    &quot;Senior&quot;    &quot;Sophomore&quot;</code></pre>
+<pre class="r"><code>factor.example[1]</code></pre>
+<pre><code>## [1] Freshman
+## Levels: Freshman Junior Senior Sophomore</code></pre>
+<pre class="r"><code>factor.example2 &lt;- as.factor(c(rep(1,3), rep(2,4), rep(&quot;Junior&quot;,6), rep(&quot;Senior&quot;, 2)))
+factor.example2</code></pre>
+<pre><code>##  [1] 1      1      1      2      2      2      2      Junior Junior Junior
+## [11] Junior Junior Junior Senior Senior
+## Levels: 1 2 Junior Senior</code></pre>
+<pre class="r"><code>levels(factor.example2)</code></pre>
+<pre><code>## [1] &quot;1&quot;      &quot;2&quot;      &quot;Junior&quot; &quot;Senior&quot;</code></pre>
+<pre class="r"><code>factor.example2[1]</code></pre>
+<pre><code>## [1] 1
+## Levels: 1 2 Junior Senior</code></pre>
+<blockquote>
+<p><strong>Syntax: Checking Data Types</strong></p>
+</blockquote>
+<pre class="r"><code>5 + 5</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>&quot;five&quot; + &quot;five&quot;</code></pre>
+<pre><code>## Error in &quot;five&quot; + &quot;five&quot;: non-numeric argument to binary operator</code></pre>
+<pre class="r"><code>5 + &quot;five&quot;</code></pre>
+<pre><code>## Error in 5 + &quot;five&quot;: non-numeric argument to binary operator</code></pre>
+<pre class="r"><code>is.numeric(whole.number)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.numeric(string.one)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>str(whole.number)</code></pre>
+<pre><code>##  num 6</code></pre>
+<pre class="r"><code>class(string.one)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p><strong>Changing data types: </strong></p>
+<pre class="r"><code>factor.example + whole.number</code></pre>
+<pre><code>## Warning in Ops.factor(factor.example, whole.number): &#39;+&#39; not meaningful for
+## factors</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</code></pre>
+<pre class="r"><code>as.numeric(factor.example) + 6</code></pre>
+<pre><code>##  [1]  7  7  7 10 10 10 10  8  8  8  8  8  8  9  9</code></pre>
+<pre class="r"><code>as.character(whole.number) </code></pre>
+<pre><code>## [1] &quot;6&quot;</code></pre>
+<div id="example-1" class="section level3">
+<h3>Example 1</h3>
+<pre class="r"><code>data &lt;- read.csv(&quot;class-grades.csv&quot;)
+datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
+<div id="htmlwidget-21de8c5290c3fa062cca" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-21de8c5290c3fa062cca">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Freshman&quot;,&quot;Junior&quot;,&quot;Senior&quot;,&quot;Sophomore&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"75\" data-max=\"90\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["Freshman","Sophomore","Sophomore","Senior","Junior","Freshman"],[78,83,86,75,89,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Student.ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Class<\/th>\n      <th>Grades<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,4]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>class(data$Student.ID)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>class(data$First.Name)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(data$Class)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<pre class="r"><code>class(data$Grades)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<hr />
+</div>
+</div>
+<div id="vectors-and-lists" class="section level2">
+<h2>Vectors and Lists</h2>
+<pre class="r"><code>weights &lt;- c(10, 15, 20, 60, 65)
+weights</code></pre>
+<pre><code>## [1] 10 15 20 60 65</code></pre>
+<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;cat&quot;, &quot;dog&quot;)
+animals</code></pre>
+<pre><code>## [1] &quot;mouse&quot; &quot;cat&quot;   &quot;dog&quot;</code></pre>
+<pre class="r"><code>c(weights, animals)</code></pre>
+<pre><code>## [1] &quot;10&quot;    &quot;15&quot;    &quot;20&quot;    &quot;60&quot;    &quot;65&quot;    &quot;mouse&quot; &quot;cat&quot;   &quot;dog&quot;</code></pre>
+<pre class="r"><code>x &lt;- c(&#39;mike&#39;, 2, &#39;lucy&#39;)
+x </code></pre>
+<pre><code>## [1] &quot;mike&quot; &quot;2&quot;    &quot;lucy&quot;</code></pre>
+<pre class="r"><code>class(x)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>y &lt;- list(&#39;mike&#39;, 2, &#39;lucy&#39;)
+y</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;mike&quot;
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] &quot;lucy&quot;</code></pre>
+<pre class="r"><code>class(y)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div id="using-vectors-and-lists" class="section level3">
+<h3>Using Vectors and Lists</h3>
+<pre class="r"><code>length(weights)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>class(weights)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>weights + 30</code></pre>
+<pre><code>## [1] 40 45 50 90 95</code></pre>
+<pre class="r"><code>weights2 &lt;- c(weights, 30)
+weights2</code></pre>
+<pre><code>## [1] 10 15 20 60 65 30</code></pre>
+<pre class="r"><code>weights[1]</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>weights[3] &lt;- 5
+weights</code></pre>
+<pre><code>## [1] 10 15  5 60 65</code></pre>
+<blockquote>
+<p>Syntax: Indices in R For those who have some programming experience, R indices start at 1. Other programming languages in the C family such as C++, Java, and Python, start from 0 instead.</p>
+</blockquote>
+</div>
+</div>
+<div id="matrices" class="section level2">
+<h2>Matrices</h2>
+<pre class="r"><code>1:12</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12</code></pre>
+<pre class="r"><code>matrix (1:12, nrow = 4, ncol = 3)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<pre class="r"><code>matrix(weights, byrow = TRUE, nrow = 3)</code></pre>
+<pre><code>## Warning in matrix(weights, byrow = TRUE, nrow = 3): data length [5] is not
+## a sub-multiple or multiple of the number of rows [3]</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   10   15
+## [2,]    5   60
+## [3,]   65   10</code></pre>
+<pre class="r"><code>matrix(weights2, byrow = TRUE, nrow = 3)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   10   15
+## [2,]   20   60
+## [3,]   65   30</code></pre>
+</div>
+<div id="dataframe" class="section level2">
+<h2>Dataframe</h2>
+<pre class="r"><code>my.data &lt;- data.frame(age = c(35, 24, 18, 72), name = c(&quot;Oliver&quot;, &quot;Meghan&quot;,
+                      &quot;Cole&quot;, &quot;Violet&quot;))
+
+View(my.data)
+my.data$age # the &#39;$&#39; lets R know you want to access something inside of my.data</code></pre>
+<pre><code>## [1] 35 24 18 72</code></pre>
+<div id="example-2" class="section level3">
+<h3>Example 2</h3>
+<pre class="r"><code>data &lt;- read.csv(&quot;excel-employee.csv&quot;)
+datatable(data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T))</code></pre>
+<div id="htmlwidget-bbee419bfef1a6232e6b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bbee419bfef1a6232e6b">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"101\" data-max=\"105\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Burke&quot;,&quot;Davis&quot;,&quot;Fontana&quot;,&quot;Leal&quot;,&quot;Patten&quot;,&quot;Sousa&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Brian&quot;,&quot;Karina&quot;,&quot;Luis&quot;,&quot;Michael&quot;,&quot;Olivier&quot;,&quot;Sara&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;Sales Manager&quot;,&quot;Sales Rep&quot;,&quot;VP (Sales)&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n  <td data-type=\"factor\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"width: 100%; display: none;\">\n      <select multiple=\"multiple\" style=\"width: 100%;\" data-options=\"[&quot;12/8/68&quot;,&quot;2/19/59&quot;,&quot;3/4/55&quot;,&quot;7/2/63&quot;,&quot;8/30/63&quot;,&quot;9/19/58&quot;]\"><\/select>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[101,102,103,104,105,105],["Davis","Fontana","Leal","Patten","Burke","Sousa"],["Sara","Olivier","Karina","Michael","Brian","Luis"],["VP (Sales)","Sales Rep","Sales Rep","Sales Rep","Sales Manager","Sales Rep"],["12/8/68","2/19/59","8/30/63","9/19/58","3/4/55","7/2/63"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>ID<\/th>\n      <th>Last.Name<\/th>\n      <th>First.Name<\/th>\n      <th>Title<\/th>\n      <th>Birth.Date<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="using-your-console" class="section level1">
+<h1>Using your console</h1>
+<div id="arithmetic-operators" class="section level2">
+<h2>Arithmetic Operators</h2>
+<pre class="r"><code>1 + 1</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>5 - 6</code></pre>
+<pre><code>## [1] -1</code></pre>
+<pre class="r"><code>4 * 5</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code>16 / 4</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>3^3</code></pre>
+<pre><code>## [1] 27</code></pre>
+<pre class="r"><code>5 %% 2</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>5 %/% 2</code></pre>
+<pre><code>## [1] 2</code></pre>
+</div>
+<div id="logical-operators" class="section level2">
+<h2>Logical Operators</h2>
+<pre class="r"><code>8 &lt; 10 </code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>8 &gt; 10 </code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>8 &lt;= 10 </code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>8 &lt;= 8</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>8 &lt; 8</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>8 == 8 </code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>8 != 8 </code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>8 != 10</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="help" class="section level2">
+<h2>Help</h2>
+<pre class="r"><code>?matrix
+?list</code></pre>
+</div>
+<div id="syntax-assignment-vs-equals" class="section level2">
+<h2>Syntax: Assignment vs Equals</h2>
+<pre class="r"><code>x = 2 # Please avoid at all costs
+x &lt;- 4 # Better assignment operator</code></pre>
+</div>
+<div id="syntax-equal-to-and-not-equal-to" class="section level2">
+<h2>Syntax: Equal-to and not-equal-to</h2>
+<pre class="r"><code>x == 4</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>x == 5</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>x !=5</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>email &lt;- &#39;john.smith@duke.edu&#39;
+email2 &lt;- &#39;james.smith@duke.edu&#39;
+email == email2</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="syntax-and-vs-or" class="section level2">
+<h2>Syntax: And vs or</h2>
+<pre class="r"><code>x == 600 &amp; y == 700 # &amp; == &#39;and this is also true&#39;</code></pre>
+<pre><code>## Warning: NAs introduced by coercion
+
+## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>x == 1000 | y == 7 # | == &#39;this, or this, or both&#39;</code></pre>
+<pre><code>## Warning: NAs introduced by coercion
+
+## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1]    NA FALSE    NA</code></pre>
+<div id="concatenation-seq-rep" class="section level3">
+<h3>Concatenation, Seq, Rep</h3>
+<pre class="r"><code>&#39;a&#39; + &#39;b&#39; # Doesn&#39;t work</code></pre>
+<pre><code>## Error in &quot;a&quot; + &quot;b&quot;: non-numeric argument to binary operator</code></pre>
+<pre class="r"><code>string.one &lt;- &quot;Hello&quot;
+string.two &lt;- &quot;World&quot;
+c(string.one, string.two)</code></pre>
+<pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+<pre class="r"><code>c(1,2,3,4,5)</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code>paste(string.one, string.two, sep = &quot; &quot;) # Default sep input </code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+<pre class="r"><code>paste0(string.one, string.two) # Eliminates spacing</code></pre>
+<pre><code>## [1] &quot;HelloWorld&quot;</code></pre>
+<pre class="r"><code>paste(string.one, whole.number) # Typecasts numeric</code></pre>
+<pre><code>## [1] &quot;Hello 6&quot;</code></pre>
+<pre class="r"><code>x &lt;- c(1, &quot;a&quot;, 2, &quot;b&quot;) # but they do have to be the same type!
+# notice that 1 and 2 are of type character, this is called &#39;type casting&#39;</code></pre>
+<p><strong>Seq and Rep</strong></p>
+<pre class="r"><code>x &lt;- c(1,2,3,4,5) # the c stands for concatenate
+x &lt;- seq(from = 1, to = 5, by = 1) # same as above
+x &lt;- 1:5 # same as above
+x &lt;- rep(1, times = 10)
+
+x &lt;- factor(LETTERS[1:4]); names(x) &lt;- letters[1:4]
+x</code></pre>
+<pre><code>## a b c d 
+## A B C D 
+## Levels: A B C D</code></pre>
+<pre class="r"><code>rep(x, 2)</code></pre>
+<pre><code>## a b c d a b c d 
+## A B C D A B C D 
+## Levels: A B C D</code></pre>
+<hr />
+</div>
+</div>
+</div>
+<div id="basic-statistics-and-analysis-functions" class="section level1">
+<h1>Basic Statistics and Analysis Functions</h1>
+<pre class="r"><code>x.vector &lt;- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
+x.vector</code></pre>
+<pre><code>##   [1] 5.373296 3.568425 4.848122 4.088324 3.497771 4.668005 4.382616
+##   [8] 5.959603 4.163696 5.890693 5.227021 5.189274 3.939950 4.506122
+##  [15] 3.230339 3.314367 7.106086 3.736653 4.590806 4.879918 4.250127
+##  [22] 3.257319 5.169476 5.294613 4.926244 5.805774 5.457244 4.423397
+##  [29] 4.436317 6.298730 5.978063 4.111997 3.882738 3.571328 4.079847
+##  [36] 5.610520 5.813181 6.133538 5.449314 6.532327 4.476059 5.215513
+##  [43] 5.379284 4.100136 4.061433 4.194436 4.698718 4.685836 4.323489
+##  [50] 4.560936 7.557513 6.104004 3.862887 6.054772 5.260703 5.396506
+##  [57] 5.434124 4.125524 4.680232 2.726229 3.341353 3.808252 5.225796
+##  [64] 4.279607 2.750339 4.841178 4.952017 4.852356 3.958622 4.359269
+##  [71] 4.593835 5.734895 4.225581 4.954563 5.960638 5.679074 7.543756
+##  [78] 5.757377 6.143428 6.029618 5.599548 5.116562 5.327418 4.177381
+##  [85] 7.190351 6.781652 4.085189 7.171438 4.850858 4.311067 4.420546
+##  [92] 4.633682 6.268435 4.933953 4.727409 4.480722 4.289275 4.871435
+##  [99] 5.926494 3.055119</code></pre>
+<pre class="r"><code>df &lt;- data.frame(A = rep(1:3, times = 10), B = rep(4:6, times = 10), C = rep(7:9, times = 10))
+y.data &lt;- as.data.frame(lapply(df, function(cc) cc[ sample(c(TRUE, NA), prob = c(0.80, 0.20), size = length(cc), replace = TRUE) ]))
+datatable(y.data, rownames = FALSE, filter=&quot;top&quot;, options = list(pageLength = 5, scrollX=T) )</code></pre>
+<div id="htmlwidget-2ea6b24443a210a4d718" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2ea6b24443a210a4d718">{"x":{"filter":"top","filterHTML":"<tr>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1\" data-max=\"3\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"4\" data-max=\"6\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"7\" data-max=\"9\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[[null,2,3,1,2,3,null,2,3,1,2,3,1,2,3,1,2,null,1,null,null,null,null,3,null,2,3,1,2,3],[4,null,6,null,null,6,4,5,null,4,5,6,null,5,6,4,5,6,4,5,6,4,null,null,4,5,6,null,5,6],[null,8,9,7,8,9,7,8,9,null,8,null,null,8,9,7,8,9,7,8,9,7,8,9,7,8,null,7,8,9]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>A<\/th>\n      <th>B<\/th>\n      <th>C<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>x.vector</code></pre>
+<pre><code>##   [1] 5.373296 3.568425 4.848122 4.088324 3.497771 4.668005 4.382616
+##   [8] 5.959603 4.163696 5.890693 5.227021 5.189274 3.939950 4.506122
+##  [15] 3.230339 3.314367 7.106086 3.736653 4.590806 4.879918 4.250127
+##  [22] 3.257319 5.169476 5.294613 4.926244 5.805774 5.457244 4.423397
+##  [29] 4.436317 6.298730 5.978063 4.111997 3.882738 3.571328 4.079847
+##  [36] 5.610520 5.813181 6.133538 5.449314 6.532327 4.476059 5.215513
+##  [43] 5.379284 4.100136 4.061433 4.194436 4.698718 4.685836 4.323489
+##  [50] 4.560936 7.557513 6.104004 3.862887 6.054772 5.260703 5.396506
+##  [57] 5.434124 4.125524 4.680232 2.726229 3.341353 3.808252 5.225796
+##  [64] 4.279607 2.750339 4.841178 4.952017 4.852356 3.958622 4.359269
+##  [71] 4.593835 5.734895 4.225581 4.954563 5.960638 5.679074 7.543756
+##  [78] 5.757377 6.143428 6.029618 5.599548 5.116562 5.327418 4.177381
+##  [85] 7.190351 6.781652 4.085189 7.171438 4.850858 4.311067 4.420546
+##  [92] 4.633682 6.268435 4.933953 4.727409 4.480722 4.289275 4.871435
+##  [99] 5.926494 3.055119</code></pre>
+<pre class="r"><code>View(y.data)</code></pre>
+<pre class="r"><code>length(x.vector)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>x.vector</code></pre>
+<pre><code>##   [1] 5.373296 3.568425 4.848122 4.088324 3.497771 4.668005 4.382616
+##   [8] 5.959603 4.163696 5.890693 5.227021 5.189274 3.939950 4.506122
+##  [15] 3.230339 3.314367 7.106086 3.736653 4.590806 4.879918 4.250127
+##  [22] 3.257319 5.169476 5.294613 4.926244 5.805774 5.457244 4.423397
+##  [29] 4.436317 6.298730 5.978063 4.111997 3.882738 3.571328 4.079847
+##  [36] 5.610520 5.813181 6.133538 5.449314 6.532327 4.476059 5.215513
+##  [43] 5.379284 4.100136 4.061433 4.194436 4.698718 4.685836 4.323489
+##  [50] 4.560936 7.557513 6.104004 3.862887 6.054772 5.260703 5.396506
+##  [57] 5.434124 4.125524 4.680232 2.726229 3.341353 3.808252 5.225796
+##  [64] 4.279607 2.750339 4.841178 4.952017 4.852356 3.958622 4.359269
+##  [71] 4.593835 5.734895 4.225581 4.954563 5.960638 5.679074 7.543756
+##  [78] 5.757377 6.143428 6.029618 5.599548 5.116562 5.327418 4.177381
+##  [85] 7.190351 6.781652 4.085189 7.171438 4.850858 4.311067 4.420546
+##  [92] 4.633682 6.268435 4.933953 4.727409 4.480722 4.289275 4.871435
+##  [99] 5.926494 3.055119</code></pre>
+<pre class="r"><code>head(y.data)</code></pre>
+<pre><code>##    A  B  C
+## 1 NA  4 NA
+## 2  2 NA  8
+## 3  3  6  9
+## 4  1 NA  7
+## 5  2 NA  8
+## 6  3  6  9</code></pre>
+<pre class="r"><code>colnames(y.data)</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<pre class="r"><code>summary(x.vector)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   2.726   4.190   4.845   4.908   5.602   7.558</code></pre>
+<pre class="r"><code>head(table(x.vector))</code></pre>
+<pre><code>## x.vector
+## 2.72622865302027 2.75033878286266  3.0551191503063 3.23033863958327 
+##                1                1                1                1 
+## 3.25731946435213 3.31436731776793 
+##                1                1</code></pre>
+<pre class="r"><code>summary(y.data$A)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   1.000   1.250   2.000   2.091   3.000   3.000       8</code></pre>
+<pre class="r"><code>summary(y.data$B)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   4.000   4.000   5.000   5.045   6.000   6.000       8</code></pre>
+<pre class="r"><code>table(y.data$B)</code></pre>
+<pre><code>## 
+## 4 5 6 
+## 7 7 8</code></pre>
+<pre class="r"><code>table(y.data$C)</code></pre>
+<pre><code>## 
+##  7  8  9 
+##  7 10  8</code></pre>
+<hr />
+</div>
+<div id="troubleshooting-r-and-rstudio" class="section level1">
+<h1>Troubleshooting R and RStudio</h1>
+<pre class="r"><code>data &lt;- mtcars</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

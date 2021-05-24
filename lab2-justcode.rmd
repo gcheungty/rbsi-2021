@@ -1,0 +1,429 @@
+---
+title: "Lab 2: Intro to R; Just Code "
+author: "Gloria Cheung"
+date: "5/18/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: FALSE
+    css: "style.css"
+---
+
+```{r, include = FALSE}
+rm(list=ls())
+library(DT)
+datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+```
+
+# R and RStudio
+
+# Downloading and Installing
+
+## R (PC, Mac, & Linux)
+
+### Downloading R
+
+1. Go to https://cran.r-project.org/
+2. On the front page, under ”Download and Install R”, select the appropriate download for your operating system.
+3. For Windows users, click ”Download R for Windows,” and then select ”base”, and then ”Download R 3.6.0 for Windows.”
+4. For Mac users, click ”Download R for Mac OS X,” and then select ”R-3.6.0.pkg”
+5. Once your file is downloaded, run and install the R .exe (windows) or .dmg (for Mac OS) file (this will look a little different depending on your computer)
+
+### Version Control for R
+
+## R Studio
+
+1. Go to https://www.rstudio.com/
+2. On the front page, click ”Download RStudio”
+3. We want the RStudio Desktop Open Source License, so select ’Download’ for that option
+4. Now, you’ll see a list of ”Installers for Supported Platforms”; click the one that’s right for your computer and download it.
+5. Run the file to install RStudio and follow the instructions.
+
+### Version Control for RStudio
+
+```{r}
+RStudio.Version() # checks version of RStudio on computer
+```
+
+For a much more detailed intro to R, check out: 
+https://cran.r-project.org/doc/manuals/R-intro.pdf 
+
+*** 
+
+<center>
+# **Welcome to RStudio **
+</center> 
+
+
+## Programming basics and key points 
+
+### Calculations, Data Elements, and Variable Assignment
+
+```{r}
+1 + 2 
+16 / 4
+```
+
+```{r}
+some_numbers <- 5
+```
+
+```{r}
+2.2 * some_numbers
+```
+
+```{r}
+some_numbers <- 10 + 20
+some_numbers
+```
+
+```{r}
+some_numbers <- c(2,3,6,18,108)
+some_numbers * 5
+```
+
+> Syntax: Case-sensitivity
+
+
+```{r, error = TRUE}
+some_numbers 
+Some_numbers
+```
+
+> Syntax: Writing and commenting in-line
+
+```{r}
+x <- 5 # Maximum score for first homework
+x2 <- 10 # Total score for first and second homework 
+```
+
+
+### User Interface (UI) explanation
+
+![RStudio layout](r-console.png)
+
+**Panel 1 - Script**
+
+**Panel 2 - Console**
+
+**Panel 3 - Local Environment**
+
+```{r}
+x <- 3 # variables can be stored in local environment
+y <- "Hello World"
+data <- read.csv("germancities.csv") # so can datasets
+View(data)
+```
+
+> **Syntax: How to clear the environment**
+
+```{r}
+rm(x) # things can be removed individually
+rm(list=ls()) # or all at once
+```
+
+
+**Panel 4 - Everything Else**
+***
+
+# Basics of Programming
+
+**Data Types/Elements/Primitives in R**
+
+## Basic Data Types
+
+The most basic unit of data types in R are numbers, characters, words, and booleans. 
+
+1. *Numeric* 
+
+```{r}
+whole.number <- 6
+real.number <- 3.141592
+```
+
+2. **Characters and Strings** 
+
+```{r, error = TRUE}
+char.one <- "a"
+char.two <- a
+string.one <- "Hello"
+string.two <- "ab12cd"
+```
+
+3. *Boolean / Logical* 
+
+```{r}
+TRUE
+FALSE
+T
+F
+```
+
+**4. Factor**
+
+```{r}
+factor.example <- as.factor(c(rep("Freshman",3), rep("Sophomore",4), rep("Junior",6), rep("Senior", 2)))
+levels(factor.example)
+factor.example[1]
+factor.example2 <- as.factor(c(rep(1,3), rep(2,4), rep("Junior",6), rep("Senior", 2)))
+factor.example2
+levels(factor.example2)
+factor.example2[1]
+```
+
+> **Syntax: Checking Data Types**
+
+```{r, error = TRUE}
+5 + 5
+"five" + "five"
+5 + "five"
+```
+
+
+```{r}
+is.numeric(whole.number)
+is.numeric(string.one)
+str(whole.number)
+class(string.one)
+```
+
+**Changing data types: **
+
+
+```{r}
+factor.example + whole.number
+as.numeric(factor.example) + 6
+```
+
+```{r}
+as.character(whole.number) 
+```
+
+
+### Example 1
+
+```{r}
+data <- read.csv("class-grades.csv")
+datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T))
+class(data$Student.ID)
+class(data$First.Name)
+class(data$Class)
+class(data$Grades)
+```
+
+
+***
+
+## Vectors and Lists
+
+```{r}
+weights <- c(10, 15, 20, 60, 65)
+weights
+animals <- c("mouse", "cat", "dog")
+animals
+c(weights, animals)
+```
+
+
+```{r}
+x <- c('mike', 2, 'lucy')
+x 
+class(x)
+y <- list('mike', 2, 'lucy')
+y
+class(y)
+```
+
+### Using Vectors and Lists
+
+```{r}
+length(weights)
+class(weights)
+weights + 30
+weights2 <- c(weights, 30)
+weights2
+```
+
+
+```{r}
+weights[1]
+weights[3] <- 5
+weights
+```
+
+> Syntax: Indices in R
+> For those who have some programming experience, R indices start at 1. Other programming languages in the C family such as C++, Java, and Python, start from 0 instead. 
+
+## Matrices
+
+
+```{r}
+1:12
+matrix (1:12, nrow = 4, ncol = 3)
+```
+
+```{r}
+matrix(weights, byrow = TRUE, nrow = 3)
+matrix(weights2, byrow = TRUE, nrow = 3)
+```
+
+
+## Dataframe
+
+```{r}
+my.data <- data.frame(age = c(35, 24, 18, 72), name = c("Oliver", "Meghan",
+                      "Cole", "Violet"))
+
+View(my.data)
+my.data$age # the '$' lets R know you want to access something inside of my.data
+```
+
+
+### Example 2
+
+```{r}
+data <- read.csv("excel-employee.csv")
+datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T))
+```
+
+# Using your console
+
+## Arithmetic Operators
+
+```{r}
+1 + 1
+5 - 6
+4 * 5
+16 / 4
+3^3
+5 %% 2
+5 %/% 2
+```
+
+
+## Logical Operators
+
+```{r}
+8 < 10 
+8 > 10 
+8 <= 10 
+8 <= 8
+8 < 8
+8 == 8 
+8 != 8 
+8 != 10
+```
+
+## Help
+```{r}
+?matrix
+?list
+```
+
+
+## Syntax: Assignment vs Equals
+
+```{r}
+x = 2 # Please avoid at all costs
+x <- 4 # Better assignment operator
+```
+
+## Syntax: Equal-to and not-equal-to
+
+```{r}
+x == 4
+x == 5
+x !=5
+```
+
+```{r}
+email <- 'john.smith@duke.edu'
+email2 <- 'james.smith@duke.edu'
+email == email2
+```
+
+## Syntax: And vs or 
+
+```{r}
+x == 600 & y == 700 # & == 'and this is also true'
+```
+
+```{r}
+x == 1000 | y == 7 # | == 'this, or this, or both'
+```
+
+### Concatenation, Seq, Rep
+
+```{r, error = TRUE}
+'a' + 'b' # Doesn't work
+string.one <- "Hello"
+string.two <- "World"
+c(string.one, string.two)
+c(1,2,3,4,5)
+paste(string.one, string.two, sep = " ") # Default sep input 
+paste0(string.one, string.two) # Eliminates spacing
+paste(string.one, whole.number) # Typecasts numeric
+```
+
+```{r}
+x <- c(1, "a", 2, "b") # but they do have to be the same type!
+# notice that 1 and 2 are of type character, this is called 'type casting'
+```
+
+**Seq and Rep**
+
+
+```{r}
+x <- c(1,2,3,4,5) # the c stands for concatenate
+x <- seq(from = 1, to = 5, by = 1) # same as above
+x <- 1:5 # same as above
+x <- rep(1, times = 10)
+
+x <- factor(LETTERS[1:4]); names(x) <- letters[1:4]
+x
+rep(x, 2)
+```
+
+***
+
+# Basic Statistics and Analysis Functions
+
+```{r}
+x.vector <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rnorm as a function for now
+x.vector
+df <- data.frame(A = rep(1:3, times = 10), B = rep(4:6, times = 10), C = rep(7:9, times = 10))
+y.data <- as.data.frame(lapply(df, function(cc) cc[ sample(c(TRUE, NA), prob = c(0.80, 0.20), size = length(cc), replace = TRUE) ]))
+datatable(y.data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+```
+
+```{r}
+x.vector
+View(y.data)
+```
+
+```{r}
+length(x.vector)
+x.vector
+head(y.data)
+colnames(y.data)
+```
+
+
+```{r}
+summary(x.vector)
+head(table(x.vector))
+summary(y.data$A)
+summary(y.data$B)
+table(y.data$B)
+table(y.data$C)
+```
+
+*** 
+
+# Troubleshooting R and RStudio
+
+```{r}
+data <- mtcars
+```

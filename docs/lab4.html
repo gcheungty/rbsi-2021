@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Gloria Cheung" />
+
+
+<title>Lab 4: OLS in R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">RBSI-Methods 2021</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
+    <li>
+      <a href="lab1.html">Lab 1</a>
+    </li>
+    <li>
+      <a href="lab2.html">Lab 2</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Lab 3</li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lab 4: OLS in R</h1>
+<h4 class="author">Gloria Cheung</h4>
+<h4 class="date">5/18/2021</h4>
+
+</div>
+
+
+<div id="using-r-to-do-statistical-analysis" class="section level1">
+<h1><span class="header-section-number">1</span> Using R to do statistical analysis</h1>
+<p>This week we have been covering the logic of regression and hypothesis testing, from a theoretical and research question building perspective. In the lab, we want to put these concepts into practice.</p>
+<p>As a reminder, we’ve discussed hypothesis testing in terms of expecting an independent variable <span class="math inline">\(x\)</span> and its effects on a dependent variable <span class="math inline">\(y\)</span>. So we can think of this relationship as resembling:</p>
+<p><span class="math display">\[Y = \alpha + \beta_1 X\]</span> Where <span class="math inline">\(\beta\)</span> is the coefficient that represents how much a unit change in independent variable <span class="math inline">\(X\)</span> results in a <span class="math inline">\(\beta\)</span> unit change in the dependent variable <span class="math inline">\(Y\)</span>.</p>
+<pre class="r"><code>rm(list=ls())</code></pre>
+</div>
+<div id="bivariate-regressions" class="section level1">
+<h1><span class="header-section-number">2</span> Bivariate Regressions</h1>
+<p>In this section, we will be going over how to perform ordinary least squares (OLS) regerssions in R, using the same example of political ideology and its effects on a voter’s feelings towards Obama.</p>
+<p><strong>The Hypothesis</strong>: Voters who are recorded as more ‘democratic’ on the political ideology scale, are more likely to have positive feelings towards Obama.</p>
+<div id="setting-up-the-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Setting up the data</h2>
+<ul>
+<li>The data is from ANES 2016 Pilot Study <a href="https://electionstudies.org/data-center/anes-2016-pilot-study/">Source</a></li>
+<li>The <strong>dependent variable</strong> is <code>ftobama</code> which measures an individual’s feelings towards obama - the ratings are between 0 to 100 degrees, where ratings between 50 and 100 indicate favorable feelings, and 0 to 50 indicates that the participant does not feel favorable towards Obama.</li>
+<li>The <strong>independent variable</strong> is <code>pid7</code>, a 7 point measure of party ID, where 1 indicates a strong democrat, and 7 indicates a strong republican.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Load the data into R, in this case, the data is in <code>.csv</code> format</li>
+</ol>
+<pre class="r"><code>anes16 &lt;- read.csv(&quot;anes_pilot_2016.csv&quot;) # Loading in the data</code></pre>
+<div id="check-the-dependent-variable" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Check the dependent variable</h3>
+<ol start="2" style="list-style-type: decimal">
+<li>Check the codebook and use <code>summary()</code> on the variables to make sure the structure of the data is as expected (i.e. that <code>ftobama</code> should range from 0 to 100, and <code>pid7</code> should range from 1 - 7.)</li>
+</ol>
+<pre class="r"><code>summary(anes16$ftobama) # always check codebook!!!</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     0.0     5.0    53.0    50.2    87.0   998.0</code></pre>
+<pre class="r"><code>table(anes16$ftobama)</code></pre>
+<pre><code>## 
+##   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17 
+## 114  71  36  37  23  27  23   4   5   7  15   8   8   7   5  11   9   7 
+##  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35 
+##   5   9   5   5   3   2   3   5   6   1   1   2   9  13   9   2   6   4 
+##  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53 
+##   2   3   3   9   6   8   4   3   9   1   3   2   1   5  17   8   8   4 
+##  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71 
+##   8   4   8   4   1  11  15   5   6   6   5   3  10   5   8   5  24  14 
+##  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89 
+##  15  10   5  20   6   4   7   8  16  10   6   5  10  10  17  11  18  20 
+##  90  91  92  93  94  95  96  97  98  99 100 998 
+##  25  17   6   6  18  22  15  11  16  27  92   2</code></pre>
+<ul>
+<li>It seems like there are two miscoded individuals in ftobama who are coded as answering <span class="math inline">\(998\)</span>, we can treat these observations as <code>NA</code>.</li>
+<li>We can do so by recoding these observations using an <code>ifelse</code> statement
+<ul>
+<li>what we basically want to do is to check each observation in the data, if the value of ftobama is more than 100, which we know there are two observations where it is more than 100 (or equals to 998), we want to code it as NA, if otherwise (if it is 100 or less), we want it to keep its value.</li>
+<li>the structure of the <code>ifelse()</code> function takes the form of <code>ifelse(test, yes, no)</code>,</li>
+<li>Following the logic above, the function should be coded as such:</li>
+</ul></li>
+</ul>
+<pre class="r"><code>anes16$ftobama &lt;- ifelse(anes16$ftobama &gt; 100, NA, anes16$ftobama)
+summary(anes16$ftobama)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    0.00    5.00   52.50   48.62   87.00  100.00       2</code></pre>
+<p>And if you check the <code>summary()</code> for <code>ftobama</code>, you will note that now that min is 0, the max is 100, as we expect, and there are 2 NAs.</p>
+</div>
+<div id="check-the-independent-variable" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Check the independent variable</h3>
+<p>According to the codebook, aside from the values 1 to 7 which represent the spectrum between strong democrat and strong republican, there is an eighth category for “Not sure”. And it seems like there are 41 individuals who answered ‘Not sure’. Using <code>summary()</code> and <code>table()</code> on pid7 confirms this.</p>
+<pre class="r"><code>summary(anes16$pid7)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##    1.00    1.00    4.00    3.73    6.00    8.00      14</code></pre>
+<pre class="r"><code>table(anes16$pid7)</code></pre>
+<pre><code>## 
+##   1   2   3   4   5   6   7   8 
+## 300 146 109 205 111 116 158  41</code></pre>
+<p>It seems there are 41 individuals who are unsure what their political ideology are, and 14 NAs. We can treat these outlying individuals two ways:</p>
+<ol style="list-style-type: decimal">
+<li>Either we can also recode the 41 individuals who answered “Not Sure” as NAs. 2. Or, we can make an educated guess about what kind of individuals would answer “Not sure” to a political ideology question. Often, survey specialists and american politics specialists argue that this is a sign of moderateness.</li>
+</ol>
+<p>In this case, we will follow the second methodology, and recode observations of <code>pid7 == 8</code> into values of <code>pid7 = 4</code>.</p>
+<pre class="r"><code>anes16$pid7&lt;- ifelse(anes16$pid7 == 8, 4, anes16$pid7) # making them moderate
+table(anes16$pid7)</code></pre>
+<pre><code>## 
+##   1   2   3   4   5   6   7 
+## 300 146 109 246 111 116 158</code></pre>
+<p>Now if you check <code>table()</code> you will note that now there are 246 individuals who chose option <span class="math inline">\(4\)</span> (instead of 205 before the recode), and none for option <span class="math inline">\(8\)</span>.</p>
+</div>
+</div>
+<div id="running-the-ols" class="section level2">
+<h2><span class="header-section-number">2.2</span> Running the OLS</h2>
+<p>To run an ordinary least squares regression, we can use the <code>lm()</code> function to create a linear regression model. If you use <code>?lm</code> you can see more details about how <code>lm()</code> works but here we use a simple setup:</p>
+<ul>
+<li>lm(y ~ x, data)</li>
+<li>where y is the dependent variable, and x is the independent variable</li>
+<li>after defining the model (and saving it as an object), you use the <code>summary()</code> function to analyze the results of the model</li>
+</ul>
+<pre class="r"><code>model1 &lt;- lm(ftobama ~ pid7, data = anes16)
+summary(model1) </code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = ftobama ~ pid7, data = anes16)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -79.650 -16.920   1.226  16.788  96.226 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  95.7955     1.5193   63.05   &lt;2e-16 ***
+## pid7        -13.1459     0.3653  -35.98   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26.31 on 1182 degrees of freedom
+##   (16 observations deleted due to missingness)
+## Multiple R-squared:  0.5228, Adjusted R-squared:  0.5224 
+## F-statistic:  1295 on 1 and 1182 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div id="interpretation" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Interpretation</h3>
+<p>The output for <code>summary()</code> shows the original <code>lm()</code> formula used, the summary statistics for the residuals, the coefficients for the predictor variables used, and performance measures for the model more generally.</p>
+<ul>
+<li>The coefficient is the <span class="math inline">\(\beta\)</span> value for <span class="math inline">\(X\)</span> which we discussed in the beginning, it represents how much a unit change in independent variable <span class="math inline">\(X\)</span> results in a <span class="math inline">\(\beta\)</span> unit change in the dependent variable <span class="math inline">\(Y\)</span>.</li>
+<li>Hence, the summary output for the model predicts a decrease of <span class="math inline">\(-13.5278\)</span> in <em>ftobama</em> for every unit increase in <em>pid7</em> - what does that mean in real terms?
+<ul>
+<li>Remember that every unit increase in pid7 indicates a shift in ideology closer to Strong Republican</li>
+</ul></li>
+<li><strong>Statistical Significance</strong>: We also discussed statistical significance in class, the model output gives us both the t value, but also automatically conducts a two-tailed test. Hence the <span class="math inline">\(Pr(&gt;|t|)\)</span> value tells us at what level of significance the null hypothesis can be rejected at, <span class="math inline">\(&lt;2e-16\)</span> or <span class="math inline">\(***\)</span> indicates that the threshold of significance is even smaller than 0.001.</li>
+<li><strong>R-squared</strong>: Lastly, the model output also provides some measures of goodness of fit, which will be important when comparing between different models, but does not have much interpretation value when just conducting hypothesis testing.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="multivariate-regressions" class="section level1">
+<h1><span class="header-section-number">3</span> Multivariate Regressions</h1>
+<p>Next, we move on to multivariate regressions, where we are comparing the effects of multiple independent variables on one dependent variable. Whereas before in the bivariate analysis we only had one <span class="math inline">\(x\)</span>, this time we can have multiple <span class="math inline">\(x\)</span>s.</p>
+<p><span class="math display">\[Y = \alpha + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4\]</span></p>
+<p>This time we include three more independent variables: 1. <code>faminc</code> 2. <code>srv_spend</code> 3. <code>equal_pay</code></p>
+<pre class="r"><code>fit2 &lt;- lm(ftobama ~ pid7 + faminc + srv_spend + equalpay, data = anes16)
+summary(fit2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = ftobama ~ pid7 + faminc + srv_spend + equalpay, 
+##     data = anes16)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -80.70 -17.57   2.21  16.30 107.81 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  98.931554   1.711971  57.788  &lt; 2e-16 ***
+## pid7        -12.624357   0.373376 -33.811  &lt; 2e-16 ***
+## faminc       -0.001916   0.025281  -0.076   0.9396    
+## srv_spend     0.005056   0.002738   1.847   0.0651 .  
+## equalpay     -2.627002   0.495146  -5.306 1.34e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26 on 1179 degrees of freedom
+##   (16 observations deleted due to missingness)
+## Multiple R-squared:  0.535,  Adjusted R-squared:  0.5334 
+## F-statistic: 339.1 on 4 and 1179 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

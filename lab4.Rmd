@@ -1,0 +1,133 @@
+---
+title: "Lab 4: OLS in R"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'lab4.html'))})
+author: "Gloria Cheung"
+date: "5/18/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: TRUE
+    css: "style.css"
+---
+
+# Using R to do statistical analysis
+
+This week we have been covering the logic of regression and hypothesis testing, from a theoretical and research question building perspective. In the lab, we want to put these concepts into practice. 
+
+As a reminder, we've discussed hypothesis testing in terms of expecting an independent variable $x$ and its effects on a dependent variable $y$. So we can think of this relationship as resembling: 
+
+$$Y = \alpha + \beta_1 X$$ 
+Where $\beta$ is the coefficient that represents how much a unit change in independent variable $X$ results in a $\beta$ unit change in the dependent variable $Y$. 
+
+```{r}
+rm(list=ls())
+```
+
+# Bivariate Regressions 
+
+In this section, we will be going over how to perform ordinary least squares (OLS) regerssions in R, using the same example of political ideology and its effects on a voter's feelings towards Obama. 
+
+**The Hypothesis**: Voters who are recorded as more 'democratic' on the political ideology scale, are more likely to have positive feelings towards Obama. 
+
+## Setting up the data 
+
+- The data is from ANES 2016 Pilot Study [Source](https://electionstudies.org/data-center/anes-2016-pilot-study/)
+- The **dependent variable** is `ftobama` which measures an individual's feelings towards obama - the ratings are between 0 to 100 degrees, where ratings between 50 and 100 indicate favorable feelings, and 0 to 50 indicates that the participant does not feel favorable towards Obama. 
+- The **independent variable** is ``pid7``, a 7 point measure of party ID, where 1 indicates a strong democrat, and 7 indicates a strong republican.
+
+1. Load the data into R, in this case, the data is in `.csv` format
+
+```{r}
+anes16 <- read.csv("anes_pilot_2016.csv") # Loading in the data
+```
+
+### Check the dependent variable
+
+2. Check the codebook and use `summary()` on the variables to make sure the structure of the data is as expected (i.e. that `ftobama` should range from 0 to 100, and `pid7` should range from 1 - 7.)
+
+```{r}
+summary(anes16$ftobama) # always check codebook!!!
+table(anes16$ftobama)
+```
+
+- It seems like there are two miscoded individuals in ftobama who are coded as answering $998$, we can treat these observations as `NA`. 
+- We can do so by recoding these observations using an `ifelse` statement
+  - what we basically want to do is to check each observation in the data, if the value of ftobama is more than 100, which we know there are two observations where it is more than 100 (or equals to 998), we want to code it as NA, if otherwise (if it is 100 or less), we want it to keep its value. 
+  - the structure of the `ifelse()` function takes the form of `ifelse(test, yes, no)`,
+  - Following the logic above, the function should be coded as such: 
+  
+```{r}
+anes16$ftobama <- ifelse(anes16$ftobama > 100, NA, anes16$ftobama)
+summary(anes16$ftobama)
+```
+
+And if you check the `summary()` for `ftobama`, you will note that now that min is 0, the max is 100, as we expect, and there are 2 NAs. 
+
+### Check the independent variable 
+
+According to the codebook, aside from the values 1 to 7 which represent the spectrum between strong democrat and strong republican, there is an eighth category for "Not sure". And it seems like there are 41 individuals who answered 'Not sure'. Using `summary()` and `table()` on pid7 confirms this. 
+
+```{r}
+summary(anes16$pid7)
+table(anes16$pid7)
+```
+
+It seems there are 41 individuals who are unsure what their political ideology are, and 14 NAs. We can treat these outlying individuals two ways: 
+
+1. Either we can also recode the 41 individuals who answered "Not Sure" as NAs. 2. Or, we can make an educated guess about what kind of individuals would answer "Not sure" to a political ideology question. Often, survey specialists and american politics specialists argue that this is a sign of moderateness. 
+
+In this case, we will follow the second methodology, and recode observations of `pid7 == 8` into values of `pid7 = 4`. 
+
+```{r}
+anes16$pid7<- ifelse(anes16$pid7 == 8, 4, anes16$pid7) # making them moderate
+table(anes16$pid7)
+```
+
+Now if you check `table()` you will note that now there are 246 individuals who chose option $4$ (instead of 205 before the recode), and none for option $8$. 
+
+
+## Running the OLS 
+
+To run an ordinary least squares regression, we can use the `lm()` function to create a linear regression model. If you use `?lm` you can see more details about how `lm()` works but here we use a simple setup: 
+
+- lm(y ~ x, data)
+- where y is the dependent variable, and x is the independent variable
+- after defining the model (and saving it as an object), you use the `summary()` function to analyze the results of the model
+
+```{r}
+model1 <- lm(ftobama ~ pid7, data = anes16)
+summary(model1) 
+```
+
+### Interpretation 
+
+The output for `summary()` shows the original `lm()` formula used, the summary statistics for the residuals, the coefficients for the predictor variables used, and performance measures for the model more generally. 
+
+- The coefficient is the $\beta$ value for $X$ which we discussed in the beginning, it represents how much a unit change in independent variable $X$ results in a $\beta$ unit change in the dependent variable $Y$. 
+- Hence, the summary output for the model predicts a decrease of $-13.5278$ in *ftobama* for every unit increase in *pid7* - what does that mean in real terms? 
+  - Remember that every unit increase in pid7 indicates a shift in ideology closer to Strong Republican
+- **Statistical Significance**: We also discussed statistical significance in class, the model output gives us both the t value, but also automatically conducts a two-tailed test. Hence the $Pr(>|t|)$ value tells us at what level of significance the null hypothesis can be rejected at, $<2e-16$ or $***$ indicates that the threshold of significance is even smaller than 0.001. 
+- **R-squared**: Lastly, the model output also provides some measures of goodness of fit, which will be important when comparing between different models, but does not have much interpretation value when just conducting hypothesis testing. 
+
+# Multivariate Regressions 
+
+Next, we move on to multivariate regressions, where we are comparing the effects of multiple independent variables on one dependent variable. Whereas before in the bivariate analysis we only had one $x$, this time we can have multiple $x$s. 
+
+$$Y = \alpha + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4$$ 
+
+This time we include three more independent variables: 
+1. `faminc`
+2. `srv_spend`
+3. `equal_pay`
+
+```{r}
+fit2 <- lm(ftobama ~ pid7 + faminc + srv_spend + equalpay, data = anes16)
+summary(fit2)
+```
+
