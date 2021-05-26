@@ -14,7 +14,7 @@
 
 <title>Lab 4: OLS in R</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +26,18 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.16/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -423,19 +435,525 @@ div.tocify {
 </div>
 
 
+<p>This week in methods class, we covered different types of hypothesis tests, depending on the level of measurement for the independent and dependent variables.</p>
+<div class="figure">
+<img src="hypothesis-testing.png" alt="Hypothesis Testing" />
+<p class="caption">Hypothesis Testing</p>
+</div>
+<div class="line-block">                   | Individual Variable Type |<br />
+                   | Categorical | Continuous |</div>
+<p>|——|————-|————————–|————————-| | DV. | Categorical | Tabular Analysis | Probit / Logit | | Type | Continuous | Difference of Means | Correlation Coefficient |</p>
+<p>The agenda in this lab is to demonstrate and execute a basic version of the tests discussed, we will be covering the following:</p>
+<ol style="list-style-type: decimal">
+<li>Chi-squared test</li>
+<li>T-tests</li>
+<li>Correlation vs Covariance</li>
+<li>Bivariate Linear Regression / Ordinary Least Squares (OLS)</li>
+</ol>
+<p>A reminder about hypothesis testing :</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: the variables are independent, there is no relationship between the two variables. Knowing the value of one variable does not help to predict the value of the other variable</li>
+<li><span class="math inline">\(H_1\)</span>: the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable</li>
+</ul>
+<div id="chi-squared-x2-test" class="section level1">
+<h1><span class="header-section-number">1</span> Chi-squared <span class="math inline">\(x^2\)</span> test</h1>
+<p>Remember, a chi-square test typically is used to compare two categorical variables. It works by comparing the observed frequencies to the expected frequencies if there was no relationship between the two variables.</p>
+<p>You can do it by hand, and Dr. Siegel goes through this in Lecture 2 Part 1, on slide 54 onwards, when he goes through an example of how to conduct a <span class="math inline">\(x^2\)</span> test by hand. I will show you how to do this in R as well, using the function <code>chisq.test()</code>.</p>
+<p>I’m going to run a hypothetical test to see if there is a difference in number of democracies in different regions of the world - it’s hypothetical because there are historical and structural reasons that could explain why some regions have more democracies than others, but we will assume that we want to test this hypothesis using a chi-square test.</p>
+<p>First, we always have to check and prepare the data to see if it needs to be cleaned - It seems that the variable <code>region</code> has 6 categories (0, 2, 3, 5, 6, 7), but it is not clear what each of these regions are. - There are two ways to deal with this, either to check the codebook, or if there are also regional dummy variables, to crosscheck region against those dummies - which is what I do in the code below to create a new variable <code>region2</code> which has the regions specified as a factor / character variable.</p>
+<pre class="r"><code>load(&quot;separatistData.RData&quot;)
+summary(separatistData$democracy)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##  0.0000  0.0000  0.0000  0.4929  1.0000  1.0000      49</code></pre>
+<pre class="r"><code>table(separatistData$region) # What do these values mean? Either check codebook, or crosscheck for regional dummy variables</code></pre>
+<pre><code>## 
+##   0   2   3   5   6   7 
+## 465 371 889 275 580 115</code></pre>
+<pre class="r"><code>separatistData$region2 &lt;- ifelse(separatistData$eeurop == 1, &quot;eeurope&quot;, 
+ifelse(separatistData$lamerica == 1, &quot;lamerica&quot;, 
+ifelse(separatistData$ssafrica == 1, &quot;ssafrica&quot;, 
+ifelse(separatistData$asia == 1, &quot;asia&quot;, 
+ifelse(separatistData$western == 1, &quot;western&quot;, 
+&quot;others&quot;)))))
+table(separatistData$region, separatistData$region2)</code></pre>
+<pre><code>##    
+##     asia eeurope lamerica others ssafrica western
+##   0    0       0        0      0        0     465
+##   2    0     371        0      0        0       0
+##   3  889       0        0      0        0       0
+##   5    0       0        0    275        0       0
+##   6    0       0        0      0      580       0
+##   7    0       0      115      0        0       0</code></pre>
+<pre class="r"><code>chisq.test(separatistData$region2, separatistData$democracy)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  separatistData$region2 and separatistData$democracy
+## X-squared = 1367.4, df = 5, p-value &lt; 2.2e-16</code></pre>
+<ul>
+<li>the p-value is 0.001, so we can reject the null hypothesis at the 0.001 significance level.
+<ul>
+<li>Interpreting this, it indicates that the number of democratic countries is significantly different across regions</li>
+</ul></li>
+<li>For more on some interesting ways to present a contingency table and the difference between the observed and expected values, see <a href="https://statsandr.com/blog/chi-square-test-of-independence-in-r/">Antoine Soetewey’s</a> blog for some examples.</li>
+</ul>
+</div>
+<div id="t-test-or-differences-in-means-test" class="section level1">
+<h1><span class="header-section-number">2</span> T-test or differences in means test</h1>
+<p>The t-test or difference of means test is is used to determine if the null hypothesis (thaat the means of two samples are equal) can be rejected and that we can infer that the differences between the two samples are statistically significant). It is similar to the chi-squared test, but is better employed when the dependent variable is continuous and the independent variable categorical.</p>
+<p>Examples:</p>
+<ul>
+<li>Do republicans and democrats have different feelings toward the military?
+<ul>
+<li>independent variable: political affiliation (categorical)</li>
+<li>dependent variable: feeling thermometer (continuous)</li>
+</ul></li>
+<li>Does college-level literacy vary across states in the U.S.?
+<ul>
+<li>independent variable: Geographical region (categorical)</li>
+<li>Dependent variable: percentage of college educated adults</li>
+</ul></li>
+</ul>
+<p>The difference in means test is referenced in Lecture 2, part 1, on slide 109 onwards. In R we perform the test using the function <code>t.test()</code>. Note that what the difference of means t-test, or a two-tailed t-test, concludes is whether there is a difference in means, rather than whether one mean is specifically less than or greater than the other - the latter type of test would be a one-tailed t-test, which R can also conduct, and is one of the options if you check <code>?t.test</code>.</p>
+<p>Using data from the ANES 2012 survey</p>
+<p>As always, check the variables and clean up the data.</p>
+<pre class="r"><code>summary(anes2012$ftgr_military) # Feeling thermometer should range from 0 to  100</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   -9.00   60.00   85.00   74.07  100.00  100.00</code></pre>
+<pre class="r"><code>summary(anes2012$pid_x)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  -2.000   1.000   3.000   3.502   5.000   7.000</code></pre>
+<pre class="r"><code>anes2012$ft_military_2 &lt;- ifelse(anes2012$ftgr_military &lt;0, NA, anes2012$ftgr_military)
+anes2012$pid_x_2 &lt;- ifelse(anes2012$pid_x &lt;0, NA, anes2012$pid_x)</code></pre>
+<p><strong>Hypothesis</strong>: Is the relationship between party ideology <code>pid_x</code> and support for the military <code>ftgr_military</code> statistically significant?</p>
+<p><strong>Null Hypothesis:</strong>: There is no difference in level of support for the military (proxied by feeling thermometer) between Republicans and Democrats</p>
+<pre class="r"><code>t.test(anes2012$pid_x_2, anes2012$ft_military_2)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  anes2012$pid_x_2 and anes2012$ft_military_2
+## t = -270.04, df = 5582.1, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -77.48951 -76.37252
+## sample estimates:
+## mean of x mean of y 
+##  3.524278 80.455292</code></pre>
+<p><strong>Interpreting the results</strong>:</p>
+<ul>
+<li>Confidence Interval (-77.48951, -76.37252)</li>
+<li>p-value (&lt;2.2e-16 ~ 0.001)</li>
+</ul>
+</div>
+<div id="correlation-coefficient" class="section level1">
+<h1><span class="header-section-number">3</span> Correlation Coefficient</h1>
+<ul>
+<li>The correlation coefficient is the most common test of signifiance used (and taught) in statistical methods.</li>
+<li>Used when the dependent and independent variable are continuous variables</li>
+</ul>
+<div id="covariance-vs-correlation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Covariance vs Correlation</h2>
+<p>Discussion on the difference between correlation and covariance is on slide 91 of Lecture 2, part 1.</p>
+<pre class="r"><code>load(&quot;separatistData.RData&quot;)
+colnames(separatistData)</code></pre>
+<pre><code>##   [1] &quot;group&quot;                      &quot;ccode&quot;                     
+##   [3] &quot;year&quot;                       &quot;stateabb&quot;                  
+##   [5] &quot;gwcode&quot;                     &quot;X&quot;                         
+##   [7] &quot;kgcid&quot;                      &quot;country.x&quot;                 
+##   [9] &quot;civilwaronset&quot;              &quot;ongoingcivilwar&quot;           
+##  [11] &quot;escalation&quot;                 &quot;ongoingescalation&quot;         
+##  [13] &quot;logfactions&quot;                &quot;laglogfactions&quot;            
+##  [15] &quot;endogfac1&quot;                  &quot;logSDfactionsendogcivilwar&quot;
+##  [17] &quot;factions&quot;                   &quot;prevconcessions_l&quot;         
+##  [19] &quot;democracy&quot;                  &quot;kin&quot;                       
+##  [21] &quot;yrnocwonset&quot;                &quot;X_spline1_cwonset&quot;         
+##  [23] &quot;X_spline2_cwonset&quot;          &quot;X_spline3_cwonset&quot;         
+##  [25] &quot;acdcivilwar1&quot;               &quot;yrsnocivilwar&quot;             
+##  [27] &quot;X_spline1_cw&quot;               &quot;X_spline2_cw&quot;              
+##  [29] &quot;X_spline3_cw&quot;               &quot;logSDsize_relative&quot;        
+##  [31] &quot;tbase&quot;                      &quot;logmountain&quot;               
+##  [33] &quot;oilexpanded&quot;                &quot;instab&quot;                    
+##  [35] &quot;avgecdis&quot;                   &quot;loggdppc&quot;                  
+##  [37] &quot;logpop&quot;                     &quot;milexpc&quot;                   
+##  [39] &quot;numgrps&quot;                    &quot;avgicrg_bq&quot;                
+##  [41] &quot;avgtaxratio&quot;                &quot;elf&quot;                       
+##  [43] &quot;ef&quot;                         &quot;groups&quot;                    
+##  [45] &quot;concentration&quot;              &quot;western&quot;                   
+##  [47] &quot;eeurop&quot;                     &quot;lamerica&quot;                  
+##  [49] &quot;ssafrica&quot;                   &quot;asia&quot;                      
+##  [51] &quot;sixties&quot;                    &quot;seventies&quot;                 
+##  [53] &quot;eighties&quot;                   &quot;coldwar&quot;                   
+##  [55] &quot;prevcivilwaronset&quot;          &quot;firstonset&quot;                
+##  [57] &quot;violentmilitant&quot;            &quot;multiplecws&quot;               
+##  [59] &quot;population&quot;                 &quot;GDP2005&quot;                   
+##  [61] &quot;GDPpc2005&quot;                  &quot;GDPpc2011&quot;                 
+##  [63] &quot;ironsteel&quot;                  &quot;militarySpend&quot;             
+##  [65] &quot;militaryPPL&quot;                &quot;energy&quot;                    
+##  [67] &quot;totalPop&quot;                   &quot;urbanPop&quot;                  
+##  [69] &quot;cinc&quot;                       &quot;polity&quot;                    
+##  [71] &quot;polity2&quot;                    &quot;year_1&quot;                    
+##  [73] &quot;year_2&quot;                     &quot;country.y&quot;                 
+##  [75] &quot;group1&quot;                     &quot;numcode&quot;                   
+##  [77] &quot;region&quot;                     &quot;autlost&quot;                   
+##  [79] &quot;belief&quot;                     &quot;catness&quot;                   
+##  [81] &quot;custom&quot;                     &quot;ethnog&quot;                    
+##  [83] &quot;gc2&quot;                        &quot;gc7&quot;                       
+##  [85] &quot;gc9&quot;                        &quot;gc10&quot;                      
+##  [87] &quot;gc11&quot;                       &quot;groupcon&quot;                  
+##  [89] &quot;lang&quot;                       &quot;polstat&quot;                   
+##  [91] &quot;race&quot;                       &quot;reg1&quot;                      
+##  [93] &quot;reg2&quot;                       &quot;reg5&quot;                      
+##  [95] &quot;regional&quot;                   &quot;relig&quot;                     
+##  [97] &quot;sepx&quot;                       &quot;ecdifxx&quot;                   
+##  [99] &quot;ecdis&quot;                      &quot;poldifx1&quot;                  
+## [101] &quot;poldifxx&quot;                   &quot;poldis&quot;                    
+## [103] &quot;polres&quot;                     &quot;gojpa&quot;                     
+## [105] &quot;org1st3&quot;                    &quot;org1st4&quot;                   
+## [107] &quot;org1st6&quot;                    &quot;org1st7&quot;                   
+## [109] &quot;org1st8&quot;                    &quot;org1st11&quot;                  
+## [111] &quot;org2st3&quot;                    &quot;org2st4&quot;                   
+## [113] &quot;org2st6&quot;                    &quot;org2st7&quot;                   
+## [115] &quot;org2st8&quot;                    &quot;org2st11&quot;                  
+## [117] &quot;org3st3&quot;                    &quot;org3st4&quot;                   
+## [119] &quot;org3st6&quot;                    &quot;org3st7&quot;                   
+## [121] &quot;org3st8&quot;                    &quot;org3st11&quot;                  
+## [123] &quot;adtype&quot;                     &quot;intercon&quot;                  
+## [125] &quot;nocomcon&quot;                   &quot;prot&quot;                      
+## [127] &quot;rep01&quot;                      &quot;rep02&quot;                     
+## [129] &quot;rep03&quot;                      &quot;rep06&quot;                     
+## [131] &quot;rep07&quot;                      &quot;rep11&quot;                     
+## [133] &quot;rep12&quot;</code></pre>
+<pre class="r"><code>summary(separatistData)</code></pre>
+<pre><code>##                         group          ccode          year     
+##  Indigenous Peoples        : 144   Min.   :  2   Min.   :1960  
+##  Saami                     : 138   1st Qu.:343   1st Qu.:1978  
+##  Kurds                     : 123   Median :530   Median :1990  
+##  Lowland Indigenous Peoples:  68   Mean   :501   Mean   :1987  
+##  Southerners               :  68   3rd Qu.:750   3rd Qu.:1998  
+##  Hungarians                :  60   Max.   :910   Max.   :2005  
+##  (Other)                   :3307   NA&#39;s   :20                  
+##     stateabb        gwcode            X              kgcid      
+##  IND    : 334   Min.   :  2.0   Min.   :   1.0   Min.   :101.0  
+##  MYA    : 317   1st Qu.:343.0   1st Qu.: 975.8   1st Qu.:139.0  
+##  YUG    : 164   Median :530.0   Median :1949.5   Median :235.0  
+##  UKG    : 138   Mean   :500.3   Mean   :1950.2   Mean   :267.4  
+##  ETH    : 132   3rd Qu.:750.0   3rd Qu.:2924.2   3rd Qu.:402.0  
+##  PAK    : 115   Max.   :910.0   Max.   :3898.0   Max.   :436.0  
+##  (Other):2708                                                   
+##           country.x    civilwaronset     ongoingcivilwar   escalation     
+##  India         : 334   Min.   :0.00000   Min.   :0.000   Min.   :0.00000  
+##  Myanmar       : 317   1st Qu.:0.00000   1st Qu.:0.000   1st Qu.:0.00000  
+##  Yugoslavia    : 164   Median :0.00000   Median :0.000   Median :0.00000  
+##  United Kingdom: 138   Mean   :0.02661   Mean   :0.164   Mean   :0.02227  
+##  Ethiopia      : 132   3rd Qu.:0.00000   3rd Qu.:0.000   3rd Qu.:0.00000  
+##  Pakistan      : 115   Max.   :1.00000   Max.   :1.000   Max.   :1.00000  
+##  (Other)       :2708                                     NA&#39;s   :1        
+##  ongoingescalation  logfactions     laglogfactions     endogfac1     
+##  Min.   :0.00000   Min.   :0.0000   Min.   :0.0000   Min.   : 1.000  
+##  1st Qu.:0.00000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.: 1.000  
+##  Median :0.00000   Median :0.6931   Median :0.6932   Median : 2.000  
+##  Mean   :0.02611   Mean   :0.8729   Mean   :0.8679   Mean   : 3.266  
+##  3rd Qu.:0.00000   3rd Qu.:1.3863   3rd Qu.:1.3863   3rd Qu.: 4.000  
+##  Max.   :1.00000   Max.   :3.6636   Max.   :3.6636   Max.   :39.000  
+##  NA&#39;s   :1                          NA&#39;s   :184      NA&#39;s   :1       
+##  logSDfactionsendogcivilwar    factions      prevconcessions_l
+##  Min.   :0.0000             Min.   : 1.000   Min.   :0.0000   
+##  1st Qu.:0.0000             1st Qu.: 1.000   1st Qu.:0.0000   
+##  Median :0.6931             Median : 2.000   Median :0.0000   
+##  Mean   :0.8725             Mean   : 3.274   Mean   :0.4289   
+##  3rd Qu.:1.3863             3rd Qu.: 4.000   3rd Qu.:1.0000   
+##  Max.   :3.6636             Max.   :39.000   Max.   :1.0000   
+##                                                               
+##    democracy           kin         yrnocwonset    X_spline1_cwonset 
+##  Min.   :0.0000   Min.   :0.000   Min.   : 0.00   Min.   :-19656.0  
+##  1st Qu.:0.0000   1st Qu.:0.000   1st Qu.: 6.00   1st Qu.: -9576.0  
+##  Median :0.0000   Median :1.000   Median :15.00   Median : -2196.0  
+##  Mean   :0.4929   Mean   :0.641   Mean   :18.23   Mean   : -5218.0  
+##  3rd Qu.:1.0000   3rd Qu.:1.000   3rd Qu.:30.00   3rd Qu.:  -187.2  
+##  Max.   :1.0000   Max.   :1.000   Max.   :45.00   Max.   :     0.0  
+##  NA&#39;s   :49       NA&#39;s   :596                                       
+##  X_spline2_cwonset  X_spline3_cwonset   acdcivilwar1    yrsnocivilwar  
+##  Min.   :-32984.0   Min.   :-30618.0   Min.   :0.0000   Min.   : 0.00  
+##  1st Qu.:-14504.0   1st Qu.:-10773.0   1st Qu.:0.0000   1st Qu.: 2.00  
+##  Median : -2324.0   Median : -1350.0   Median :0.0000   Median :12.00  
+##  Mean   : -7920.1   Mean   : -6362.7   Mean   :0.1909   Mean   :16.02  
+##  3rd Qu.:  -148.8   3rd Qu.:   -86.4   3rd Qu.:0.0000   3rd Qu.:29.00  
+##  Max.   :     0.0   Max.   :     0.0   Max.   :1.0000   Max.   :45.00  
+##                                                                        
+##   X_spline1_cw         X_spline2_cw         X_spline3_cw       
+##  Min.   :-10962.000   Min.   :-30888.000   Min.   :-31616.000  
+##  1st Qu.: -5187.066   1st Qu.:-12972.268   1st Qu.:-10270.578  
+##  Median :  -883.800   Median : -1267.200   Median :  -729.600  
+##  Mean   : -2768.528   Mean   : -7038.195   Mean   : -6216.402  
+##  3rd Qu.:    -7.467   3rd Qu.:    -5.867   3rd Qu.:    -3.378  
+##  Max.   :     0.000   Max.   :     0.000   Max.   :     0.000  
+##                                                                
+##  logSDsize_relative     tbase         logmountain     oilexpanded  
+##  Min.   :-0.8142    Min.   :0.0000   Min.   :0.000   Min.   :0.00  
+##  1st Qu.: 6.0190    1st Qu.:1.0000   1st Qu.:2.116   1st Qu.:0.00  
+##  Median : 7.3167    Median :1.0000   Median :2.667   Median :0.00  
+##  Mean   : 7.0744    Mean   :0.8958   Mean   :2.600   Mean   :0.14  
+##  3rd Qu.: 8.2586    3rd Qu.:1.0000   3rd Qu.:3.600   3rd Qu.:0.00  
+##  Max.   :10.9444    Max.   :1.0000   Max.   :4.557   Max.   :1.00  
+##  NA&#39;s   :344        NA&#39;s   :596      NA&#39;s   :25      NA&#39;s   :151   
+##      instab           avgecdis         loggdppc          logpop      
+##  Min.   :0.00000   Min.   :0.0000   Min.   : 4.364   Min.   : 5.574  
+##  1st Qu.:0.00000   1st Qu.:0.8571   1st Qu.: 6.628   1st Qu.: 9.267  
+##  Median :0.00000   Median :1.9583   Median : 7.811   Median :10.459  
+##  Mean   :0.08997   Mean   :1.8336   Mean   : 7.738   Mean   :10.438  
+##  3rd Qu.:0.00000   3rd Qu.:3.0000   3rd Qu.: 8.711   3rd Qu.:11.131  
+##  Max.   :1.00000   Max.   :4.0000   Max.   :10.585   Max.   :14.074  
+##  NA&#39;s   :151       NA&#39;s   :596                                       
+##     milexpc            numgrps         avgicrg_bq      avgtaxratio    
+##  Min.   :   0.000   Min.   : 0.000   Min.   :0.0000   Min.   :0.0370  
+##  1st Qu.:   8.964   1st Qu.: 4.000   1st Qu.:0.9473   1st Qu.:0.0973  
+##  Median :  29.891   Median : 6.000   Median :2.3488   Median :0.1388  
+##  Mean   : 138.309   Mean   : 6.583   Mean   :2.2807   Mean   :0.1512  
+##  3rd Qu.: 132.779   3rd Qu.: 9.000   3rd Qu.:3.5536   3rd Qu.:0.1973  
+##  Max.   :2046.513   Max.   :22.000   Max.   :4.0000   Max.   :0.3565  
+##  NA&#39;s   :84         NA&#39;s   :25       NA&#39;s   :693      NA&#39;s   :822     
+##       elf               ef             groups       concentration
+##  Min.   :0.0382   Min.   :0.0396   Min.   : 2.000   Min.   :1.0  
+##  1st Qu.:0.3255   1st Qu.:0.3592   1st Qu.: 4.000   1st Qu.:5.0  
+##  Median :0.5340   Median :0.5321   Median : 6.000   Median :6.0  
+##  Mean   :0.5346   Mean   :0.5374   Mean   : 8.975   Mean   :5.4  
+##  3rd Qu.:0.7566   3rd Qu.:0.7508   3rd Qu.:11.000   3rd Qu.:6.0  
+##  Max.   :0.9250   Max.   :1.0000   Max.   :47.000   Max.   :6.0  
+##  NA&#39;s   :546      NA&#39;s   :25       NA&#39;s   :1357     NA&#39;s   :935  
+##     western           eeurop         lamerica          ssafrica     
+##  Min.   :0.0000   Min.   :0.000   Min.   :0.00000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:0.00000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.000   Median :0.00000   Median :0.0000  
+##  Mean   :0.2346   Mean   :0.129   Mean   :0.05527   Mean   :0.1858  
+##  3rd Qu.:0.0000   3rd Qu.:0.000   3rd Qu.:0.00000   3rd Qu.:0.0000  
+##  Max.   :1.0000   Max.   :1.000   Max.   :1.00000   Max.   :1.0000  
+##                                                                     
+##       asia           sixties         seventies         eighties    
+##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:0.000  
+##  Median :0.0000   Median :0.0000   Median :0.0000   Median :0.000  
+##  Mean   :0.3209   Mean   :0.1198   Mean   :0.1633   Mean   :0.208  
+##  3rd Qu.:1.0000   3rd Qu.:0.0000   3rd Qu.:0.0000   3rd Qu.:0.000  
+##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.000  
+##                                                                    
+##     coldwar       prevcivilwaronset   firstonset      violentmilitant
+##  Min.   :0.0000   Min.   :0.000     Min.   :0.00000   Min.   :0.000  
+##  1st Qu.:0.0000   1st Qu.:0.000     1st Qu.:0.00000   1st Qu.:0.000  
+##  Median :1.0000   Median :0.000     Median :0.00000   Median :1.000  
+##  Mean   :0.5154   Mean   :0.415     Mean   :0.01484   Mean   :0.675  
+##  3rd Qu.:1.0000   3rd Qu.:1.000     3rd Qu.:0.00000   3rd Qu.:1.000  
+##  Max.   :1.0000   Max.   :4.000     Max.   :1.00000   Max.   :1.000  
+##                                                                      
+##   multiplecws       population           GDP2005           GDPpc2005    
+##  Min.   :0.0000   Min.   :    272.2   Min.   :     225   Min.   :  199  
+##  1st Qu.:0.0000   1st Qu.:  10183.3   1st Qu.:   27930   1st Qu.: 1245  
+##  Median :0.0000   Median :  33969.3   Median :  133336   Median : 3262  
+##  Mean   :0.2528   Mean   : 127721.2   Mean   :  600587   Mean   : 7893  
+##  3rd Qu.:1.0000   3rd Qu.:  68082.1   3rd Qu.:  640077   3rd Qu.:11635  
+##  Max.   :1.0000   Max.   :1284823.1   Max.   :12564300   Max.   :58908  
+##                                                                         
+##    GDPpc2011          ironsteel        militarySpend      
+##  Min.   :   89.09   Min.   :    -9.0   Min.   :       -9  
+##  1st Qu.:  758.18   1st Qu.:     0.0   1st Qu.:   234000  
+##  Median : 2113.76   Median :   735.5   Median :  1372049  
+##  Mean   : 5236.28   Mean   : 10606.4   Mean   : 12198110  
+##  3rd Qu.: 5912.04   3rd Qu.: 11495.0   3rd Qu.:  5446060  
+##  Max.   :58908.16   Max.   :355790.0   Max.   :495326000  
+##                     NA&#39;s   :20         NA&#39;s   :20         
+##   militaryPPL         energy           totalPop          urbanPop     
+##  Min.   :  -9.0   Min.   :      0   Min.   :    273   Min.   :     0  
+##  1st Qu.:  55.0   1st Qu.:   9015   1st Qu.:  10637   1st Qu.:  1662  
+##  Median : 174.0   Median :  42628   Median :  34492   Median :  6989  
+##  Mean   : 408.7   Mean   : 293354   Mean   : 126153   Mean   : 24477  
+##  3rd Qu.: 450.0   3rd Qu.: 238101   3rd Qu.:  69171   3rd Qu.: 20637  
+##  Max.   :4750.0   Max.   :5529642   Max.   :1303720   Max.   :710800  
+##  NA&#39;s   :20       NA&#39;s   :20        NA&#39;s   :20        NA&#39;s   :20      
+##       cinc              polity           polity2            year_1    
+##  Min.   :0.000017   Min.   :-88.000   Min.   :-10.000   Min.   :1960  
+##  1st Qu.:0.001877   1st Qu.: -7.000   1st Qu.: -6.000   1st Qu.:1979  
+##  Median :0.005260   Median :  5.000   Median :  5.000   Median :1990  
+##  Mean   :0.018490   Mean   : -1.752   Mean   :  2.357   Mean   :1987  
+##  3rd Qu.:0.018356   3rd Qu.:  9.000   3rd Qu.:  9.000   3rd Qu.:1997  
+##  Max.   :0.215444   Max.   : 10.000   Max.   : 10.000   Max.   :2003  
+##  NA&#39;s   :20         NA&#39;s   :61        NA&#39;s   :105       NA&#39;s   :1213  
+##      year_2          country.y                   group1    
+##  Min.   :1960   -99       : 734   KURDS             : 117  
+##  1st Qu.:1979   BURMA     : 134   INDIGENOUS PEOPLES:  90  
+##  Median :1990   INDIA     : 121   SOUTHERNERS       :  64  
+##  Mean   :1987   ETHIOPIA  :  79   HUNGARIANS        :  56  
+##  3rd Qu.:1997   YUGOSLAVIA:  73   ASSAMESE          :  44  
+##  Max.   :2003   (Other)   :1554   (Other)           :2324  
+##  NA&#39;s   :1213   NA&#39;s      :1213   NA&#39;s              :1213  
+##     numcode          region         autlost           belief     
+##  Min.   :  203   Min.   :0.000   Min.   :-99.00   Min.   :-99.0  
+##  1st Qu.:34504   1st Qu.:2.000   1st Qu.:-99.00   1st Qu.:-99.0  
+##  Median :55102   Median :3.000   Median :  1.00   Median :  0.0  
+##  Mean   :52453   Mean   :3.365   Mean   :-25.83   Mean   :-26.5  
+##  3rd Qu.:75014   3rd Qu.:6.000   3rd Qu.:  2.00   3rd Qu.:  3.0  
+##  Max.   :91001   Max.   :7.000   Max.   :  4.00   Max.   :  3.0  
+##  NA&#39;s   :1213    NA&#39;s   :1213    NA&#39;s   :1213     NA&#39;s   :1213   
+##     catness           custom           ethnog            gc2        
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  8.70   Median :  0.00   Median :  1.00   Median :  1.00  
+##  Mean   :-35.91   Mean   :-27.12   Mean   :-37.49   Mean   :-37.87  
+##  3rd Qu.: 12.70   3rd Qu.:  1.00   3rd Qu.:  1.00   3rd Qu.:  1.00  
+##  Max.   : 20.00   Max.   :  1.00   Max.   :  1.00   Max.   :  2.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##       gc7              gc9              gc10             gc11       
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.00   Median :  2.00   Median :  1.00   Median :-99.00  
+##  Mean   :-50.32   Mean   :-37.96   Mean   :-36.56   Mean   :-51.28  
+##  3rd Qu.:  1.00   3rd Qu.:  3.00   3rd Qu.:  4.00   3rd Qu.:  2.00  
+##  Max.   :  3.00   Max.   :  3.00   Max.   :  5.00   Max.   :  4.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##     groupcon           lang           polstat            race       
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  3.00   Median :  1.00   Median :  2.00   Median :  0.00  
+##  Mean   :-25.07   Mean   :-37.76   Mean   :-37.08   Mean   :-37.58  
+##  3rd Qu.:  3.00   3rd Qu.:  1.00   3rd Qu.:  3.00   3rd Qu.:  1.00  
+##  Max.   :  3.00   Max.   :  3.00   Max.   :  8.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##       reg1             reg2             reg5           regional     
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  0.00   Median :  0.00   Median :  0.00   Median :  1.00  
+##  Mean   :-37.64   Mean   :-38.04   Mean   :-38.09   Mean   :-37.52  
+##  3rd Qu.:  1.00   3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  1.00  
+##  Max.   :  1.00   Max.   :  1.00   Max.   :  1.00   Max.   :  1.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##      relig             sepx           ecdifxx          ecdis       
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.0   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.0   1st Qu.:-99.00  
+##  Median :  0.00   Median :  3.00   Median :  0.0   Median :  0.00  
+##  Mean   :-38.08   Mean   :-25.24   Mean   :-31.3   Mean   :-45.74  
+##  3rd Qu.:  0.00   3rd Qu.:  3.00   3rd Qu.:  3.0   3rd Qu.:  2.00  
+##  Max.   :  1.00   Max.   :  3.00   Max.   :  4.0   Max.   :  4.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    NA&#39;s   :1213    
+##     poldifx1         poldifxx          poldis           polres      
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  0.00   Median :  1.00   Median :  0.00   Median :-99.00  
+##  Mean   :-29.91   Mean   :-31.09   Mean   :-45.73   Mean   :-70.39  
+##  3rd Qu.:  2.00   3rd Qu.:  2.00   3rd Qu.:  2.00   3rd Qu.:  0.00  
+##  Max.   :  2.00   Max.   : 99.00   Max.   :  4.00   Max.   : 16.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##      gojpa           org1st3          org1st4          org1st6      
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.00   Median :  0.00   Median :  0.00   Median :  0.00  
+##  Mean   :-72.65   Mean   :-40.14   Mean   :-40.94   Mean   :-41.07  
+##  3rd Qu.:  1.00   3rd Qu.:  1.00   3rd Qu.:  1.00   3rd Qu.:  0.00  
+##  Max.   :  5.00   Max.   :  3.00   Max.   :  3.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##     org1st7          org1st8          org1st11         org2st3      
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  0.00   Median :  0.00   Median :  0.00   Median :-99.00  
+##  Mean   :-41.56   Mean   :-41.33   Mean   :-41.34   Mean   :-58.93  
+##  3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00  
+##  Max.   :  3.00   Max.   :  2.00   Max.   :  2.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##     org2st4         org2st6          org2st7          org2st8      
+##  Min.   :-99.0   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.0   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.0   Median :-99.00   Median :-99.00   Median :-99.00  
+##  Mean   :-58.9   Mean   :-59.79   Mean   :-59.84   Mean   :-59.84  
+##  3rd Qu.:  0.0   3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00  
+##  Max.   :  3.0   Max.   :  3.00   Max.   :  2.00   Max.   :  2.00  
+##  NA&#39;s   :1213    NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##     org2st11         org3st3          org3st4         org3st6      
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.0   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.0   1st Qu.:-99.00  
+##  Median :-99.00   Median :-99.00   Median :-99.0   Median :-99.00  
+##  Mean   :-59.89   Mean   :-77.63   Mean   :-77.6   Mean   :-77.63  
+##  3rd Qu.:  0.00   3rd Qu.:-99.00   3rd Qu.:-99.0   3rd Qu.:-99.00  
+##  Max.   :  2.00   Max.   :  1.00   Max.   :  1.0   Max.   :  2.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    NA&#39;s   :1213    
+##     org3st7          org3st8          org3st11          adtype      
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.00   Median :-99.00   Median :-99.00   Median :-99.00  
+##  Mean   :-77.64   Mean   :-77.63   Mean   :-77.69   Mean   :-92.08  
+##  3rd Qu.:-99.00   3rd Qu.:-99.00   3rd Qu.:-99.00   3rd Qu.:-99.00  
+##  Max.   :  2.00   Max.   :  2.00   Max.   :  1.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##     intercon         nocomcon           prot            rep01       
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :  0.00   Median :  0.00   Median :  0.00   Median :-99.00  
+##  Mean   :-26.85   Mean   :-26.68   Mean   :-36.92   Mean   :-69.61  
+##  3rd Qu.:  1.00   3rd Qu.:  1.00   3rd Qu.:  2.00   3rd Qu.:  0.00  
+##  Max.   :  1.00   Max.   :  1.00   Max.   :  5.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##      rep02            rep03            rep06            rep07       
+##  Min.   :-99.00   Min.   :-99.00   Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.00   Median :-99.00   Median :-99.00   Median :-99.00  
+##  Mean   :-69.61   Mean   :-69.63   Mean   :-69.54   Mean   :-69.66  
+##  3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00   3rd Qu.:  0.00  
+##  Max.   :  3.00   Max.   :  3.00   Max.   :  3.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213     NA&#39;s   :1213    
+##      rep11            rep12       
+##  Min.   :-99.00   Min.   :-99.00  
+##  1st Qu.:-99.00   1st Qu.:-99.00  
+##  Median :-99.00   Median :-99.00  
+##  Mean   :-69.48   Mean   :-69.55  
+##  3rd Qu.:  0.00   3rd Qu.:  0.00  
+##  Max.   :  3.00   Max.   :  3.00  
+##  NA&#39;s   :1213     NA&#39;s   :1213</code></pre>
+<pre class="r"><code>cor(separatistData$militarySpend, separatistData$GDPpc2005, use=&quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.4774947</code></pre>
+<pre class="r"><code>cov(separatistData$militarySpend, separatistData$GDPpc2005, use=&quot;complete.obs&quot;) </code></pre>
+<pre><code>## [1] 1.95685e+11</code></pre>
+<pre class="r"><code>plot(separatistData$militarySpend, separatistData$GDPpc2005)</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>How to interpret covariance / correlation between two variables?</p>
+<pre class="r"><code>X = matrix(c(1,0.5,3,7,9,6,2,8,4), nrow=3, ncol=3, byrow=FALSE)
+X &lt;- data.frame(X)
+colMeans(X)</code></pre>
+<pre><code>##       X1       X2       X3 
+## 1.500000 7.333333 4.666667</code></pre>
+<pre class="r"><code>cov(X)</code></pre>
+<pre><code>##       X1        X2        X3
+## X1  1.75 -1.750000 -1.500000
+## X2 -1.75  2.333333  3.666667
+## X3 -1.50  3.666667  9.333333</code></pre>
+<pre class="r"><code>cor(X)</code></pre>
+<pre><code>##            X1         X2         X3
+## X1  1.0000000 -0.8660254 -0.3711537
+## X2 -0.8660254  1.0000000  0.7857143
+## X3 -0.3711537  0.7857143  1.0000000</code></pre>
+<pre class="r"><code>X</code></pre>
+<pre><code>##    X1 X2 X3
+## 1 1.0  7  2
+## 2 0.5  9  8
+## 3 3.0  6  4</code></pre>
+<pre class="r"><code>cov(X$X3, X$X2)</code></pre>
+<pre><code>## [1] 3.666667</code></pre>
+<pre class="r"><code>cor(X$X3, X$X2)</code></pre>
+<pre><code>## [1] 0.7857143</code></pre>
+<pre class="r"><code>plot(X$X2, X$X3)</code></pre>
+<p><img src="lab4_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="bivariate-regressions" class="section level2">
+<h2><span class="header-section-number">3.2</span> Bivariate Regressions</h2>
+</div>
+</div>
 <div id="using-r-to-do-statistical-analysis" class="section level1">
-<h1><span class="header-section-number">1</span> Using R to do statistical analysis</h1>
+<h1><span class="header-section-number">4</span> Using R to do statistical analysis</h1>
 <p>This week we have been covering the logic of regression and hypothesis testing, from a theoretical and research question building perspective. In the lab, we want to put these concepts into practice.</p>
 <p>As a reminder, we’ve discussed hypothesis testing in terms of expecting an independent variable <span class="math inline">\(x\)</span> and its effects on a dependent variable <span class="math inline">\(y\)</span>. So we can think of this relationship as resembling:</p>
 <p><span class="math display">\[Y = \alpha + \beta_1 X\]</span> Where <span class="math inline">\(\beta\)</span> is the coefficient that represents how much a unit change in independent variable <span class="math inline">\(X\)</span> results in a <span class="math inline">\(\beta\)</span> unit change in the dependent variable <span class="math inline">\(Y\)</span>.</p>
-<pre class="r"><code>rm(list=ls())</code></pre>
 </div>
-<div id="bivariate-regressions" class="section level1">
-<h1><span class="header-section-number">2</span> Bivariate Regressions</h1>
+<div id="bivariate-regressions-1" class="section level1">
+<h1><span class="header-section-number">5</span> Bivariate Regressions</h1>
 <p>In this section, we will be going over how to perform ordinary least squares (OLS) regerssions in R, using the same example of political ideology and its effects on a voter’s feelings towards Obama.</p>
 <p><strong>The Hypothesis</strong>: Voters who are recorded as more ‘democratic’ on the political ideology scale, are more likely to have positive feelings towards Obama.</p>
 <div id="setting-up-the-data" class="section level2">
-<h2><span class="header-section-number">2.1</span> Setting up the data</h2>
+<h2><span class="header-section-number">5.1</span> Setting up the data</h2>
 <ul>
 <li>The data is from ANES 2016 Pilot Study <a href="https://electionstudies.org/data-center/anes-2016-pilot-study/">Source</a></li>
 <li>The <strong>dependent variable</strong> is <code>ftobama</code> which measures an individual’s feelings towards obama - the ratings are between 0 to 100 degrees, where ratings between 50 and 100 indicate favorable feelings, and 0 to 50 indicates that the participant does not feel favorable towards Obama.</li>
@@ -446,7 +964,7 @@ div.tocify {
 </ol>
 <pre class="r"><code>anes16 &lt;- read.csv(&quot;anes_pilot_2016.csv&quot;) # Loading in the data</code></pre>
 <div id="check-the-dependent-variable" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> Check the dependent variable</h3>
+<h3><span class="header-section-number">5.1.1</span> Check the dependent variable</h3>
 <ol start="2" style="list-style-type: decimal">
 <li>Check the codebook and use <code>summary()</code> on the variables to make sure the structure of the data is as expected (i.e. that <code>ftobama</code> should range from 0 to 100, and <code>pid7</code> should range from 1 - 7.)</li>
 </ol>
@@ -483,7 +1001,7 @@ summary(anes16$ftobama)</code></pre>
 <p>And if you check the <code>summary()</code> for <code>ftobama</code>, you will note that now that min is 0, the max is 100, as we expect, and there are 2 NAs.</p>
 </div>
 <div id="check-the-independent-variable" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> Check the independent variable</h3>
+<h3><span class="header-section-number">5.1.2</span> Check the independent variable</h3>
 <p>According to the codebook, aside from the values 1 to 7 which represent the spectrum between strong democrat and strong republican, there is an eighth category for “Not sure”. And it seems like there are 41 individuals who answered ‘Not sure’. Using <code>summary()</code> and <code>table()</code> on pid7 confirms this.</p>
 <pre class="r"><code>summary(anes16$pid7)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
@@ -506,7 +1024,7 @@ table(anes16$pid7)</code></pre>
 </div>
 </div>
 <div id="running-the-ols" class="section level2">
-<h2><span class="header-section-number">2.2</span> Running the OLS</h2>
+<h2><span class="header-section-number">5.2</span> Running the OLS</h2>
 <p>To run an ordinary least squares regression, we can use the <code>lm()</code> function to create a linear regression model. If you use <code>?lm</code> you can see more details about how <code>lm()</code> works but here we use a simple setup:</p>
 <ul>
 <li>lm(y ~ x, data)</li>
@@ -535,7 +1053,7 @@ summary(model1) </code></pre>
 ## Multiple R-squared:  0.5228, Adjusted R-squared:  0.5224 
 ## F-statistic:  1295 on 1 and 1182 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div id="interpretation" class="section level3">
-<h3><span class="header-section-number">2.2.1</span> Interpretation</h3>
+<h3><span class="header-section-number">5.2.1</span> Interpretation</h3>
 <p>The output for <code>summary()</code> shows the original <code>lm()</code> formula used, the summary statistics for the residuals, the coefficients for the predictor variables used, and performance measures for the model more generally.</p>
 <ul>
 <li>The coefficient is the <span class="math inline">\(\beta\)</span> value for <span class="math inline">\(X\)</span> which we discussed in the beginning, it represents how much a unit change in independent variable <span class="math inline">\(X\)</span> results in a <span class="math inline">\(\beta\)</span> unit change in the dependent variable <span class="math inline">\(Y\)</span>.</li>
@@ -550,7 +1068,7 @@ summary(model1) </code></pre>
 </div>
 </div>
 <div id="multivariate-regressions" class="section level1">
-<h1><span class="header-section-number">3</span> Multivariate Regressions</h1>
+<h1><span class="header-section-number">6</span> Multivariate Regressions</h1>
 <p>Next, we move on to multivariate regressions, where we are comparing the effects of multiple independent variables on one dependent variable. Whereas before in the bivariate analysis we only had one <span class="math inline">\(x\)</span>, this time we can have multiple <span class="math inline">\(x\)</span>s.</p>
 <p><span class="math display">\[Y = \alpha + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4\]</span></p>
 <p>This time we include three more independent variables: 1. <code>faminc</code> 2. <code>srv_spend</code> 3. <code>equal_pay</code></p>

@@ -498,9 +498,6 @@ One of the most common functions of R is the use of arithmetic operators, here i
 - The order of operations is the same as the convention in math: parenthesis, exponents, multiplication and division (from left to right), addition and subtraction (from left to right); also known as PEMDAS.
 - when in doubt use parentheses!
 
-
-```{r}
-tabl <- "
 | Operator | Description    |
 |----------|----------------|
 | +        | addition       |
@@ -510,9 +507,6 @@ tabl <- "
 | ^ or **  | exponentiation | 
 | x %% y   | 5 %% 2 is 1    |
 | x %/% y  | 5 %/% 2 is 2   |
-"
-cat(tabl)
-```
 
 ## Logical Operators
 
@@ -526,20 +520,6 @@ Another common operator type are logical operators
 | >=       | Greater than or equal to |
 | ==       | Equal to each other      |
 | !=       | Not equal to each other  |
-
-```{r}
-tabl2 <- "
-| Operator | Description              |
-|----------|--------------------------|
-| <        | Less than                |
-| >        | Great than               |
-| <=       | Less than or equal to    |
-| >=       | Greater than or equal to |
-| ==       | Equal to each other      |
-| !=       | Not equal to each other  |
-"
-
-```
 
 ## Help
 

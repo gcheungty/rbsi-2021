@@ -62,16 +62,25 @@ https://cran.r-project.org/doc/manuals/R-intro.pdf
 ### Calculations, Data Elements, and Variable Assignment
 
 ```{r}
+3 + 3
 1 + 2 
 16 / 4
 ```
 
 ```{r}
+x <- 9 
 some_numbers <- 5
 ```
 
 ```{r}
 2.2 * some_numbers
+2.2 * 5
+
+more_numbers <- c(1, 2, 3, 4, 5)
+more_numbers * 5
+1 * 5
+2 * 5
+3 * 5
 ```
 
 ```{r}
@@ -93,10 +102,14 @@ Some_numbers
 ```
 
 > Syntax: Writing and commenting in-line
+# 
 
-```{r}
+```{r, error = TRUE}
 x <- 5 # Maximum score for first homework
 x2 <- 10 # Total score for first and second homework 
+x3 # testing <- 3
+x3 # <- 5
+x3 
 ```
 
 
@@ -159,14 +172,17 @@ TRUE
 FALSE
 T
 F
+freshmen_status <- TRUE
 ```
 
 **4. Factor**
 
 ```{r}
 factor.example <- as.factor(c(rep("Freshman",3), rep("Sophomore",4), rep("Junior",6), rep("Senior", 2)))
-levels(factor.example)
+factor.example
+levels(factor.example) <- c("Freshman", "Sophomore", "Junior", "Senior")
 factor.example[1]
+
 factor.example2 <- as.factor(c(rep(1,3), rep(2,4), rep("Junior",6), rep("Senior", 2)))
 factor.example2
 levels(factor.example2)
@@ -181,20 +197,26 @@ factor.example2[1]
 5 + "five"
 ```
 
+is.numeric
+is.character
+is.factor()
+str()
 
-```{r}
+```{r, error = TRUE}
 is.numeric(whole.number)
 is.numeric(string.one)
 str(whole.number)
 class(string.one)
+class(whole.number)
+string.one + whole.number
 ```
 
 **Changing data types: **
 
 
 ```{r}
-factor.example + whole.number
-as.numeric(factor.example) + 6
+factor.example + 5
+as.numeric(factor.example) + 4
 ```
 
 ```{r}
@@ -223,7 +245,7 @@ weights <- c(10, 15, 20, 60, 65)
 weights
 animals <- c("mouse", "cat", "dog")
 animals
-c(weights, animals)
+c(weights, animals) #typecasting 
 ```
 
 
@@ -259,9 +281,10 @@ weights
 ## Matrices
 
 
-```{r}
+```{r, error = TRUE}
 1:12
-matrix (1:12, nrow = 4, ncol = 3)
+matrix1 <- matrix (1:12, nrow = 4, ncol = 3)
+matrix1$[,1]
 ```
 
 ```{r}
@@ -285,6 +308,7 @@ my.data$age # the '$' lets R know you want to access something inside of my.data
 
 ```{r}
 data <- read.csv("excel-employee.csv")
+View(data)
 datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T))
 ```
 
@@ -320,6 +344,7 @@ datatable(data, rownames = FALSE, filter="top", options = list(pageLength = 5, s
 ```{r}
 ?matrix
 ?list
+?c
 ```
 
 
@@ -347,24 +372,29 @@ email == email2
 ## Syntax: And vs or 
 
 ```{r}
-x == 600 & y == 700 # & == 'and this is also true'
+x <- 200
+x == 600
+x == 700
+x == 600 & x == 700 # & == 'and this is also true'
 ```
 
 ```{r}
-x == 1000 | y == 7 # | == 'this, or this, or both'
+y <- 5
+x == 200 | y == 7
+x == 200 & y == 7
 ```
 
 ### Concatenation, Seq, Rep
 
 ```{r, error = TRUE}
+a + b
 'a' + 'b' # Doesn't work
-string.one <- "Hello"
-string.two <- "World"
-c(string.one, string.two)
-c(1,2,3,4,5)
-paste(string.one, string.two, sep = " ") # Default sep input 
-paste0(string.one, string.two) # Eliminates spacing
-paste(string.one, whole.number) # Typecasts numeric
+'ab'
+c('a', 'b')
+paste('a', 'b')
+paste0('a', 'b')
+c("John", "Smith", "Jane", "Doe")
+c(paste("John", "Smith"), paste("Jane", "Doe"))
 ```
 
 ```{r}
@@ -376,13 +406,14 @@ x <- c(1, "a", 2, "b") # but they do have to be the same type!
 
 
 ```{r}
-x <- c(1,2,3,4,5) # the c stands for concatenate
-x <- seq(from = 1, to = 5, by = 1) # same as above
-x <- 1:5 # same as above
-x <- rep(1, times = 10)
+c(1,2,3,4,5) # the c stands for concatenate
+seq(from = 1, to = 5, by = 1)
+seq(from = 1, to = 10, by = 2)
+1:5
+1:10
+rep(1, times = 100)
 
-x <- factor(LETTERS[1:4]); names(x) <- letters[1:4]
-x
+x <- c("a", "b", "c", "d")
 rep(x, 2)
 ```
 
@@ -395,7 +426,7 @@ x.vector <- rnorm(100, 5, 1) # x is a vector of 100 numbers, dont worry about rn
 x.vector
 df <- data.frame(A = rep(1:3, times = 10), B = rep(4:6, times = 10), C = rep(7:9, times = 10))
 y.data <- as.data.frame(lapply(df, function(cc) cc[ sample(c(TRUE, NA), prob = c(0.80, 0.20), size = length(cc), replace = TRUE) ]))
-datatable(y.data, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+View(y.data)
 ```
 
 ```{r}
@@ -405,7 +436,10 @@ View(y.data)
 
 ```{r}
 length(x.vector)
-x.vector
+class(x.vector)
+str(x.vector)
+
+str(y.data)
 head(y.data)
 colnames(y.data)
 ```
@@ -418,6 +452,7 @@ summary(y.data$A)
 summary(y.data$B)
 table(y.data$B)
 table(y.data$C)
+table(x.vector)
 ```
 
 *** 
@@ -426,4 +461,5 @@ table(y.data$C)
 
 ```{r}
 data <- mtcars
+View(data)
 ```

@@ -16,6 +16,144 @@ output:
     css: "style.css"
 ---
 
+This week in methods class, we covered different types of hypothesis tests, depending on the level of measurement for the independent and dependent variables. 
+
+![Hypothesis Testing](hypothesis-testing.png)
+
+|                    | Individual Variable Type                           |
+|                    | Categorical              | Continuous              |
+|------|-------------|--------------------------|-------------------------|
+| DV.  | Categorical | Tabular Analysis         | Probit / Logit          |
+| Type | Continuous  | Difference of Means      | Correlation Coefficient |
+
+The agenda in this lab is to demonstrate and execute a basic version of the tests discussed, we will be covering the following: 
+
+1. Chi-squared test 
+2. T-tests 
+3. Correlation vs Covariance
+4. Bivariate Linear Regression / Ordinary Least Squares (OLS) 
+
+A reminder about hypothesis testing : 
+
+- $H_0$:  the variables are independent, there is no relationship between the two variables. Knowing the value of one variable does not help to predict the value of the other variable
+- $H_1$: the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable 
+
+# Chi-squared $x^2$ test
+
+Remember, a chi-square test typically is used to compare two categorical variables. It works by comparing the observed frequencies to the expected frequencies if there was no relationship between the two variables. 
+
+You can do it by hand, and Dr. Siegel goes through this in Lecture 2 Part 1, on slide 54 onwards, when he goes through an example of how to conduct a $x^2$ test by hand. I will show you how to do this in R as well, using the function `chisq.test()`.
+
+I'm going to run a hypothetical test to see if there is a difference in number of democracies in different regions of the world - it's hypothetical because there are historical and structural reasons that could explain why some regions have more democracies than others, but we will assume that we want to test this hypothesis using a chi-square test. 
+
+First, we always have to check and prepare the data to see if it needs to be cleaned
+- It seems that the variable `region` has 6 categories (0, 2, 3, 5, 6, 7), but it is not clear what each of these regions are. 
+- There are two ways to deal with this, either to check the codebook, or if there are also regional dummy variables, to crosscheck region against those dummies - which is what I do in the code below to create a new variable `region2` which has the regions specified as a factor / character variable. 
+
+```{r}
+load("separatistData.RData")
+summary(separatistData$democracy)
+table(separatistData$region) # What do these values mean? Either check codebook, or crosscheck for regional dummy variables
+separatistData$region2 <- ifelse(separatistData$eeurop == 1, "eeurope", 
+ifelse(separatistData$lamerica == 1, "lamerica", 
+ifelse(separatistData$ssafrica == 1, "ssafrica", 
+ifelse(separatistData$asia == 1, "asia", 
+ifelse(separatistData$western == 1, "western", 
+"others")))))
+table(separatistData$region, separatistData$region2)
+```
+
+```{r}
+chisq.test(separatistData$region2, separatistData$democracy)
+```
+
+- the p-value is 0.001, so we can reject the null hypothesis at the 0.001 significance level.
+  - Interpreting this, it indicates that the number of democratic countries is significantly different across regions
+- For more on some interesting ways to present a contingency table and the difference between the observed and expected values, see [Antoine Soetewey's](https://statsandr.com/blog/chi-square-test-of-independence-in-r/) blog for some examples.
+
+# T-test or differences in means test
+
+The t-test or difference of means test is is used to determine if the null hypothesis (thaat the means of two samples are equal) can be rejected and that we can infer that the differences between the two samples are statistically significant). It is similar to the chi-squared test, but is better employed when the dependent variable is continuous and the independent variable categorical. 
+
+Examples: 
+
+- Do republicans and democrats have different feelings toward the military?
+  - independent variable: political affiliation (categorical)
+  - dependent variable: feeling thermometer (continuous)
+- Does college-level literacy vary across states in the U.S.?
+  - independent variable: Geographical region (categorical)
+  - Dependent variable: percentage of college educated adults 
+
+The difference in means test is referenced in Lecture 2, part 1, on slide 109 onwards. In R we perform the test using the function `t.test()`. Note that what the difference of means t-test, or a two-tailed t-test, concludes is whether there is a difference in means, rather than whether one mean is specifically less than or greater than the other - the latter type of test would be a one-tailed t-test, which R can also conduct, and is one of the options if you check `?t.test`. 
+
+Using data from the ANES 2012 survey
+
+```{r, include = FALSE}
+library(haven)
+library(DT)
+anes2012 <- read_sav("~/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/anes_timeseries_2012/anes_timeseries_2012.sav")
+datatable(anes2012, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+```
+
+As always, check the variables and clean up the data. 
+
+```{r}
+summary(anes2012$ftgr_military) # Feeling thermometer should range from 0 to  100
+summary(anes2012$pid_x)
+
+anes2012$ft_military_2 <- ifelse(anes2012$ftgr_military <0, NA, anes2012$ftgr_military)
+anes2012$pid_x_2 <- ifelse(anes2012$pid_x <0, NA, anes2012$pid_x)
+```
+
+**Hypothesis**: Is the relationship between party ideology `pid_x`  and support for the military `ftgr_military` statistically significant?
+
+**Null Hypothesis:**: There is no difference in level of support for the military (proxied by feeling thermometer) between Republicans and Democrats
+
+```{r}
+t.test(anes2012$pid_x_2, anes2012$ft_military_2)
+```
+
+**Interpreting the results**: 
+
+- Confidence Interval (-77.48951, -76.37252)
+- p-value (<2.2e-16 ~ 0.001)
+
+
+# Correlation Coefficient
+
+- The correlation coefficient is the most common test of signifiance used (and taught) in statistical methods. 
+- Used when the dependent and independent variable are continuous variables
+
+
+## Covariance vs Correlation
+
+Discussion on the difference between correlation and covariance is on slide 91 of Lecture 2, part 1. 
+
+```{r}
+load("separatistData.RData")
+colnames(separatistData)
+summary(separatistData)
+cor(separatistData$militarySpend, separatistData$GDPpc2005, use="complete.obs")
+cov(separatistData$militarySpend, separatistData$GDPpc2005, use="complete.obs") 
+plot(separatistData$militarySpend, separatistData$GDPpc2005)
+```
+
+How to interpret covariance / correlation between two variables? 
+
+```{r}
+X = matrix(c(1,0.5,3,7,9,6,2,8,4), nrow=3, ncol=3, byrow=FALSE)
+X <- data.frame(X)
+colMeans(X)
+cov(X)
+cor(X)
+X
+cov(X$X3, X$X2)
+cor(X$X3, X$X2)
+plot(X$X2, X$X3)
+```
+
+## Bivariate Regressions
+
 # Using R to do statistical analysis
 
 This week we have been covering the logic of regression and hypothesis testing, from a theoretical and research question building perspective. In the lab, we want to put these concepts into practice. 
@@ -24,10 +162,6 @@ As a reminder, we've discussed hypothesis testing in terms of expecting an indep
 
 $$Y = \alpha + \beta_1 X$$ 
 Where $\beta$ is the coefficient that represents how much a unit change in independent variable $X$ results in a $\beta$ unit change in the dependent variable $Y$. 
-
-```{r}
-rm(list=ls())
-```
 
 # Bivariate Regressions 
 
