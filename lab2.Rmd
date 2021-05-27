@@ -686,3 +686,6 @@ And the best way to be more familiar with R is to play around with it! You can t
 data <- mtcars
 ```
 
+# In-class Exercises 
+
+[**Lab 2 Exercises**](lab2-exercises.html)

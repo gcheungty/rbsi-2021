@@ -15,6 +15,8 @@ output: html_document
 
 [**Intro to R**](lab2.html)
 
+  - [**Lab 2 Exercises**](lab2-exercises.html)
+
 [**Data Cleaning**]
 
 [**OLS in R**](lab4.html)
