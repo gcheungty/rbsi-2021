@@ -21,6 +21,6 @@ output: html_document
 
 [**OLS in R**](lab4.html)
 
-[**Interpreting and Graphing Results in R**]
+[**Interpreting and Graphing Results in R**](Lab5_Visualization.html)
 
 [**Research Paper Troubleshooting**]
