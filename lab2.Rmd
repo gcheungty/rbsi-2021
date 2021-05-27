@@ -688,4 +688,4 @@ data <- mtcars
 
 # In-class Exercises 
 
-[**Lab 2 Exercises**](lab2-exercises.html)
+[**Lab 2 Exercises**](lab2-ex.html)
