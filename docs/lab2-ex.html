@@ -423,8 +423,10 @@ div.tocify {
 </div>
 
 
-<div id="q" class="section level1">
-<h1><span class="header-section-number">1</span> Q</h1>
+<div id="technical-questions" class="section level1">
+<h1><span class="header-section-number">1</span> Technical Questions</h1>
+<div id="vectors" class="section level2">
+<h2><span class="header-section-number">1.1</span> Vectors</h2>
 <p>Consider the following vectors:</p>
 <pre class="r"><code>p &lt;- c(1,2,3,4)
 q &lt;- c(7,3,5,2)
@@ -432,8 +434,8 @@ r  &lt;- c(1,2)</code></pre>
 <p>What is the value of <code>p + q</code>?</p>
 <p>What is the value of <code>p + r</code>?</p>
 </div>
-<div id="q-1" class="section level1">
-<h1><span class="header-section-number">2</span> Q</h1>
+<div id="dataframes" class="section level2">
+<h2><span class="header-section-number">1.2</span> Dataframes</h2>
 <p>If:</p>
 <pre class="r"><code>Age &lt;- c(22, 25, 18, 20)
 Name &lt;- c(&quot;James&quot;, &quot;Mathew&quot;, &quot;Olivia&quot;, &quot;Stella&quot;)
@@ -445,8 +447,8 @@ Gender &lt;- c(&quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;)</code
 ## 3  18 Olivia      F
 ## 4  20 Stella      F</code></pre>
 </div>
-<div id="q-2" class="section level1">
-<h1><span class="header-section-number">3</span> Q</h1>
+<div id="data-types" class="section level2">
+<h2><span class="header-section-number">1.3</span> Data Types</h2>
 <p>If:</p>
 <pre class="r"><code>x &lt;- c(&quot;Peony&quot;, &quot;Thyme&quot;, &quot;Honeysuckle&quot;, &quot;Olive&quot;)
 z &lt;- 0:9</code></pre>
@@ -454,11 +456,41 @@ z &lt;- 0:9</code></pre>
 <pre class="r"><code>as.character(z)
 as.factor(x)</code></pre>
 </div>
-<div id="q-3" class="section level1">
-<h1><span class="header-section-number">4</span> Q</h1>
+<div id="logical-operators" class="section level2">
+<h2><span class="header-section-number">1.4</span> Logical Operators</h2>
 <pre class="r"><code>y &lt;- c(21, 4, 7, 2, 10, 5, 12, 6)</code></pre>
 <p>What is the value of:</p>
 <pre class="r"><code>y &lt; 7</code></pre>
+</div>
+</div>
+<div id="applying-to-a-dataset" class="section level1">
+<h1><span class="header-section-number">2</span> Applying to a dataset</h1>
+<p>Now we are going to try and import a dataset and examine the variables within it. - Remember to use the <code>$</code> notation to access variables / columns in a dataset.</p>
+<p>Download and load into R the UCDP Battle-Related Deaths Dataset, dyadic-level version, in <code>.csv</code> format, from the following website:</p>
+<p><a href="http://ucdp.uu.se/downloads">http://ucdp.uu.se/downloads</a></p>
+<p>We are going to use a point-and-click shortcut to load the dataset into your R for now.</p>
+<p>From the RStudio dropdown menu, select <code>File &gt; Import Dataset &gt; From text (base)</code>, (see image below if these instructions are unclear) and then from the pop-up, locate your downloaded csv file.</p>
+<div class="figure">
+<img src="load-dataset.png" alt="Load Dataset" />
+<p class="caption">Load Dataset</p>
+</div>
+<div class="figure">
+<img src="dataset-options.png" alt="Dataset options" />
+<p class="caption">Dataset options</p>
+</div>
+<p>The dataset should open automatically and you should see a similar code in your console as below:</p>
+<pre class="r"><code>ucdp.brd.dyadic.201 &lt;- read.csv(&quot;~/Downloads/ucdp-brd-dyadic-201.csv&quot;)
+View(ucdp.brd.dyadic.201)</code></pre>
+<p>We are going to examine one variable:</p>
+<ol style="list-style-type: decimal">
+<li><strong>bd_best</strong></li>
+</ol>
+<ul>
+<li>Without looking at the codebook, what format is it in? (continuous, integer, character, etc)?</li>
+<li>Calculate and provide the mean, variance, and range of bd_best.</li>
+<li>How many (if any) missing values are present in bd_best?</li>
+<li>Now check the codebook, what does bd_best measure?</li>
+</ul>
 </div>
 
 

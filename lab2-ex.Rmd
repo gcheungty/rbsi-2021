@@ -4,7 +4,7 @@ knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
  encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'MwadU.html'))})
+ output_file=file.path(dirname(input_file), out_dir, 'lab2-exercises.html'))})
 author: "Gloria Cheung"
 date: "5/18/2021"
 output: 
@@ -16,7 +16,9 @@ output:
     css: "style.css"
 ---
 
-# Q
+# Technical Questions
+
+## Vectors 
 
 Consider the following vectors: 
 
@@ -31,7 +33,7 @@ What is the value of `p + q`?
 What is the value of `p + r`?
 
 
-# Q
+## Dataframes
 
 If:
 ```{r}
@@ -46,7 +48,7 @@ then what is the R-code for getting the following output;
 data.frame(Age, Name, Gender)
 ```
 
-# Q
+## Data Types
 
 If: 
 
@@ -62,17 +64,48 @@ as.character(z)
 as.factor(x)
 ```
 
-# Q
+## Logical Operators
 
 ```{r}
 y <- c(21, 4, 7, 2, 10, 5, 12, 6)
 ```
 
-What is the value of:
+What is the value of: 
 
 ```{r, results = 'hide'}
 y < 7
 ```
 
+# Applying to a dataset
+
+Now we are going to try and import a dataset and examine the variables within it. 
+- Remember to use the `$` notation to access variables / columns in a dataset. 
+
+Download and load into R the UCDP Battle-Related Deaths Dataset, dyadic-level version, in `.csv` format, from the following website: 
+
+[http://ucdp.uu.se/downloads](http://ucdp.uu.se/downloads)
+
+We are going to use a point-and-click shortcut to load the dataset into your R for now. 
+
+From the RStudio dropdown menu, select `File > Import Dataset > From text (base)`, (see image below if these instructions are unclear) and then from the pop-up, locate your downloaded csv file. 
+
+![Load Dataset](load-dataset.png)
+
+![Dataset options](dataset-options.png)
+
+The dataset should open automatically and you should see a similar code in your console as below: 
+
+```{r, results = 'hide'}
+ucdp.brd.dyadic.201 <- read.csv("~/Downloads/ucdp-brd-dyadic-201.csv")
+View(ucdp.brd.dyadic.201)
+```
+
+We are going to examine one variable: 
+
+1. **bd_best**
+  - Without looking at the codebook, what format is it in? (continuous, integer, character, etc)? 
+  - Calculate and provide the mean, variance, and range of bd_best. 
+  - How many (if any) missing values are present in bd_best? 
+  - Now check the codebook, what does bd_best measure? 
 
 
