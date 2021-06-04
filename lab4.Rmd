@@ -29,9 +29,9 @@ The agenda in this lab is to demonstrate and execute a basic version of the test
 
 **A reminder about hypothesis testing :**
 
-- $H_0$: *the null hypothesis*
+$H_0$: *the null hypothesis*
   - any difference observed is just the result of random chance
-- $H_1$: *the research hypothesis* 
+$H_1$: *the research hypothesis* 
   - the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable
 - we want to *reject the null hypothesis*
 

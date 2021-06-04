@@ -436,17 +436,7 @@ div.tocify {
 <li>Bivariate Linear Regression / Ordinary Least Squares (OLS) - Correlation regression</li>
 </ol>
 <p><strong>A reminder about hypothesis testing :</strong></p>
-<ul>
-<li><span class="math inline">\(H_0\)</span>: <em>the null hypothesis</em>
-<ul>
-<li>any difference observed is just the result of random chance</li>
-</ul></li>
-<li><span class="math inline">\(H_1\)</span>: <em>the research hypothesis</em>
-<ul>
-<li>the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable</li>
-</ul></li>
-<li>we want to <em>reject the null hypothesis</em></li>
-</ul>
+<p><span class="math inline">\(H_0\)</span>: <em>the null hypothesis</em> - any difference observed is just the result of random chance <span class="math inline">\(H_1\)</span>: <em>the research hypothesis</em> - the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable - we want to <em>reject the null hypothesis</em></p>
 <div id="chi-squared-x2-test" class="section level1">
 <h1><span class="header-section-number">1</span> Chi-squared <span class="math inline">\(x^2\)</span> test</h1>
 <p>A chi-square test typically is used to compare two categorical variables. It works by comparing the observed frequencies to the expected frequencies if there was no relationship between the two variables.</p>
@@ -459,14 +449,8 @@ div.tocify {
 <li>The codebook and data will be on sakai</li>
 </ul>
 <pre class="r"><code>library(sjlabelled)
-library(haven) # for opening .sav files</code></pre>
-<pre><code>## 
-## Attaching package: &#39;haven&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:sjlabelled&#39;:
-## 
-##     as_factor, read_sas, read_spss, read_stata, write_sas,
-##     zap_labels</code></pre>
-<pre class="r"><code>anes2012 &lt;- read_sav(&quot;~/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/anes_timeseries_2012/anes_timeseries_2012.sav&quot;)</code></pre>
+library(haven) # for opening .sav files
+anes2012 &lt;- read_sav(&quot;~/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/anes_timeseries_2012/anes_timeseries_2012.sav&quot;)</code></pre>
 <ul>
 <li>You always want to start by checking and preparing the data.
 <ul>
