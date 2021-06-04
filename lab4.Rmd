@@ -248,6 +248,61 @@ Here we can make three inferences about the results:
 2. As respondents' religious practices shift from important to not important, their feeling towards the military decreases by 7.08 units on average, and this is also significant at the 0.001 level. 
 3. Family income has no statistically significant effect on one's feelings towards the military. 
 
+## Putting it together
+
+How can we use these regression predictions to develop a better understanding of the possible effects of political ideology on feelings towards the military? How meaningful are the effects of `+1.26` units from political ideology, or `-7.08` from (lack of) religious practices? 
+
+### What does the intercept mean? 
+
+Recall the results from model1: 
+```{r}
+summary(model1)
+```
+
+The intercept (often labeled the constant, or $\alpha$) is the expected mean value of Y when all X=0. 
+- Hence, in the model above, the intercept (75.904) indicates the baseline mean level of respondent's feelings towards the military, if `pid_x` is held at the lowest level (0). 
+
+The estimate, (often labeled the coeffcient, or $\beta$) is the expected impact of X on Y for every additional unit of X
+- Hence, in the model above, the coefficient (1.2961) indicates the upward slope or additional increase in Y, for every unit increase in X
+
+```{r}
+library(ggplot2)
+ggplot(anes2012, aes(x = pid_x, y = ft_military_2)) + geom_point(alpha = 0.005) + 
+    geom_smooth(method='lm')
+```
+
+
+### Coefficient Comparison
+
+Can we compare between different kinds of coefficients? 
+- Are the results from `pid_x` and `relig_import_2` equally significant or meaningful in **fit2**?
+- In the model above, the estimated coefficient for pid_x is 1.25808, which seems sizeably smaller than that of relig_import_2 which is -7.08419. 
+  - However, this doesn't take into account the range and values of pid_x, which ranges from 1 to 7. Compared to relig_import_2, which is only 1 - 2. 
+  - So this means that between a respondent who is strongly democrat (pid_x = 1), and a respondent who is strongly republican (pid_x = 7), the difference in predicted level of feelings towards the military is 8.80656, which arguably is greater than the impact of relig_import_2
+
+
+### Model goodness of fit and $R^2$
+
+- You might remember this from slide 57 in Week 2, Pt 2 of the lecture slides. 
+- $R^2$ is the proportion of the variance in the dependent variable that our model explains.
+  - It ranges from 0-1.
+  - The closer our R2 is to 1, the more of the variation our model explains.
+  - The closer our R2 is to 1, the better our model is at predicting the dependent variable.
+
+From the `summary()` function, when used on `lm()`, we get some information on the goodness of fit of the model as well. In fit2 above, for example, the $R^2$ value is 0.0435, which indicates that though the variables we have identified may be significant, they may not be key explanations for the dependent variable of interest. 
+
+
+Talking about the intercept, Rsquare, and confidence intervals 
+
+# Making Tables
+
+Lastly, we are going to go over how to present the results you get from a regression, into the kinds of tables you often see in papers. We use a package called `stargazer` to present the results. 
+```{r}
+library(stargazer)
+stargazer(model1, fit2, type = "html", title="Effects of Political Ideology on Feelings Towards the Military", digits=1, out="table1.htm", style = "ajps")
+```
+
+
 # Glossary
 
 The functions we've gone over today are: 
@@ -255,3 +310,4 @@ The functions we've gone over today are:
 1. `chisq.test()`
 2. `t.test()`
 3. `lm()` + `summary()`
+4. `stargazer()`
