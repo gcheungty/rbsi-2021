@@ -32,14 +32,23 @@ What is the value of `p + q`?
 
 What is the value of `p + r`?
 
+```{r}
+p + q
+p + r
+1:12
+```
+
 
 ## Dataframes
 
 If:
-```{r}
+```{r, error = TRUE}
 Age <- c(22, 25, 18, 20)
 Name <- c("James", "Mathew", "Olivia", "Stella")
 Gender <- c("M", "M", "F", "F")
+data.frame(age, name, gender)
+data <- data.frame(Age, Name, Gender)
+data$Name
 ```
 
 then what is the R-code for getting the following output;

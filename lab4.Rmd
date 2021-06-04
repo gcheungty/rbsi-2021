@@ -20,94 +20,132 @@ This week in methods class, we covered different types of hypothesis tests, depe
 
 ![Hypothesis Testing](hypothesis-testing.png)
 
-|                    | Individual Variable Type                           |
-|                    | Categorical              | Continuous              |
-|------|-------------|--------------------------|-------------------------|
-| DV.  | Categorical | Tabular Analysis         | Probit / Logit          |
-| Type | Continuous  | Difference of Means      | Correlation Coefficient |
+The agenda in this lab is to demonstrate and execute a basic version of the tests discussed in class, we will be covering four tests, three of which directly come from the matrix above (I'll include probit/logit in a bonus section but will not cover it.)
 
-The agenda in this lab is to demonstrate and execute a basic version of the tests discussed, we will be covering the following: 
+1. Chi-squared test - Tabular Analysis
+2. T-tests - Difference of means test
+3. Correlation vs Covariance - Understanding the correlation coefficient
+4. Bivariate Linear Regression / Ordinary Least Squares (OLS)  - Correlation regression
 
-1. Chi-squared test 
-2. T-tests 
-3. Correlation vs Covariance
-4. Bivariate Linear Regression / Ordinary Least Squares (OLS) 
+**A reminder about hypothesis testing :**
 
-A reminder about hypothesis testing : 
-
-- $H_0$:  the variables are independent, there is no relationship between the two variables. Knowing the value of one variable does not help to predict the value of the other variable
-- $H_1$: the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable 
+- $H_0$: *the null hypothesis*
+  - any difference observed is just the result of random chance
+- $H_1$: *the research hypothesis* 
+  - the variables are dependent, there is a relationship between the two variables. Knowing the value of one variable helps to predict the value of the other variable
+- we want to *reject the null hypothesis*
 
 # Chi-squared $x^2$ test
 
-Remember, a chi-square test typically is used to compare two categorical variables. It works by comparing the observed frequencies to the expected frequencies if there was no relationship between the two variables. 
+A chi-square test typically is used to compare two categorical variables. It works by comparing the observed frequencies to the expected frequencies if there was no relationship between the two variables. 
 
 You can do it by hand, and Dr. Siegel goes through this in Lecture 2 Part 1, on slide 54 onwards, when he goes through an example of how to conduct a $x^2$ test by hand. I will show you how to do this in R as well, using the function `chisq.test()`.
 
-I'm going to run a hypothetical test to see if there is a difference in number of democracies in different regions of the world - it's hypothetical because there are historical and structural reasons that could explain why some regions have more democracies than others, but we will assume that we want to test this hypothesis using a chi-square test. 
+I'm going to run a hypothetical test to see if there is a difference in the number of 2008 voters, between the republican party and democratic party. The two variables of interest are `interest_voted2008` (did the respondent vote in the 2008 elections?), and `prevote_regpty` (what is the official party of registration of the respondent?)
 
-First, we always have to check and prepare the data to see if it needs to be cleaned
-- It seems that the variable `region` has 6 categories (0, 2, 3, 5, 6, 7), but it is not clear what each of these regions are. 
-- There are two ways to deal with this, either to check the codebook, or if there are also regional dummy variables, to crosscheck region against those dummies - which is what I do in the code below to create a new variable `region2` which has the regions specified as a factor / character variable. 
+## Setting up the data 
+
+- We will be using data from the ANES 2012 survey throughout this lab.
+- The codebook and data will be on sakai
 
 ```{r}
-load("separatistData.RData")
-summary(separatistData$democracy)
-table(separatistData$region) # What do these values mean? Either check codebook, or crosscheck for regional dummy variables
-separatistData$region2 <- ifelse(separatistData$eeurop == 1, "eeurope", 
-ifelse(separatistData$lamerica == 1, "lamerica", 
-ifelse(separatistData$ssafrica == 1, "ssafrica", 
-ifelse(separatistData$asia == 1, "asia", 
-ifelse(separatistData$western == 1, "western", 
-"others")))))
-table(separatistData$region, separatistData$region2)
+library(sjlabelled)
+library(haven) # for opening .sav files
+anes2012 <- read_sav("~/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/anes_timeseries_2012/anes_timeseries_2012.sav")
+```
+
+- You always want to start by checking and preparing the data. 
+  - You can check the codebook to find the levels of a data and how it has been coded. 
+  - For **prevote_regpty** the possible responses to the question are: 
+```{r, include = FALSE}
+get_labels(anes2012$prevote_regpty)
+```
+
+  - So to keep the analysis as clean as possible, we might just want to restrict our chi-square analysis to those who answered `1. Democratic Party` or `2. Republican Party`, since we don't have any logical reason for recoding independents or those who didn't answer
+  - Though note that there is a significant number of respondents who don't qualify under the restrictions (-1 Inapplicable: 2958; 4 None or Independent: 214; 5 Other: 456)
+  
+```{r}
+table(anes2012$prevote_regpty)
+anes2012$regpty <- ifelse(anes2012$prevote_regpty == 1, 1,
+                  ifelse(anes2012$prevote_regpty == 2, 2, NA))
+table(anes2012$regpty)
+summary(anes2012$regpty) # Note the 3667 NAs
+```
+
+  - For **interest_voted2008*,the possible responses to the question are: 
+```{r, include = FALSE}
+get_labels(anes2012$interest_voted2008)
 ```
 
 ```{r}
-chisq.test(separatistData$region2, separatistData$democracy)
+summary(anes2012$interest_voted2008)
+table(anes2012$interest_voted2008)
 ```
 
-- the p-value is 0.001, so we can reject the null hypothesis at the 0.001 significance level.
-  - Interpreting this, it indicates that the number of democratic countries is significantly different across regions
+We only have 22 nonrespondents, so we can do a simple recode for this as well
+
+```{r}
+anes2012$interest_voted2008 <- ifelse(anes2012$interest_voted2008 > 0 , anes2012$interest_voted2008, NA )
+table(anes2012$interest_voted2008)
+```
+
+## Chi-squared test + Analysis
+
+Now for the chi-squared test: 
+
+```{r}
+chisq.test(anes2012$interest_voted2008, anes2012$regpty)
+```
+
+- Here the p-value is 0.0361, which means we can reject the null hypothesis at the 0.05 level, but not at the 0.01 level. 
+  - the levels for hypothesis testing tend to be 0.10, 0.05, 0.01, and 0.001.
+  - Interpreting this, it means that the number of 2008 voters differs significantly across party registration levels, at the 5 percent significance level. 
 - For more on some interesting ways to present a contingency table and the difference between the observed and expected values, see [Antoine Soetewey's](https://statsandr.com/blog/chi-square-test-of-independence-in-r/) blog for some examples.
 
 # T-test or differences in means test
 
-The t-test or difference of means test is is used to determine if the null hypothesis (thaat the means of two samples are equal) can be rejected and that we can infer that the differences between the two samples are statistically significant). It is similar to the chi-squared test, but is better employed when the dependent variable is continuous and the independent variable categorical. 
+The t-test or difference of means test is is used to determine if the null hypothesis can be rejected and that we can infer that the differences between the two samples are statistically significant. It is similar to the chi-squared test, but is better employed when the *dependent variable is continuous and the independent variable categorical*. 
 
 Examples: 
 
-- Do republicans and democrats have different feelings toward the military?
+1. Do republicans and democrats have different feelings toward the military?
   - independent variable: political affiliation (categorical)
   - dependent variable: feeling thermometer (continuous)
-- Does college-level literacy vary across states in the U.S.?
+2. Does college-level literacy vary across states in the U.S.?
   - independent variable: Geographical region (categorical)
   - Dependent variable: percentage of college educated adults 
 
 The difference in means test is referenced in Lecture 2, part 1, on slide 109 onwards. In R we perform the test using the function `t.test()`. Note that what the difference of means t-test, or a two-tailed t-test, concludes is whether there is a difference in means, rather than whether one mean is specifically less than or greater than the other - the latter type of test would be a one-tailed t-test, which R can also conduct, and is one of the options if you check `?t.test`. 
 
-Using data from the ANES 2012 survey
-
-```{r, include = FALSE}
-library(haven)
-library(DT)
-anes2012 <- read_sav("~/Dropbox/Duke/Summer 2021/RBSI Online/Methods Lab/anes_timeseries_2012/anes_timeseries_2012.sav")
-datatable(anes2012, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
-```
-
-As always, check the variables and clean up the data. 
-
-```{r}
-summary(anes2012$ftgr_military) # Feeling thermometer should range from 0 to  100
-summary(anes2012$pid_x)
-
-anes2012$ft_military_2 <- ifelse(anes2012$ftgr_military <0, NA, anes2012$ftgr_military)
-anes2012$pid_x_2 <- ifelse(anes2012$pid_x <0, NA, anes2012$pid_x)
-```
+We will test the first example hypothesis **Do republicans and democrats have different feelings toward the military?**
 
 **Hypothesis**: Is the relationship between party ideology `pid_x`  and support for the military `ftgr_military` statistically significant?
 
 **Null Hypothesis:**: There is no difference in level of support for the military (proxied by feeling thermometer) between Republicans and Democrats
+
+
+## Cleaning Data
+
+As always, check the variables and clean up the data. 
+
+From the codebook, pid_x should range from 1 to 7. And we know that feeling thermometers should range from 0 to 100. 
+```{r, include = FALSE}
+get_labels(anes2012$pid_x)
+```
+
+Hence we need to recode the values of either variable that doesn't fall within that range. I've chosen this time to recode them as new variables `ft_military_2` and `pid_x_2`. In pid_x_2, I've chosen to turn it into a binary variable, where 1 captures all respondents who identify as democrat-leaning (pid_x <= 3), and where 2 captures all respondents who identify as republican-leaning (pid_x >= 5). 
+
+```{r}
+summary(anes2012$ftgr_military) # Feeling thermometer should range from 0 to  100
+summary(anes2012$pid_x) # pid_x should range from 1 to 7.
+anes2012$ft_military_2 <- ifelse(anes2012$ftgr_military <0, NA, anes2012$ftgr_military)
+anes2012$pid_x <- ifelse(anes2012$pid_x <0, NA, anes2012$pid_x)
+anes2012$pid_x_2 <- ifelse(anes2012$pid_x <= 3, 1, 
+                    ifelse(anes2012$pid_x >= 5, 2, NA))
+table(anes2012$pid_x_2)
+```
+
+## T-test
 
 ```{r}
 t.test(anes2012$pid_x_2, anes2012$ft_military_2)
@@ -115,115 +153,35 @@ t.test(anes2012$pid_x_2, anes2012$ft_military_2)
 
 **Interpreting the results**: 
 
-- Confidence Interval (-77.48951, -76.37252)
-- p-value (<2.2e-16 ~ 0.001)
+Here, we see that the p-value is <2.2e-16, which means it is very close to 0. We can reject the null hypothesis at the 0.001 significance level, that there is no difference in respondents' feelings towards the military, between republican and democrat respondents. 
 
+Does this follow through with our expectations of how people actually feel towards the military in real life? 
 
-# Correlation Coefficient
+# Bivariate Regressions
 
-- The correlation coefficient is the most common test of signifiance used (and taught) in statistical methods. 
-- Used when the dependent and independent variable are continuous variables
-
-
-## Covariance vs Correlation
-
-Discussion on the difference between correlation and covariance is on slide 91 of Lecture 2, part 1. 
-
-```{r}
-load("separatistData.RData")
-colnames(separatistData)
-summary(separatistData)
-cor(separatistData$militarySpend, separatistData$GDPpc2005, use="complete.obs")
-cov(separatistData$militarySpend, separatistData$GDPpc2005, use="complete.obs") 
-plot(separatistData$militarySpend, separatistData$GDPpc2005)
-```
-
-How to interpret covariance / correlation between two variables? 
-
-```{r}
-X = matrix(c(1,0.5,3,7,9,6,2,8,4), nrow=3, ncol=3, byrow=FALSE)
-X <- data.frame(X)
-colMeans(X)
-cov(X)
-cor(X)
-X
-cov(X$X3, X$X2)
-cor(X$X3, X$X2)
-plot(X$X2, X$X3)
-```
-
-## Bivariate Regressions
-
-# Using R to do statistical analysis
-
-This week we have been covering the logic of regression and hypothesis testing, from a theoretical and research question building perspective. In the lab, we want to put these concepts into practice. 
-
-As a reminder, we've discussed hypothesis testing in terms of expecting an independent variable $x$ and its effects on a dependent variable $y$. So we can think of this relationship as resembling: 
+The logic of regression is often thought of in terms of some independent variable $x$ can cause changes in some dependent variable $y$. So we can think of this relationship as resembling: 
 
 $$Y = \alpha + \beta_1 X$$ 
+
 Where $\beta$ is the coefficient that represents how much a unit change in independent variable $X$ results in a $\beta$ unit change in the dependent variable $Y$. 
 
-# Bivariate Regressions 
+In this section, we will be going over how to perform ordinary least squares (OLS) regessions in R, using the same example of political ideology and its effects on a voter's feelings towards the military. Here we are interested in how one unit change in political ideology (towards increased 'democratic-ness'), shifts one's feelings towards the military.
 
-In this section, we will be going over how to perform ordinary least squares (OLS) regerssions in R, using the same example of political ideology and its effects on a voter's feelings towards Obama. 
-
-**The Hypothesis**: Voters who are recorded as more 'democratic' on the political ideology scale, are more likely to have positive feelings towards Obama. 
+**The Hypothesis**: Voters who are recorded as more 'democratic' on the political ideology scale, are more likely to have negative feelings towards the military 
 
 ## Setting up the data 
 
-- The data is from ANES 2016 Pilot Study [Source](https://electionstudies.org/data-center/anes-2016-pilot-study/)
-- The **dependent variable** is `ftobama` which measures an individual's feelings towards obama - the ratings are between 0 to 100 degrees, where ratings between 50 and 100 indicate favorable feelings, and 0 to 50 indicates that the participant does not feel favorable towards Obama. 
-- The **independent variable** is ``pid7``, a 7 point measure of party ID, where 1 indicates a strong democrat, and 7 indicates a strong republican.
+- We will be using the same data from ANES 2012. 
 
-1. Load the data into R, in this case, the data is in `.csv` format
+- The **dependent variable** is `ftgr_military` which measures an individual's feelings towards obama - the ratings are between 0 to 100 degrees, where ratings between 50 and 100 indicate favorable feelings, and 0 to 50 indicates that the participant does not feel favorable towards the military 
+- The **independent variable** is ``pid_x``, a 7 point measure of party ID, where 1 indicates a strong democrat, and 7 indicates a strong republican.
 
-```{r}
-anes16 <- read.csv("anes_pilot_2016.csv") # Loading in the data
-```
-
-### Check the dependent variable
-
-2. Check the codebook and use `summary()` on the variables to make sure the structure of the data is as expected (i.e. that `ftobama` should range from 0 to 100, and `pid7` should range from 1 - 7.)
+Earlier, we already cleaned up the variables, so we will be using the cleaned variables `ft_military_2`, and `pid_x`
 
 ```{r}
-summary(anes16$ftobama) # always check codebook!!!
-table(anes16$ftobama)
+summary(anes2012$ft_military_2)
+summary(anes2012$pid_x)
 ```
-
-- It seems like there are two miscoded individuals in ftobama who are coded as answering $998$, we can treat these observations as `NA`. 
-- We can do so by recoding these observations using an `ifelse` statement
-  - what we basically want to do is to check each observation in the data, if the value of ftobama is more than 100, which we know there are two observations where it is more than 100 (or equals to 998), we want to code it as NA, if otherwise (if it is 100 or less), we want it to keep its value. 
-  - the structure of the `ifelse()` function takes the form of `ifelse(test, yes, no)`,
-  - Following the logic above, the function should be coded as such: 
-  
-```{r}
-anes16$ftobama <- ifelse(anes16$ftobama > 100, NA, anes16$ftobama)
-summary(anes16$ftobama)
-```
-
-And if you check the `summary()` for `ftobama`, you will note that now that min is 0, the max is 100, as we expect, and there are 2 NAs. 
-
-### Check the independent variable 
-
-According to the codebook, aside from the values 1 to 7 which represent the spectrum between strong democrat and strong republican, there is an eighth category for "Not sure". And it seems like there are 41 individuals who answered 'Not sure'. Using `summary()` and `table()` on pid7 confirms this. 
-
-```{r}
-summary(anes16$pid7)
-table(anes16$pid7)
-```
-
-It seems there are 41 individuals who are unsure what their political ideology are, and 14 NAs. We can treat these outlying individuals two ways: 
-
-1. Either we can also recode the 41 individuals who answered "Not Sure" as NAs. 2. Or, we can make an educated guess about what kind of individuals would answer "Not sure" to a political ideology question. Often, survey specialists and american politics specialists argue that this is a sign of moderateness. 
-
-In this case, we will follow the second methodology, and recode observations of `pid7 == 8` into values of `pid7 = 4`. 
-
-```{r}
-anes16$pid7<- ifelse(anes16$pid7 == 8, 4, anes16$pid7) # making them moderate
-table(anes16$pid7)
-```
-
-Now if you check `table()` you will note that now there are 246 individuals who chose option $4$ (instead of 205 before the recode), and none for option $8$. 
 
 
 ## Running the OLS 
@@ -235,7 +193,7 @@ To run an ordinary least squares regression, we can use the `lm()` function to c
 - after defining the model (and saving it as an object), you use the `summary()` function to analyze the results of the model
 
 ```{r}
-model1 <- lm(ftobama ~ pid7, data = anes16)
+model1 <- lm(ft_military_2 ~ pid_x, data = anes2012)
 summary(model1) 
 ```
 
@@ -244,7 +202,7 @@ summary(model1)
 The output for `summary()` shows the original `lm()` formula used, the summary statistics for the residuals, the coefficients for the predictor variables used, and performance measures for the model more generally. 
 
 - The coefficient is the $\beta$ value for $X$ which we discussed in the beginning, it represents how much a unit change in independent variable $X$ results in a $\beta$ unit change in the dependent variable $Y$. 
-- Hence, the summary output for the model predicts a decrease of $-13.5278$ in *ftobama* for every unit increase in *pid7* - what does that mean in real terms? 
+- Hence, the summary output for the model predicts an increase of $1.2961$ in *ftmilitary_2* for every unit increase in *pid_x* - what does that mean in real terms? 
   - Remember that every unit increase in pid7 indicates a shift in ideology closer to Strong Republican
 - **Statistical Significance**: We also discussed statistical significance in class, the model output gives us both the t value, but also automatically conducts a two-tailed test. Hence the $Pr(>|t|)$ value tells us at what level of significance the null hypothesis can be rejected at, $<2e-16$ or $***$ indicates that the threshold of significance is even smaller than 0.001. 
 - **R-squared**: Lastly, the model output also provides some measures of goodness of fit, which will be important when comparing between different models, but does not have much interpretation value when just conducting hypothesis testing. 
@@ -255,13 +213,45 @@ Next, we move on to multivariate regressions, where we are comparing the effects
 
 $$Y = \alpha + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4$$ 
 
-This time we include three more independent variables: 
-1. `faminc`
-2. `srv_spend`
-3. `equal_pay`
+This time we include two more independent variables, on top of `pid_x`: 
+1. Pre family income - `inc_incgroup_pre` 
+2. Religious practices - `relig_import`
 
 ```{r}
-fit2 <- lm(ftobama ~ pid7 + faminc + srv_spend + equalpay, data = anes16)
+summary(anes2012$inc_incgroup_pre)
+get_labels(anes2012$inc_incgroup_pre) #you will need the package sjlabelled to use the get_labels() function
+```
+
+```{r}
+summary(anes2012$relig_import)
+get_labels(anes2012$relig_import)
+```
+
+## Recoding both variables: 
+
+```{r}
+anes2012$faminc <- ifelse(anes2012$inc_incgroup_pre > 0 , anes2012$inc_incgroup_pre, NA)
+
+anes2012$relig_import_2 <- ifelse(anes2012$relig_import > 0, anes2012$relig_import, NA)
+```
+
+
+```{r}
+fit2 <- lm(ft_military_2 ~ pid_x + faminc + relig_import_2, data = anes2012)
 summary(fit2)
 ```
 
+Here we can make three inferences about the results: 
+
+1. As political ideology increases one unit towards more 'republican' levels, the respondents' feeling towards the military increases by 1.26 units on average, and this effect is statistically significant at the 0.001 level. 
+  - Also, the inclusion of more variables has not changed the effect of political ideology on feelings towards the military
+2. As respondents' religious practices shift from important to not important, their feeling towards the military decreases by 7.08 units on average, and this is also significant at the 0.001 level. 
+3. Family income has no statistically significant effect on one's feelings towards the military. 
+
+# Glossary
+
+The functions we've gone over today are: 
+
+1. `chisq.test()`
+2. `t.test()`
+3. `lm()` + `summary()`
