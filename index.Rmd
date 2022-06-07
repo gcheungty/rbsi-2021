@@ -17,7 +17,7 @@ output: html_document
 
   - [**Lab 2 Exercises**](lab2-ex.html)
 
-[**Data Cleaning**]
+[**Data Cleaning**](lab3.html)
 
 [**OLS in R**](lab4.html)
 
