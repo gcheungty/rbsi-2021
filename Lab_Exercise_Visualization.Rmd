@@ -1,0 +1,117 @@
+---
+title: "**RBSI Visualization Lab Exercise**"
+author: "Mateo Villamizar-Chaparro (sv161@duke.edu)"
+date: "June 10, 2021"
+output: 
+  html_document: 
+    toc: true
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: FALSE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/Mateo Chaparro/Dropbox/Documentos/0_Duke/4_FourthYear/1_Summer/RBSI") 
+library(ggplot2)
+```
+
+### Instructions
+Using the code and the provided ANES data from the video-lab on Visualizations, reproduce the following figures using only ggplot (not the other canned functions explained in the lab like ggeffects or coeffplot).
+
+### Exercise 1
+
+Create a coefficient plot with 95% and 90% Confidence intervals. (Hint: extend the placeholder matrix and change the qnorm() command)
+
+```{r coefplot1, echo=FALSE}
+# Call your data
+anes <- as.data.frame(read.csv("lab_Visualization_Data.csv"))
+# Run your model
+m1 <- lm(vote ~ black + hisp + pid7 + income + age + educ_attain, data = anes)
+# Create an object as a placeholder for the summary results
+out <- summary(m1)                                                                    
+# Extract the number of coefficients in the model
+n <- nrow(out$coefficients)                                                           
+
+# Create a placeholder matrix, make sure you have 
+coefMat <- matrix(NA, n-1, 6)
+coefMat[,1] <- out$coefficients[2:n,1]
+coefMat[,2] <- out$coefficients[2:n,2]
+coefMat[,3] <- coefMat[,1] - qnorm(1-0.05/2)*coefMat[,2]
+coefMat[,4] <- coefMat[,1] + qnorm(1-0.05/2)*coefMat[,2]
+coefMat[,5] <- coefMat[,1] - qnorm(1-0.1/2)*coefMat[,2]
+coefMat[,6] <- coefMat[,1] + qnorm(1-0.1/2)*coefMat[,2]
+rownames(coefMat) <- c("Black", "Hispanic", "Ideology", "Income", "Age", "Education")
+colnames(coefMat) <- c("coef", "std_err", "min", "max", "min10", "max10")
+df <- as.data.frame(coefMat)
+# Plot
+coefplot <- ggplot(data = df, aes(x = rownames(coefMat),
+                           y = coef)) + 
+   geom_hline(yintercept=0, colour="black", size=1, linetype="dotted") +
+   geom_linerange(aes(ymin=min, ymax=max), size=0.2, color="#0a55fd") + 
+   geom_linerange(aes(ymin=min10, ymax=max10), size=0.8, color="#012169") + 
+   geom_point(color="#012169") + 
+   labs(x="Coefficient", y="Estimate", title="Coefficient Plot") +  
+   coord_flip() + theme_classic()
+
+coefplot
+```
+
+### Exercise 2
+
+Create a margins plot showing both the responses for hispanics and non-hispanics. (Hint: you will need to create two different predictions and then merge them together. You can also create an additional numeric column while using cbind() to repeat the same value in all your rows.)
+
+```{r, margins plot, echo=FALSE}
+m2 <- lm(vote ~ hisp*income, data = anes)
+
+# First, create the prediction data
+# The prediction data is going to be a a 5X2 matrix for rows equal to the values of the running variable and columns equal to the number of variables in our model. Be super careful about the order of the elements. For this figure, we will create two of those one for Hispanics and another one for non-Hispanics.
+n <- length(unique(anes$income))
+prediction_data_hisp <- data.frame(hisp = rep(1,n),    
+                              income = 0:(n-1))
+prediction_data_nohisp <- data.frame(hisp = rep(0,n),    
+                              income = 0:(n-1))
+# Predict the probability of voting with the results of our model using predict
+predvals_hisp <- predict(m2,
+                         type="response", 
+                         se.fit=T, 
+                         newdata = prediction_data_hisp)     # if using a newdataset for predictions, which data is that 
+predvals_nohisp <- predict(m2,
+                         type="response", 
+                         se.fit=T, 
+                         newdata = prediction_data_nohisp) 
+
+
+# Create the standard errors and the values for each level of income and then make them a dataframe
+income <- 0:28
+# Hispanic Data
+fit <- predvals_hisp$fit
+lowCI <- predvals_hisp$fit - qnorm(1-0.05/2)*predvals_hisp$se.fit
+highCI <- predvals_hisp$fit + qnorm(1-0.05/2)*predvals_hisp$se.fit
+effects_hisp <- as.data.frame(cbind(income, 1, fit, lowCI, highCI))
+# No Hispanic data
+fit <- predvals_nohisp$fit
+lowCI <- predvals_nohisp$fit - qnorm(1-0.05/2)*predvals_nohisp$se.fit
+highCI <- predvals_nohisp$fit + qnorm(1-0.05/2)*predvals_nohisp$se.fit
+effects_nohisp <- as.data.frame(cbind(income, 0, fit, lowCI, highCI))
+
+# Merge both sets
+effects <- rbind(effects_hisp, effects_nohisp)
+
+# Plot
+margplot <- ggplot(data = effects, aes(x = income,
+                                       y = fit, group = V2)) + 
+   geom_line(aes(linetype=as.factor(V2))) +
+   geom_ribbon(aes(ymin = lowCI, ymax = highCI), alpha = .1) + 
+   labs(x = "Income",
+        y = "Probability of Voting",
+        title = "Correlation between Income for \nHispanic and non-Hispanic Respondents", 
+        caption = "Source: ANES, 2016") +
+   theme_classic() +
+   scale_linetype_manual(name = "Hispanic", 
+                         values = c('solid', 'dashed'),
+                         labels = c("No", "Yes"))
+
+margplot
+
+```

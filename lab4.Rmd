@@ -266,6 +266,8 @@ The estimate, (often labeled the coeffcient, or $\beta$) is the expected impact 
 - Hence, in the model above, the coefficient (1.2961) indicates the upward slope or additional increase in Y, for every unit increase in X
 
 ```{r}
+plot(anes2012$ft_military_2, anes2012$pid_x)
+
 library(ggplot2)
 ggplot(anes2012, aes(x = pid_x, y = ft_military_2)) + geom_point(alpha = 0.005) + 
     geom_smooth(method='lm')

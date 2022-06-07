@@ -20,6 +20,7 @@ output:
 
 ```{r, include = FALSE}
 rm(list=ls())
+#install.packages("DT")
 library(DT)
 datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
 ```
