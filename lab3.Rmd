@@ -145,7 +145,8 @@ With that, let us load the two datasets we will be working with today. Go to the
 - Remember to save and name your datasets, it would be best to call the CCES data **cces16** and the fatalencounters data **fatal**
 
 ```{r, include =FALSE}
-cces16<-read.dta13("CCES16_Common_OUTPUT_Feb2018_VV.dta")
+load("CCES16_Common_OUTPUT_Feb2018_VV.RData")
+cces16 <- x
 fatal<-read.csv("fatal.csv")
 ```
 
