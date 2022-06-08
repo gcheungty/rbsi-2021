@@ -19,7 +19,7 @@ output: html_document
 
 [**Data Cleaning**](lab3.html)
 
-  - [**Lab 2 Exercises**](lab3-ex.html)
+  - [**Lab 3 Exercises**](lab3-ex.html)
 
 [**OLS in R**](lab4.html)
 

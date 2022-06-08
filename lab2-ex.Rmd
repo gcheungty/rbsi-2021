@@ -100,7 +100,7 @@ From the RStudio dropdown menu, select `File > Import Dataset > From text (base)
 
 ![Load Dataset](load-dataset.png)
 
-![Dataset options](dataset-options.png)
+![Dataset options](dataset-options.png)s
 
 The dataset should open automatically and you should see a similar code in your console as below: 
 
