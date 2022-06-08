@@ -251,20 +251,17 @@ fatal[c(1:10), c(8:13)]
 For example, we can use the subset command to make our data only represent survey respondents on the CCES in the state of North Carolina. We do so using the following syntax
 
 ```{r}
-summary(cces16$inputstate) # states are names (character), not numeric
+str(cces16$inputstate) # states are names (character), not numeric
 NC <- subset(cces16, inputstate == "North Carolina")
 ## NC <- subset(cces16, inputstate == 37)
 # subset if inputstate is 37 (North Carolina)
-head(NC)
 ```
 
 If we want to subset based on MULTIPLE conditions, we can do that easily, using  & (and) | (or) in our subset command. For example, say we want to only include CCES survey respondents from North Carolina and Georgia, we use the OR (|) to subset based on those criteria.
 
 ```{r}
-ganc <-subset(cces16, inputstate == 37 | inputstate == 13) # subset if inputstate is 37 (North Carolina) OR 13 (Georgia)
+ganc <-subset(cces16, inputstate == "North Carolina" | inputstate == "Georgia") # subset if inputstate is 37 (North Carolina) OR 13 (Georgia)
 
-#compare to: subset if inputstate is 37 (North Carolina) AND 13 (Georgia)
-subset(cces16, inputstate == 37 & inputstate == 13) #it shouldn't work
 ```
 
 But what about if we want to subset to only look at say, individuals who work at a union (union) and self-report having voted in 2012 (CC16_316) ? We need to consult our codebook and be sure to use the & (and) during the subset command. 
@@ -356,7 +353,7 @@ But things are a bit more complex here. Remember, we want to ultimately merge th
 
 - The answer is we need to aggregate our data using the `dplyr/tidyverse package`.
 
-```{r, echo = FALSE}
+```{r, message = FALSE}
 #install.packages("dplyr")
 library(dplyr)
 ```
@@ -548,3 +545,7 @@ This is obviously a lot to remember and a lot to make sense of in a single lectu
 * https://judgelord.github.io/PS811/ -- A course on statistical computing in social science by Dr. Devin Judge-Lord. 
 * http://qss.princeton.press/ -- A textbook on statistical analysis in social and political science with guided examples by Dr. Kosuke Imai
 * https://s3.amazonaws.com/assets.datacamp.com/blog_assets/Tidyverse+Cheat+Sheet.pdf -- A tidyverse cheat sheet with examples and easy to reference common functions
+
+## Take-home Exercises
+
+[**Lab 3 Exercises**](lab3-ex.html)

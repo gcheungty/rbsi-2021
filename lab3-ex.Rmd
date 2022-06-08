@@ -1,0 +1,51 @@
+---
+title: "Lab 3 Exercises"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'lab3-ex.html'))})
+author: "Gloria Cheung"
+date: "06/07/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: TRUE
+    css: "style.css"
+    code_folding: show
+---
+
+# Manipulating Data
+
+Using the 2016 CCES data we used in lab, provide us with the mean level of support for raising the minimum wage to 12 dollars per hour among residents of North Carolina (there are multiple ways to do this)
+
+Some coding tips if you are stuck..
+
+a. On the choice of variables for minimum wage and states:
+
+```{r class.source = 'fold-hide'}
+#Variable: CC16_351K is support for min wage raise (1 == for, 2 == against, 8 == skipped)
+#Variable: inputstate is state FIPS code (37 == NC)
+```
+
+b. On manipulating the variable
+
+```{r class.source = 'fold-hide'}
+#You may have to use as.numeric() on CC16_351K
+```
+
+# Merging data
+
+1. Download this dataset on poverty rates in NC counties as a CSV file [https://drive.google.com/file/d/1fmwOQnmhPOzkxZ_9DeTPyaYfobk-Pjr2/view?usp=sharing]
+
+2. Merge NC poverty data with the 2016 CCES survey data... 
+
+Tip: 
+```{r class.source = 'fold-hide'}
+# You might merge them using the county FIPS codes
+```
+
+3. [Do part 3 after OLS Lab] Assess the relationship between poverty rates and support for raising the minimum wage among NC residents, what variables would you control for in the process?
+
