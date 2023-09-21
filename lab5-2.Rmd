@@ -1,0 +1,193 @@
+---
+title: "Lab 5: OLS and Interpretations in R"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'lab4.html'))})
+author: "Gloria Cheung"
+date: "9/19/2023"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: FALSE
+    number_sections: TRUE
+    css: "style.css"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stargazer)
+library(ggeffects)
+
+anes <- as.data.frame(read.csv("ANES_2016.csv"))
+```
+
+This lab will pick up from where we left off in the last lab, we will continue to use **ordinary least squares (OLS)** to analyze the relationship between variables. We covered bivariate regressions in the last lab, and we will cover multivariate regressions, interpretations, tables, and plotting in this lab. 
+
+Again we will be using the 2016 ANES. We will be using the following seven variables from the dataset: 
+
+  + *Vote*: Indicator variable if the individual casted a vote
+  + *Black*: Indicator variable if the individual self-identified as black
+  + *Hisp*: Indicator variable if the individual self-identified as hispanic
+  + *pid7*: 7-point partisan identification scale
+  + *income*: income category for the respondent
+  + *age*: age of the respondent at the time of the survey
+  + *educ_attain*: Highest educational attainment from the individual at the time of the survey.
+  
+The research question we will be using as our example will be: 
+How does the probability of voting vary with the ethnicity and race of the respondent? 
+
+### Using `stargazer` for summary statistics
+
+```{r, include=TRUE, eval=TRUE}
+# stargazer(dataset, options)
+stargazer(anes, type="text")
+# What if we don¿t want to add the median?
+stargazer(anes, type="text", median = TRUE)
+# You can play with some of the other values in order for the to appear or not in the table: nobs, mean.sd, iqr, etc
+# You can also display the statistics you want using a list object but the names are different
+stargazer(anes, type="text", summary.stat = c("n", "min", "mean", "max", "sd")) # order matters here
+
+# You can also change the names of the covariates to more descriptive ones (order matters here too!!)
+stargazer(anes, type="text", summary.stat = c("n", "min", "mean", "max", "sd"),
+           covariate.labels=c("Voted 2016 election","Respondent is Black","Respondent is Hispanic", "PArty Identification", "Income", "Age", "Educational attainment"))
+
+# What about adding a name and making the number of digits after zero smaller?
+stargazer(anes, type="text", summary.stat = c("n", "min", "mean", "max", "sd"),
+           covariate.labels=c("Voted 2016 election","Respondent is Black","Respondent is Hispanic", "PArty Identification", "Income", "Age", "Educational attainment"),
+          title="Descriptive statistics/selected variables", 
+          digits=2)
+
+# Finally, how can you export it
+stargazer(anes, type="text", summary.stat = c("n", "min", "mean", "max", "sd"),
+           covariate.labels=c("Voted 2016 election","Respondent is Black","Respondent is Hispanic", "PArty Identification", "Income", "Age", "Educational attainment"),
+          title="Descriptive statistics/selected variables", 
+          digits=2,
+          out="desc_stats.doc")
+
+```
+
+### Comparing Multivariate Models
+
+In the last lab, we primarily ran bivariate models (meaning only one explanatory variables), now we will try multivariate models. Run a first model that shows the correlation between voting and being Black and Hispanic. Then run another model that includes partisan identification, income, age and educational attainment as controls. Which model would you choose and why? 
+
+```{r models, warning=FALSE, echo=FALSE, message=FALSE, eval=TRUE}
+# Run your first model
+m1 <- lm(vote ~ hisp + black, data = anes)
+
+# Run your second model
+m2 <- lm(vote ~ hisp + black + educ_attain + pid7 +income + age, data = anes)
+
+```
+
+Compare the output using stargazer: 
+
+```{r}
+# Exporting the data
+stargazer(m1, m2, type="text",
+          title            = "Table 1",                          # Give a title to the table 
+          covariate.labels = c("Hispanic", "Black"),             # Choose the labels for the variables you want to show  
+          dep.var.caption  = "OLS Models",                       # Name your columns
+          dep.var.labels   = "Voted",                            # Name your dependent variable
+          add.lines = list(c("Controls", "No", "Yes")),          # add lines of info
+          keep = c("black","hisp"),                              # keep certain variables  
+          out="table1.doc")                                      # for nicer looking exported tables change text for html in type
+          
+```
+
+
+Practising interpretation, try interpreting the table and compare it with the analysis in this dropdown menu: 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+1. For instance, a respondent that self-identifies as black will be 0.14 percentage points less prone to vote when compared to non-black respondents. You can also say that being black is associated with a decrease in the probability of voting of 0.14 percentage points when compared to non blacks. If the population or sample is only comprised by black and white people, you could make the baseline categories whites. If there is a larger variation of ethnic groups is better to leave as non-black. 
+
+2. For instance, one more year of life is associated with a 0.001 percentage point increase in the probability of voting. We could also assume income categories are continuous and say that a one unit change in income is associated with a decrease of 0.001 percentage points on the probability of voting. 
+```
+
+
+# Graphing 
+
+## arm function | base R
+
+The `arm` package uses the function `coefplot` to make a plot.
+
+```{r}
+install.packages("arm")
+install.packages("lme4")
+library(arm)
+library(lme4)
+
+coefplot(m2, 
+         intercept = F, 
+         main = "Coefficient Plot",  # Title
+         varnames = c("intercept", "Hispanic", "Black", "Education", "Party Identification", "Income", "Age") )
+
+```
+
+## ggplot 
+
+For the kind of plots we usually see in academic papers, most scholars use `ggplot` to make the plot, it allows for very aesthetically pleasing plots. 
+
+```{r}
+ggplot(data = df, aes(x = rownames(coefMat),
+                           y = coef)) + 
+   geom_hline(yintercept=0, colour="black", size=1, linetype="dotted") +
+   geom_linerange(aes(ymin=min, ymax=max), size=0.2, color="#0a55fd") + 
+   geom_point(color="#0a55fd") + 
+   labs(x="Coefficient", y="Estimate", title="Coefficient Plot") +
+   coord_flip() + theme_classic()
+
+```
+
+# **Interactions**
+
+[[ What is an interaction? Explain interaction and interpretation]]
+
+You can also have a model with an interaction. This will make interpretation a bit trickier. For this section, let's simplify our model and analyze the probability of voting with respect to being hispanic, the education level of the individual and their interaction. Here, we could hypothesize that more educated hispanics will vote more. The model we want to estimate is:
+
+$$ vote_i = \beta_0 +\beta_1hisp_i + \beta_2 educ_i + \beta_3 hisp_i\times educ_i + \epsilon_i$$
+In this case:
+
+   + the average effect of being hispanic is: $Pr(vote_i | hisp=1) = \beta_0 +\beta_1 + \beta_2 income_i + \beta_3 income$.
+   + the average effect of not being hispanic is: $Pr(vote_i | hisp=0) = \beta_0 + \beta_2 income_i$
+   + $\beta_1$ is the effect of hispanic at no levels of income (not so telling)
+   + $\beta_2$ is the effect of income for non-hispanics
+   + $\beta_3$ is the interaction effect, it is the marginal effect of being hispanic at each level of income
+
+
+What would that model look like in R coding?
+
+```{r interaction, include=TRUE, eval=TRUE, echo=FALSE}
+m4 <- lm(vote ~ hisp*educ_attain, data = anes)
+summary(m4)
+```
+
+## Interpreting Interactions 
+
+Interpreting interaction effects can be hard.
+
+In `m4` above, the results suggest that .
+
+However... 
+
+The easiest way is to show the marginal changes visually. We should expect to see a decreasing / increasing effect of the dependent variable as independent variable increases from 0 to 1. 
+
+In other words, we can plot the effects of interactions. These are usually known as **marginal effect plots**. For this, we can use a combination of `ggplot` and `ggeffects` or use base R. We would look at this on the next lab. For today, I want to explain a bit more what the `predict` command does and how it is helpful to deal with interactions. 
+
+
+# Glossary
+
+The functions we've gone over today are: 
+
+1. `lm()`
+2. `coeftest()`
+3. ggplot()
+4. predict()
+5. ggeffects()
